@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://earth.google.com/kml/2.1">
+	<Document>
+		<Folder>
+			<name>GR1</name>
+			<Placemark>
+				<name>406AE3</name>
+				<styleUrl>#Style_406AE3</styleUrl>
+				<LineString>
+					<tessellate>1</tessellate>
+					<altitudeMode>relativeToGround</altitudeMode>
+					<extrude>1</extrude>
+					<coordinates>-0.2697800000,51.4780693333,0.041155555552
+						-0.2685700000,51.4780883333,0.041155555552
+						-0.2678700000,51.4781188333,0.041155555552
+						-0.2671600000,51.4780883333,0.041155555552
+						-0.2666400000,51.4780883333,0.041155555552
+						-0.2662000000,51.4780883333,0.041155555552
+						-0.2656800000,51.4780883333,0.041155555552
+						-0.2649700000,51.4781188333,0.041155555552
+						-0.0530800000,51.4442596667,0.041155555552
+						-0.0526300000,51.4440803333,0.041155555552
+						-0.0515000000,51.4436188333,0.041155555552
+						-0.0510400000,51.4434815000,0.041155555552
+						-0.0503300000,51.4432106667,0.041155555552
+						-0.1287900000,51.3199806667,0.041155555552
+						-0.1281200000,51.3197898333,0.041155555552
+						-0.1260400000,51.3190498333,0.041155555552
+						-0.1254300000,51.3188591667,0.041155555552
+						-0.1247400000,51.3186683333,0.041155555552
+						-0.1238200000,51.3184203333,0.041155555552
+						-0.1225600000,51.3180503333,0.041155555552
+						-0.1218900000,51.3179206667,0.041155555552 </coordinates>
+				</LineString>
+			</Placemark>
+		</Folder>
+
+
+
+		<Style id="Style_406AE3">
+			<IconStyle>
+				<color>ffD7EFC8</color>
+				<colorMode>random</colorMode>
+				<scale>1.1</scale>
+				<Icon>
+					<href>http://www.earthpoint.us/images/airports.png</href>
+				</Icon>
+			</IconStyle>
+			<LineStyle>
+				<color>ffD7EFC8</color>
+				<colorMode>random</colorMode>
+				<width>2</width>
+			</LineStyle>
+			<PolyStyle>
+				<color>ffD7EFC8</color>
+				<colorMode>random</colorMode>
+			</PolyStyle>
+		</Style>
+	</Document>
+</kml>
