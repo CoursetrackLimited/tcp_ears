@@ -2,5 +2,7 @@ package com.ordint.tcpears.domain;
 
 public interface TrackWriter {
 	
-	String write(Position2 p, String currentTrack);
+	String write(Position p, String currentTrack);
+	
+	void calculateTrackLength(int clientCount);
 }

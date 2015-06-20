@@ -2,12 +2,6 @@ package com.ordint.tcpears.server;
 
 
 
-import java.io.IOException;
-
-import com.ordint.tcpears.memcache.MemcacheHelper;
-import com.ordint.tcpears.service.PositionService;
-import com.ordint.tcpears.service.PositionServiceImpl;
-
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
@@ -23,6 +17,10 @@ import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.ssl.SslContext;
 import io.netty.util.CharsetUtil;
+
+import com.ordint.tcpears.memcache.MemcacheHelper;
+import com.ordint.tcpears.rest.RestServer;
+import com.ordint.tcpears.service.PositionService;
 
 
 
@@ -53,15 +51,11 @@ public class TCPEarsServer {
 		final SslContext sslCtx = null;
 		EventLoopGroup bossGroup = new NioEventLoopGroup(1);
 		EventLoopGroup workerGroup = new NioEventLoopGroup();
+		Config config = new Config();
 		
-		try {
-			memcacheHelper = new MemcacheHelper("localhost", 11211);
-			 //new StringHandler(memcacheHelper);
-			//
-			
-			//memcacheHelper = new MemcacheHelper();
-			
-			positionService = new PositionServiceImpl(memcacheHelper);
+		try {			
+			positionService = config.positionService();
+			startAdminService(config);
 			ServerBootstrap b = new ServerBootstrap();
 			b.option(ChannelOption.SO_BACKLOG, 1024);
 			b.group(bossGroup, workerGroup)
@@ -78,7 +72,12 @@ public class TCPEarsServer {
 			workerGroup.shutdownGracefully();
 		}
 	}
-
+	
+	private void startAdminService(Config config) {
+		Thread t = new Thread(new RestServer(config.administrationService()));
+		t.start();
+	}
+	
 	private final class DefaultChannelInitializer extends ChannelInitializer<SocketChannel> {
 
 		@Override

@@ -10,5 +10,7 @@ public interface Memcached {
 	
 	Object get(String key);
 	
+	Future<Boolean> delete(String key);
+	
 
 }

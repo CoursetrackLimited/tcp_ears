@@ -1,5 +1,6 @@
 package com.ordint.tcpears.memcache;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Future;
 
@@ -28,7 +29,9 @@ public class DevMemcachedClient implements Memcached {
 	public Future<Boolean> set(final String key, int exp, final Object o) {
 		log.info("set ({}, {})", key, o);
 		cached.put(key, o);
-		return null;		
+		CompletableFuture<Boolean> f = new CompletableFuture<>();
+		f.complete(true);
+		return f;	
 		
 	}
 	
@@ -38,6 +41,14 @@ public class DevMemcachedClient implements Memcached {
 		Object val = cached.get(key);
 		log.info("get {} = {}", key, val);
 		return val;
+	}
+
+	@Override
+	public Future<Boolean> delete(String key) {
+		cached.remove(key);
+		CompletableFuture<Boolean> f = new CompletableFuture<>();
+		f.complete(true);
+		return f;
 	}
 	
 	

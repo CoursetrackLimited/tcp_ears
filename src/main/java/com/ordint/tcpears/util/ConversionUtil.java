@@ -1,9 +1,10 @@
-package com.ordint.tcpears.domain;
+package com.ordint.tcpears.util;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 
 public final class ConversionUtil {
 
@@ -18,19 +19,34 @@ public final class ConversionUtil {
 		//convert ddmm.mmmmm to decimal
 		//convert dddmm.mmmmm to decimal
 		int dp = value.indexOf(".");
-		
-		double mins = Math.abs(Double.parseDouble(value.substring(dp-2)));
-		String degStr = value.substring(0, dp-2);
-		
-		int degs = StringUtils.isNumeric(degStr) ? Integer.parseInt(degStr) : 0;	
+		int degs = extractDegrees(value, dp);
+
+		double mins = Math.abs(Double.parseDouble(value.substring(upTo0(dp))));
+
 		if (value.charAt(0) == '-')
 			return formatDouble(degs -(mins)/60);
 		else
 			return formatDouble(degs +(mins)/60);
 			
 			
-	} 
+	}
+    private static int upTo0(int dp) {
+		return dp -2 < 0 ? 0 : dp -2;
+
+    }
+    private static  int extractDegrees(String value, int dp) {
+    	if (dp < 3) return 0;
+    	String str = value.substring(0, dp-2);
+    	if (NumberUtils.isParsable(str))
+    		return Integer.parseInt(str);
+    	else
+    		return 0;
+    }
+    
     public static String formatDouble(double d) {
     	return new BigDecimal(d).setScale(12, RoundingMode.HALF_DOWN).stripTrailingZeros().toString();
+    }
+    public static String formatDouble(String d) {
+    	return StringUtils.stripEnd(d, "0");
     }
 }

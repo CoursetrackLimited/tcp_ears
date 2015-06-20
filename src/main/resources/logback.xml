@@ -34,7 +34,7 @@
 	
 
 	<logger name="com.ordint" level="info"> 
-		<!-- <appender-ref ref="consoleAppender" /> -->
+		<appender-ref ref="consoleAppender" />
 		<appender-ref ref="FILE" />
 	</logger>
 </configuration>

@@ -2,12 +2,9 @@ package com.ordint.tcpears.memcache;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Future;
-
-import net.spy.memcached.MemcachedClient;
 
 import org.boon.json.ObjectMapper;
 import org.boon.json.implementation.ObjectMapperImpl;
@@ -30,6 +27,7 @@ public class MemcacheHelper {
 	
 	private final ObjectMapper objectMapper = new ObjectMapperImpl();
 	
+	@SuppressWarnings("unchecked")
 	public Map<String,String> getMap(String namespace, String objectKey) throws  IOException {
 		Object json = getObject(namespace, objectKey);
 		if (json == null) {
@@ -47,6 +45,10 @@ public class MemcacheHelper {
 	public Future<Boolean> set(String namespace, String objectKey, Object object) {
 		String key = getNamespaceKey(namespace, objectKey);
 		return memcachedClient.set(key, 0, object);
+	}
+	
+	public void clear(String namespace, String objectKey) {
+		memcachedClient.delete(getNamespaceKey(namespace, objectKey));
 	}
 	
 	public Object getObject(String namespace, String objectKey ) {

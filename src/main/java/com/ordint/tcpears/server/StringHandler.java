@@ -1,16 +1,12 @@
 package com.ordint.tcpears.server;
 
-import static org.apache.commons.lang3.StringUtils.leftPad;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.SimpleChannelInboundHandler;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ordint.tcpears.memcache.MemcacheHelper;
 import com.ordint.tcpears.service.PositionService;
-
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.SimpleChannelInboundHandler;
 
 public class StringHandler extends SimpleChannelInboundHandler<String> {
 	
@@ -24,9 +20,6 @@ public class StringHandler extends SimpleChannelInboundHandler<String> {
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, String message) throws Exception {
 		log.debug(message);
-		
-		
-		
 		positionService.update(message);
 
 	}
