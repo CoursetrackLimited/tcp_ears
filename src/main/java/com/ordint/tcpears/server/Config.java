@@ -74,8 +74,9 @@ public class Config {
 		ds.setUsername(environment.getProperty("user", "root"));
 		ds.setUrl("jdbc:mysql://"
 				+ environment.getProperty("dbhost", "10.10.0.148")
+				//+ environment.getProperty("dbhost", "localhost")
 				+ "/ggps01");
-		//		+ "/tcp_ears");
+				//+ "/tcp_ears");
 		ds.setDriverClassName("com.mysql.jdbc.Driver");
 		ds.setDefaultAutoCommit(true);
 		ds.setPassword(environment.getProperty("password", "Grotto1Frop"));

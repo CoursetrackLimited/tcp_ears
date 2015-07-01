@@ -63,7 +63,7 @@ public class DefaultInputParserTest {
 		
 		ClientDetails c = new ClientDetails("groupId", "clientId");
 		BDDMockito.when(clientDetailsResolver.resolveClientDetails("400678")).thenReturn(c);
-		String input = "400678,105413.15,5101.63261,-00019.47240,0.080000,119.430000,0.700000,0.600000,19925,D";
+		String input = "400678,105413.15,5101.63261,-00019.47240,0.080000,119.430000,0.700000,0.600000,6073.14,D";
 		Position expected = Position.builder()
 				.altitude("6073.14")
 				.clientDetails(c)

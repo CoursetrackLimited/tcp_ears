@@ -19,7 +19,7 @@ public class StringHandler extends SimpleChannelInboundHandler<String> {
 
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, String message) throws Exception {
-		log.debug(message);
+		//log.debug(message);
 		positionService.update(message);
 
 	}

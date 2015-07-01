@@ -139,8 +139,8 @@ public class ClientManagerImplTest {
 		verify(memcacheHelper).set(Mockito.eq("/ggps/locations/groupId"), Mockito.eq("/ggps/locations/groupId"), 
 				Mockito.anyMap());			
 		verify(memcacheHelper).clear(Mockito.eq("/ggps/tracks/groupId"), Mockito.eq("/ggps/tracks/groupId"));
-		verify(memcacheHelper).set(Mockito.eq("/ggps/trackinglist"), Mockito.eq("/ggps/trackinglist"), 
-				Mockito.eq(""));		
+//		verify(memcacheHelper).set(Mockito.eq("/ggps/trackinglist"), Mockito.eq("/ggps/trackinglist"), 
+//				Mockito.eq(""));		
 		verifyNoMoreInteractions(memcacheHelper); 
 		
 	}

@@ -64,12 +64,12 @@ public class ClientManagerImpl implements ClientManager {
 			public void run() {
 				try {
 					publishPositions();
-				} catch (IOException e) {
-					e.printStackTrace();
+				} catch (Exception e) {
+					log.error("error publishing postions", e);
 				}
 			}
 		},
-		1000, 333, TimeUnit.MILLISECONDS);
+		1000, 100, TimeUnit.MILLISECONDS);
 		
 		executor.scheduleAtFixedRate(new Runnable() {
 			@Override
@@ -77,7 +77,7 @@ public class ClientManagerImpl implements ClientManager {
 				try {
 					removeStaleClients();
 				} catch (Exception e) {
-					e.printStackTrace();
+					log.error("error removing stale clients", e);
 				}
 			}
 		},
@@ -122,7 +122,7 @@ public class ClientManagerImpl implements ClientManager {
 			//as some may have been removed or timed out since the last trackMap was created
 			Set<String> clientsInGroup = new HashSet<>(postionMap.keySet());
 			trackWriter.calculateTrackLength(clientsInGroup.size());
-			ConcurrentMap<String, String> trackMap = groupTracks.get(groupId).entrySet().stream()
+			ConcurrentMap<String, String> trackMap = getTrackMap(groupId).entrySet().stream()
 					.filter(p -> clientsInGroup.contains(p.getKey()))
 					.collect(Collectors.toConcurrentMap(p -> p.getKey(), p -> p.getValue()));
 			
@@ -135,7 +135,7 @@ public class ClientManagerImpl implements ClientManager {
 			memcacheHelper.clear(groupTracksName, groupTracksName);
 			groupTracks.remove(groupId);
 		}
-		memcacheHelper.set(TRACKING_LIST, TRACKING_LIST, StringUtils.join(groupTracks.keySet(), ","));
+		//memcacheHelper.set(TRACKING_LIST, TRACKING_LIST, StringUtils.join(groupTracks.keySet(), ","));
 	}
 	
 	@Override
