@@ -33,7 +33,7 @@
 	</appender>
 	
 
-	<logger name="com.ordint" level="info"> 
+	<logger name="com.ordint" level="debug"> 
 		<appender-ref ref="consoleAppender" />
 		<appender-ref ref="FILE" />
 	</logger>

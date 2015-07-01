@@ -19,7 +19,7 @@ import io.netty.handler.ssl.SslContext;
 import io.netty.util.CharsetUtil;
 
 import com.ordint.tcpears.memcache.MemcacheHelper;
-import com.ordint.tcpears.rest.RestServer;
+import com.ordint.tcpears.rpc.RpcServer;
 import com.ordint.tcpears.service.PositionService;
 
 
@@ -55,7 +55,7 @@ public class TCPEarsServer {
 		
 		try {			
 			positionService = config.positionService();
-			startAdminService(config);
+			
 			ServerBootstrap b = new ServerBootstrap();
 			b.option(ChannelOption.SO_BACKLOG, 1024);
 			b.group(bossGroup, workerGroup)
@@ -73,10 +73,6 @@ public class TCPEarsServer {
 		}
 	}
 	
-	private void startAdminService(Config config) {
-		Thread t = new Thread(new RestServer(config.administrationService()));
-		t.start();
-	}
 	
 	private final class DefaultChannelInitializer extends ChannelInitializer<SocketChannel> {
 

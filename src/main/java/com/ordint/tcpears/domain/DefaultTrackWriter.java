@@ -1,6 +1,14 @@
 package com.ordint.tcpears.domain;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.ordint.tcpears.service.impl.ClientManagerImpl;
+
 public class DefaultTrackWriter implements TrackWriter{
+	
+	private final static Logger log = LoggerFactory.getLogger(ClientManagerImpl.class);
+	
 	private final static int DEFAULT_CLIENT_COUNT = 20;
 	private final static int MAX_CLIENT_COUNT = 6500;
 	public final static int DEFAULT_MAX_TRACK = 157025;
@@ -60,6 +68,7 @@ public class DefaultTrackWriter implements TrackWriter{
 				throw new IllegalArgumentException("Too many clients for tracking " + clientCount);
 			}
 			maxLength = calculateMaxTrackLength(clientCount);
+			log.debug("Max track length is {}", maxLength);
 		}
 		
 	}

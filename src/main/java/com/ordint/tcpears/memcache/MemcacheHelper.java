@@ -2,13 +2,14 @@ package com.ordint.tcpears.memcache;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Future;
 
 import org.boon.json.ObjectMapper;
 import org.boon.json.implementation.ObjectMapperImpl;
-import org.joda.time.DateTime;
+
 
 
 public class MemcacheHelper {
@@ -76,7 +77,7 @@ public class MemcacheHelper {
 	}
 	private String getNextKey(String namespace) {
 		
-		return "--DateStamp=" + DateTime.now() + "--";
+		return "--DateStamp=" + LocalDateTime.now() + "--";
 	}
 	private String getItemKey(String namespace, String namespaceKeyOffset, String objectKey) {
 		return String.format("%s_%s_%s", namespace, namespaceKeyOffset, objectKey);

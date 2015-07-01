@@ -2,6 +2,8 @@ package com.ordint.tcpears.service.impl;
 
 import java.time.Clock;
 
+import org.springframework.stereotype.Component;
+
 import com.ordint.tcpears.domain.DefaultInputParser;
 import com.ordint.tcpears.domain.InputParser;
 import com.ordint.tcpears.domain.Position;
@@ -11,13 +13,14 @@ import com.ordint.tcpears.service.PositionService;
 
 public class PositionServiceImpl implements PositionService {
 	
-	private ClientDetailsResolver clientDetailsResolver = new AirplaneClientDetailsResolver();
+	private ClientDetailsResolver clientDetailsResolver;;
 	private ClientManager clientManager;
-	private InputParser inputParser = new DefaultInputParser(clientDetailsResolver, Clock.systemUTC());
+	private InputParser inputParser ;
 	
 	public PositionServiceImpl(ClientManager clientManager, ClientDetailsResolver clientDetailsResolve) {
 		this.clientDetailsResolver = clientDetailsResolve;
 		this.clientManager = clientManager;
+		this.inputParser = new DefaultInputParser(clientDetailsResolve, Clock.systemUTC());
 	}
 	
 	@Override

@@ -25,6 +25,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.ordint.tcpears.domain.ClientDetails;
 import com.ordint.tcpears.domain.DefaultOutputWriter;
@@ -38,6 +39,9 @@ public class ClientManagerImplTest {
 	@Mock
 	private MemcacheHelper memcacheHelper;
 	
+	@Mock
+	private JdbcTemplate jdbcTemplate;
+	
 	@Captor
 	private ArgumentCaptor<Map<String, String>> mapCaptor;
 	
@@ -47,7 +51,7 @@ public class ClientManagerImplTest {
 	private Clock clock = Clock.fixed(Instant.now(), ZoneId.systemDefault());
 	@Before
 	public void setUp() throws Exception {
-		 clientManager = new ClientManagerImpl(memcacheHelper, clock);
+		 clientManager = new ClientManagerImpl(memcacheHelper, clock, jdbcTemplate);
 	}
 	
 
@@ -135,7 +139,9 @@ public class ClientManagerImplTest {
 		verify(memcacheHelper).set(Mockito.eq("/ggps/locations/groupId"), Mockito.eq("/ggps/locations/groupId"), 
 				Mockito.anyMap());			
 		verify(memcacheHelper).clear(Mockito.eq("/ggps/tracks/groupId"), Mockito.eq("/ggps/tracks/groupId"));
-		verifyNoMoreInteractions(memcacheHelper);
+		verify(memcacheHelper).set(Mockito.eq("/ggps/trackinglist"), Mockito.eq("/ggps/trackinglist"), 
+				Mockito.eq(""));		
+		verifyNoMoreInteractions(memcacheHelper); 
 		
 	}
 	

@@ -1,4 +1,4 @@
-package com.ordint.tcpears.rest;
+package com.ordint.tcpears.rpc;
 
 import java.lang.reflect.Method;
 import java.util.List;
@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import org.boon.core.value.ValueList;
 import org.boon.json.JsonParser;
 import org.boon.json.JsonParserFactory;
 import org.boon.json.ObjectMapper;
@@ -31,14 +32,20 @@ public class RpcInvoker {
 	
 	@SuppressWarnings("unchecked")
 	public void invoke(String rpcString) {
-		
-		
+			
 		Map<String, Object> request = (Map<String, Object>) mapper.fromJson(rpcString);
 		String methodName = request.get("method").toString();
-		
+		String id = request.get("id").toString();
 		Method m = methods.get(methodName);
-		List<Object> things = (List<Object>) request.get("params");
-		ReflectionUtils.invokeMethod(m, adminService, things.toArray(new Object[things.size()]));
+		List<Object> params = (List<Object>) request.get("params");
+		Object[] args =  params.toArray(new Object[params.size()]);
+		if (params.get(0) instanceof ValueList) {
+			ValueList v = (ValueList) params.get(0);
+			args[0] =  v.toArray(new String[0]);
+		}
+		//args = new Object[] {new String[] {"TC1", "TC2"}, "1"};
+
+		ReflectionUtils.invokeMethod(m, adminService, args);
 				
 	}
 

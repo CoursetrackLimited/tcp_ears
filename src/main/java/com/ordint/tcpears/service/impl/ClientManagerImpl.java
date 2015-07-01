@@ -1,6 +1,7 @@
 package com.ordint.tcpears.service.impl;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -14,12 +15,18 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.jdbc.core.JdbcTemplate;
+
 import com.ordint.tcpears.domain.DefaultOutputWriter;
 import com.ordint.tcpears.domain.DefaultTrackWriter;
 import com.ordint.tcpears.domain.OutputWriter;
 import com.ordint.tcpears.domain.Position;
 import com.ordint.tcpears.domain.TrackWriter;
 import com.ordint.tcpears.memcache.MemcacheHelper;
+import com.ordint.tcpears.server.StringHandler;
 import com.ordint.tcpears.service.ClientManager;
 
 
@@ -29,7 +36,9 @@ import com.ordint.tcpears.service.ClientManager;
  *
  */
 public class ClientManagerImpl implements ClientManager {
+	private final static Logger log = LoggerFactory.getLogger(ClientManagerImpl.class);
 	
+	private final static String TRACKING_LIST = "/ggps/trackinglist";
 	//map of position keyed on clientId
 	private final ConcurrentMap<String, Position> clients = new ConcurrentHashMap<>();
 	//map of map of client tracks, keeyed on groupId
@@ -44,9 +53,12 @@ public class ClientManagerImpl implements ClientManager {
 	private Clock clock = Clock.systemUTC();
 	
 	private ScheduledExecutorService executor = Executors.newScheduledThreadPool(2);
+	
+	private JdbcTemplate jdbcTemplate;
 
-	public ClientManagerImpl(MemcacheHelper memcacheHelper) {
+	public ClientManagerImpl(MemcacheHelper memcacheHelper, JdbcTemplate jdbcTempalate) {
 		this.memcacheHelper = memcacheHelper;
+		this.jdbcTemplate = jdbcTempalate;
 		
 		executor.scheduleAtFixedRate(new Runnable() {
 			@Override
@@ -75,9 +87,10 @@ public class ClientManagerImpl implements ClientManager {
 		
 	}
 	
-	public ClientManagerImpl(MemcacheHelper memcacheHelper, Clock clock) {
+	public ClientManagerImpl(MemcacheHelper memcacheHelper, Clock clock, JdbcTemplate jdbcTempalate) {
 		this.memcacheHelper = memcacheHelper;
 		this.clock = clock;
+		this.jdbcTemplate = jdbcTempalate;
 	}
 	
 	public void publishPositions()  throws IOException {
@@ -123,15 +136,18 @@ public class ClientManagerImpl implements ClientManager {
 			memcacheHelper.clear(groupTracksName, groupTracksName);
 			groupTracks.remove(groupId);
 		}
+		memcacheHelper.set(TRACKING_LIST, TRACKING_LIST, StringUtils.join(groupTracks.keySet(), ","));
 	}
 	
 	@Override
 	public void trackGroup(String groupId) {
+		log.debug("Tracking group {}", groupId);
 		groupsToTrack.put(groupId, new DefaultTrackWriter());
 	}
 	
 	@Override
 	public void stopTrackingGroup(String groupId) {
+		log.debug("Stop Tracking group {}", groupId);
 		groupsToTrack.remove(groupId);
 	}
 	
@@ -143,10 +159,17 @@ public class ClientManagerImpl implements ClientManager {
 	
 	public void removeStaleClients() {
 		clients.entrySet().removeIf(p -> isOld(p.getValue()));
+		
 	}
 	
 	private boolean isOld(Position p) {
-		return p.getTimeCreated().until(LocalDateTime.now(clock), ChronoUnit.SECONDS) > 300;
+		if(p.getTimeCreated().until(LocalDateTime.now(clock), ChronoUnit.SECONDS) > 300) {
+			Timestamp t = Timestamp.valueOf(p.getTimeCreated());
+			jdbcTemplate.update("insert into clients (client_ident, last_seen) values (?, ?) " +
+                " on duplicate key UPDATE last_seen=?", p.getClientId(), t, t);
+			return true;
+		}
+		return false;
 	}
 	
 	private void updateTracks(Position p) {
