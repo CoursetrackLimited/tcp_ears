@@ -2,8 +2,6 @@ package com.ordint.tcpears.service.impl;
 
 import java.time.Clock;
 
-import org.springframework.stereotype.Component;
-
 import com.ordint.tcpears.domain.DefaultInputParser;
 import com.ordint.tcpears.domain.InputParser;
 import com.ordint.tcpears.domain.Position;

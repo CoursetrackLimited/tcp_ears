@@ -23,7 +23,7 @@ public class HorseDetailsResolver implements ClientDetailsResolver {
 	private final static Logger log = LoggerFactory.getLogger(HorseDetailsResolver.class);
 	private ConcurrentMap<String, ClientDetails> clientDetailsMap = new ConcurrentHashMap<>();
 	private final static String UNKNOWN_GROUP ="nogroup";
-	
+	private String defaultGroupId = UNKNOWN_GROUP;
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	
@@ -39,11 +39,16 @@ public class HorseDetailsResolver implements ClientDetailsResolver {
 
 	@Override
 	public ClientDetails resolveClientDetails(String clientId) {	
-		return clientDetailsMap.computeIfAbsent(clientId, val -> new ClientDetails(UNKNOWN_GROUP, clientId));
+		return clientDetailsMap.computeIfAbsent(clientId, val -> new ClientDetails(defaultGroupId, clientId));
 	}
 	@Override
 	public void updateClientDetails(ClientDetails clientDetail) {
 		log.debug("Updating client details {} ", clientDetail);
 		clientDetailsMap.put(clientDetail.getClientId(), clientDetail);		
+	}
+	
+	@Override
+	public void setDefaultGroup(String groupId) {
+		defaultGroupId = groupId;
 	}
 }

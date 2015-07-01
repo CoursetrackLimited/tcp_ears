@@ -2,7 +2,6 @@ package com.ordint.tcpears.rpc;
 
 import java.io.IOException;
 
-
 import com.ordint.tcpears.service.AdministrationService;
 
 public class RpcServer implements Runnable{

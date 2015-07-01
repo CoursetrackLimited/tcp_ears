@@ -10,5 +10,7 @@ public interface AdministrationService {
 	
 	void setClientsGroup(String[] clientId, String groupId);
 	
+	void setDefaultGroup(String groupId);
+	
 	
 }

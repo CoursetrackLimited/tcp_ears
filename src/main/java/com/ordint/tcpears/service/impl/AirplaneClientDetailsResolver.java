@@ -20,5 +20,9 @@ public class AirplaneClientDetailsResolver implements ClientDetailsResolver {
 		clientDetailsMap.put(clientDetail.getClientId(), clientDetail);
 		
 	}
+	@Override
+	public void setDefaultGroup(String groupId) {
+		
+	}
 
 }

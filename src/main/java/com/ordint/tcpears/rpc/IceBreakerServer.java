@@ -47,7 +47,7 @@ public class IceBreakerServer
  
 /* 111 */   public Map<String, String> header = new HashMap<>();
    
-/* 113 */   public Map<String, String> parms = new HashMap();
+/* 113 */   public Map<String, String> parms = new HashMap<>();
    
    private void loadProps() {
 /* 116 */     Properties prop = new Properties();
@@ -145,7 +145,7 @@ public class IceBreakerServer
    
    private static Map<String, String> getQueryMap(String query) {
 /* 210 */     String[] params = query.split("&");
-/* 211 */     Map<String, String> map = new HashMap();
+/* 211 */     Map<String, String> map = new HashMap<>();
 /* 212 */     for (String param : params) {
 /* 213 */       int p = param.indexOf('=');
 /* 214 */       if (p >= 0) {

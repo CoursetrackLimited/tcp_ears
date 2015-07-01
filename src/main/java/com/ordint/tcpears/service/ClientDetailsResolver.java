@@ -8,4 +8,6 @@ public interface ClientDetailsResolver {
 	
 	void updateClientDetails(ClientDetails clientDetails);
 	
+	void setDefaultGroup(String groupId);
+	
 }

@@ -37,6 +37,12 @@ public class AdministrationServiceImpl implements AdministrationService {
 		}
 		
 	}
+
+	@Override
+	public void setDefaultGroup(String groupId) {
+		clientDetailsResolver.setDefaultGroup(groupId);
+		
+	}
 	
 
 }

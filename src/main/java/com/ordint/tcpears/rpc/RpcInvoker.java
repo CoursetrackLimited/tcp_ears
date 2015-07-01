@@ -7,8 +7,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import org.boon.core.value.ValueList;
-import org.boon.json.JsonParser;
-import org.boon.json.JsonParserFactory;
 import org.boon.json.ObjectMapper;
 import org.boon.json.implementation.ObjectMapperImpl;
 import org.springframework.util.ReflectionUtils;
