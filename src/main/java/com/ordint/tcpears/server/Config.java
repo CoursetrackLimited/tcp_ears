@@ -77,7 +77,7 @@ public class Config {
 		BasicDataSource ds = new BasicDataSource();
 		ds.setUsername(environment.getProperty("user", "root"));
 		ds.setUrl("jdbc:mysql://"
-				+ environment.getProperty("dbhost", "10.10.0.148")
+				+ environment.getProperty("dbhost", "localhost")
 				+ "/ggps01?useServerPrepStmts=false&rewriteBatchedStatements=true");
 		ds.setDriverClassName("com.mysql.jdbc.Driver");
 		ds.setDefaultAutoCommit(true);

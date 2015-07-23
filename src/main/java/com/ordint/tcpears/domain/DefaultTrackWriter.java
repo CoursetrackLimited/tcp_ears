@@ -68,7 +68,6 @@ public class DefaultTrackWriter implements TrackWriter{
 				throw new IllegalArgumentException("Too many clients for tracking " + clientCount);
 			}
 			maxLength = calculateMaxTrackLength(clientCount);
-			log.debug("Max track length is {}", maxLength);
 		}
 		
 	}

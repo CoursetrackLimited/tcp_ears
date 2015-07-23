@@ -80,10 +80,9 @@ public class MySqlPositionLogger implements PositionLogger {
 				p.getSpeed(),
 				p.getStatus(),
 				p.getTimestamp(),
-				p.getTimeCreated().toString(),
-				
+				p.getTimeCreated().toString(),				
 				p.getVerticalAccuracy(),
-				0,
+				p.getLag(),
 				vehicleType,
 				source
 				

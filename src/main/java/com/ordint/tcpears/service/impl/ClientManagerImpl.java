@@ -171,7 +171,7 @@ public class ClientManagerImpl implements ClientManager {
 	
 	@Override
 	public void updatePostion(Position position) {
-		clients.put(position.getClientId(), position);
+		Position previousPosition = clients.put(position.getClientId(), position);
 		updateTracks(position);
 	}
 	
