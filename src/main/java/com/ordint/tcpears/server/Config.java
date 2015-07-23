@@ -26,6 +26,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.ImportResource;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
@@ -39,10 +41,12 @@ import com.ordint.tcpears.rpc.RpcServer;
 import com.ordint.tcpears.service.AdministrationService;
 import com.ordint.tcpears.service.ClientDetailsResolver;
 import com.ordint.tcpears.service.ClientManager;
+import com.ordint.tcpears.service.PositionLogger;
 import com.ordint.tcpears.service.PositionService;
 import com.ordint.tcpears.service.impl.AdministrationServiceImpl;
 import com.ordint.tcpears.service.impl.ClientManagerImpl;
 import com.ordint.tcpears.service.impl.HorseDetailsResolver;
+import com.ordint.tcpears.service.impl.MySqlPositionLogger;
 import com.ordint.tcpears.service.impl.PositionServiceImpl;
 @Configuration
 @ComponentScan("com.ordint.tcpears")
@@ -74,9 +78,7 @@ public class Config {
 		ds.setUsername(environment.getProperty("user", "root"));
 		ds.setUrl("jdbc:mysql://"
 				+ environment.getProperty("dbhost", "10.10.0.148")
-				//+ environment.getProperty("dbhost", "localhost")
-				+ "/ggps01");
-				//+ "/tcp_ears");
+				+ "/ggps01?useServerPrepStmts=false&rewriteBatchedStatements=true");
 		ds.setDriverClassName("com.mysql.jdbc.Driver");
 		ds.setDefaultAutoCommit(true);
 		ds.setPassword(environment.getProperty("password", "Grotto1Frop"));
@@ -165,10 +167,13 @@ public class Config {
 	public ClientManager clientManager() throws Exception {
 		return new ClientManagerImpl(memcacheHelper(), jdbcTemplate());
 	}
-	
+	@Bean
+	public PositionLogger positionLogger() {
+		return new MySqlPositionLogger();
+	}
 	@Bean
 	public PositionService positionService() throws Exception {
-		return new PositionServiceImpl(clientManager(), clientDetailsResolver());
+		return new PositionServiceImpl(clientManager(), clientDetailsResolver(), positionLogger());
 	}
 	@Bean
 	public AdministrationService administrationService() throws Exception {

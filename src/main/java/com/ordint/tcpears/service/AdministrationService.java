@@ -12,5 +12,5 @@ public interface AdministrationService {
 	
 	void setDefaultGroup(String groupId);
 	
-	
+	void clearTrack(String groupId);
 }

@@ -8,6 +8,7 @@ import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.verifyZeroInteractions;
 
 import java.time.Clock;
 import java.time.Instant;
@@ -93,7 +94,7 @@ public class ClientManagerImplTest {
 	}
 	
 	@Test
-	public void publishPositionsShouldSaveTracks() throws Exception {
+	public void publishTracksShouldSaveTracks() throws Exception {
 		
 		clientManager.trackGroup("groupId");
 		
@@ -111,7 +112,7 @@ public class ClientManagerImplTest {
 		
 		
 		
-		clientManager.publishPositions();
+		clientManager.publishTracks();
 		
 		DefaultTrackWriter out = new DefaultTrackWriter();
 		verify(memcacheHelper).set(Mockito.eq("/ggps/tracks/groupId"), Mockito.eq("/ggps/tracks/groupId"), 
@@ -135,16 +136,17 @@ public class ClientManagerImplTest {
 		
 		clientManager.stopTrackingGroup("groupId");
 		
-		clientManager.publishPositions();
-		verify(memcacheHelper).set(Mockito.eq("/ggps/locations/groupId"), Mockito.eq("/ggps/locations/groupId"), 
-				Mockito.anyMap());			
-		verify(memcacheHelper).clear(Mockito.eq("/ggps/tracks/groupId"), Mockito.eq("/ggps/tracks/groupId"));
-//		verify(memcacheHelper).set(Mockito.eq("/ggps/trackinglist"), Mockito.eq("/ggps/trackinglist"), 
-//				Mockito.eq(""));		
-		verifyNoMoreInteractions(memcacheHelper); 
+		clientManager.publishTracks();
+				
+		verifyZeroInteractions(memcacheHelper); 
 		
 	}
-	
+	@Test
+	public void clearTrackShouldClearMemcache() throws Exception {
+		clientManager.clearTrack("groupId");
+		verify(memcacheHelper).clear(Mockito.eq("/ggps/tracks/groupId"), Mockito.eq("/ggps/tracks/groupId"));
+		
+	}
 	@Test
 	public void oldClientsShouldNotBePublished() throws Exception {
 		Position p1 = Position.builder().clientDetails(new ClientDetails("groupId", "oldClient"))

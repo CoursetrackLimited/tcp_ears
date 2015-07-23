@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.CollectionFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.ordint.tcpears.domain.DefaultOutputWriter;
@@ -35,6 +36,8 @@ import com.ordint.tcpears.service.ClientManager;
  *
  */
 public class ClientManagerImpl implements ClientManager {
+	private static final String TRACK_PREFIX = "/ggps/tracks/";
+
 	private final static Logger log = LoggerFactory.getLogger(ClientManagerImpl.class);
 	
 	private final static String TRACKING_LIST = "/ggps/trackinglist";
@@ -70,19 +73,18 @@ public class ClientManagerImpl implements ClientManager {
 			}
 		},
 		1000, 100, TimeUnit.MILLISECONDS);
-		
+
 		executor.scheduleAtFixedRate(new Runnable() {
 			@Override
 			public void run() {
 				try {
-					removeStaleClients();
+					publishTracks();
 				} catch (Exception e) {
-					log.error("error removing stale clients", e);
+					log.error("error publishing tracks", e);
 				}
 			}
 		},
-		5, 5, TimeUnit.MINUTES);
-		
+		1500, 333, TimeUnit.MILLISECONDS);
 		
 	}
 	
@@ -92,11 +94,9 @@ public class ClientManagerImpl implements ClientManager {
 		this.jdbcTemplate = jdbcTempalate;
 	}
 	
-	public void publishPositions()  throws IOException {
+	protected void publishPositions()  throws IOException {
 		//A map of lists of postitions keyed on groupId
-		ConcurrentMap<String, List<Position>> groups =  clients.values()
-			.stream()
-			.collect(Collectors.groupingByConcurrent(Position::getGroupId));
+		ConcurrentMap<String, List<Position>> groups =  getAllGroups();
 	
 		//build memecache objects for each of the groups of positions	
 		for(String groupId : groups.keySet()) {		
@@ -108,19 +108,41 @@ public class ClientManagerImpl implements ClientManager {
 			String groupKeyName = "/ggps/locations/" + groupId;
 			
 			memcacheHelper.set(groupKeyName, groupKeyName, postionMap);
-						
-			publishTracks(groupId, postionMap);
 		}	
 		
 	}
-
-	private void publishTracks(String groupId, ConcurrentMap<String, String> postionMap) throws IOException {
-		String groupTracksName="/ggps/tracks/" + groupId;
+	
+	private ConcurrentMap<String, List<Position>> getAllGroups() {
+		return clients.values()
+				.stream()
+				.collect(Collectors.groupingByConcurrent(Position::getGroupId));
+	}
+	
+	private  ConcurrentMap<String, List<Position>> getGroups(Set<String> groupsToInclude) {
+		return clients.values()
+				.stream()
+				.filter(p -> groupsToInclude.contains(p.getGroupId()))
+				.collect(Collectors.groupingByConcurrent(Position::getGroupId));		
+	}
+	
+	protected void publishTracks() throws Exception {
+		ConcurrentMap<String, List<Position>> groups =  getGroups(groupsToTrack.keySet());
+		for(String groupId : groups.keySet()) {
+			Set<String> clientsInGroup =  groups.get(groupId)
+					.stream()
+					.map(p -> p.getClientId())
+					.collect(Collectors.toSet());
+			publishTrack(groupId, clientsInGroup);
+		
+		}
+ 	}
+	
+	private void publishTrack(String groupId, Set<String> clientsInGroup) throws IOException {
+		String groupTracksName= TRACK_PREFIX + groupId;
 		TrackWriter trackWriter = groupsToTrack.get(groupId);
 		if(trackWriter != null) {
 			//build a trackMap by only selecting the tracks for clients that are currently in this group
-			//as some may have been removed or timed out since the last trackMap was created
-			Set<String> clientsInGroup = new HashSet<>(postionMap.keySet());
+			//as some may have been removed or timed out since the last trackMap was updated
 			trackWriter.calculateTrackLength(clientsInGroup.size());
 			ConcurrentMap<String, String> trackMap = getTrackMap(groupId).entrySet().stream()
 					.filter(p -> clientsInGroup.contains(p.getKey()))
@@ -131,10 +153,7 @@ public class ClientManagerImpl implements ClientManager {
 			memcacheHelper.set(groupTracksName, groupTracksName, trackMap);
 			//replace existing track map with latest
 			groupTracks.put(groupId, trackMap);
-		} else {
-			memcacheHelper.clear(groupTracksName, groupTracksName);
-			groupTracks.remove(groupId);
-		}
+		} 
 		//memcacheHelper.set(TRACKING_LIST, TRACKING_LIST, StringUtils.join(groupTracks.keySet(), ","));
 	}
 	
@@ -184,6 +203,13 @@ public class ClientManagerImpl implements ClientManager {
 	
 	private ConcurrentMap<String, String> getTrackMap(String groupId) {
 		return groupTracks.computeIfAbsent(groupId, map -> new ConcurrentHashMap<>());
+	}
+
+	@Override
+	public void clearTrack(String groupId) {
+		String groupTracksName = TRACK_PREFIX + groupId;
+		memcacheHelper.clear(groupTracksName, groupTracksName);
+		groupTracks.remove(groupId);
 	}
 	
 	

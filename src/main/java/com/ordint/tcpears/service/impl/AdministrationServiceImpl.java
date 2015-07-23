@@ -42,6 +42,11 @@ public class AdministrationServiceImpl implements AdministrationService {
 	public void setDefaultGroup(String groupId) {
 		clientDetailsResolver.setDefaultGroup(groupId);		
 	}
+
+	@Override
+	public void clearTrack(String groupId) {
+		clientManager.clearTrack(groupId);
+	}
 	
 
 }

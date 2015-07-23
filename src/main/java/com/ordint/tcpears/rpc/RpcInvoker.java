@@ -46,5 +46,11 @@ public class RpcInvoker {
 		ReflectionUtils.invokeMethod(m, adminService, args);
 				
 	}
+	
+	protected void blurg(String rpcString) {
+	
+		
+	}	
+	
 
 }
