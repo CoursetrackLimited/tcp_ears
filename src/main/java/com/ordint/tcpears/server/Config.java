@@ -56,8 +56,7 @@ public class Config {
 	@Value("${boss.thread.count}")
 	private int bossCount;
 
-	@Value("${tcp.port}")
-	private int tcpPort;
+;
 	@Value("${admin.port}")
 	private int adminPort;	
 
@@ -129,11 +128,6 @@ public class Config {
 	@Bean(name = "workerGroup", destroyMethod = "shutdownGracefully")
 	public NioEventLoopGroup workerGroup() {
 		return new NioEventLoopGroup();
-	}
-
-	@Bean(name = "tcpSocketAddress")
-	public InetSocketAddress tcpPort() {
-		return new InetSocketAddress(tcpPort);
 	}
 
 	@Bean(name = "tcpChannelOptions")
