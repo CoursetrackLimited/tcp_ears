@@ -17,8 +17,8 @@ public class PositionTest {
 	@Test
 	public void testGetLag() throws Exception {
 		Position p = Position.builder()
-			.timestamp("102345.34")
-			.timeCreated(LocalDateTime.parse("2007-12-03T10:23:46.355"))
+			.timestamp("012345.34")
+			.timeCreated(LocalDateTime.parse("2007-12-03T13:23:46.355"))
 			.build();
 		
 		assertThat(p.getLag(), Matchers.equalTo(1015L));

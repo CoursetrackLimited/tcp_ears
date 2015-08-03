@@ -57,7 +57,7 @@ public class DefaultInputParser implements InputParser {
 					.status("-1");
 			
 		}
-		
+		//log.debug(message);
 		return builder.build();
 	}
 
