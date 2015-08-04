@@ -1,4 +1,4 @@
-<configuration scan="true" debug="false">
+<configuration scan="false" debug="false">
 
 	<appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder>
@@ -33,7 +33,7 @@
 	</appender>
 	
 
-	<logger name="com.ordint" level="debug"> 
+	<logger name="com.ordint" level="info"> 
 		<appender-ref ref="consoleAppender" />
 		<appender-ref ref="FILE" />
 	</logger>
