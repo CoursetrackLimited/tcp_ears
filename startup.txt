@@ -1,0 +1,11 @@
+nohup java -Dcom.sun.management.jmxremote.port=9999 -Dcom.sun.management.jmxremote.authenticate=false -Dio.netty.epollBugWorkaround=true -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=10.10.0.148 -Dlogback.configurationFile=/data-local/java/lib/logback.xml -server -jar tcpears-0.0.1-SNAPSHOT.jar --dbhost=10.10.0.148 --tcp.ports=5011,5012,5013,5014,5015,5016,5017,5018,5019,5020 &
+
+
+nohup java -Dcom.sun.management.jmxremote.port=9999 -Dcom.sun.management.jmxremote.authenticate=false -Dio.netty.epollBugWorkaround=true -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=10.10.0.148 -Dlogback.configurationFile=root/java/tcpears/lib/logback.xml -server -jar tcpears-0.0.1-SNAPSHOT.jar --dbhost=127.0.0.1 --password=GrottoFrop --tcp.ports=5011,5012,5013,5014,5015,5016,5017,5018,5019,5020 > /dev/null 2>&1 &
+
+
+setup
+
+PHP- PDO
+mysql
+memcache (adjust

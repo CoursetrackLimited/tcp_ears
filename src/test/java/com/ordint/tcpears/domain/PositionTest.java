@@ -17,7 +17,7 @@ public class PositionTest {
 	@Test
 	public void testGetLag() throws Exception {
 		Position p = Position.builder()
-			.timestamp("012345.34")
+			.timestamp("132345.34")
 			.timeCreated(LocalDateTime.parse("2007-12-03T13:23:46.355"))
 			.build();
 		

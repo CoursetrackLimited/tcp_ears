@@ -37,9 +37,11 @@ public class TCPServer {
 
 	@PostConstruct
 	public void start() throws Exception {
-		log.info("Starting server, listening at  {}", tcpPorts);
+		log.info("Starting server....");
 		for(Integer port : tcpPorts) {
+			log.info("Listening on port {}", port);
 			serverChannelFutures.add(bootstrap.bind(port));
+			
 		}
 		for(ChannelFuture f : serverChannelFutures) {
 			f.sync();

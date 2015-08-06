@@ -33,6 +33,7 @@ public class DefaultInputParser implements InputParser {
 	 */
 	@Override
 	public Position parse(String message) {
+		log.debug(message);
 		String parts[] = message.split(",");
 		Position.PositionBuilder builder = Position.builder()
 				.clientDetails(clientDetailsResolver.resolveClientDetails(parts[0]))
@@ -48,7 +49,6 @@ public class DefaultInputParser implements InputParser {
 					.verticalAccuracy(formatDouble(parts[7]))
 					.altitude(parts[8])
 					.status(parts[9]);
-			//log.debug(message);
 		} else {
 			builder = builder.altitude("-1")
 					.heading("-1")
@@ -57,7 +57,7 @@ public class DefaultInputParser implements InputParser {
 					.status("-1");
 			
 		}
-		log.debug(message);
+		
 		return builder.build();
 	}
 
