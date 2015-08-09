@@ -1,14 +1,12 @@
 package com.ordint.tcpears.domain;
 
 import static com.ordint.tcpears.domain.PositionUtil.createPosition;
-import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.lessThan;
 import static org.hamcrest.Matchers.startsWith;
 import static org.junit.Assert.assertThat;
 
 import java.time.Clock;
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 
 import org.apache.commons.lang3.StringUtils;

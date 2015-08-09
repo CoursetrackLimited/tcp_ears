@@ -3,11 +3,13 @@ package com.ordint.tcpears.domain;
 import java.time.LocalDateTime;
 
 public class PositionUtil {
-
+	
 	public static Position createPosition(String lat, String lon, String alt, String group, String clientId) {
 		 return Position.builder().clientDetails(new ClientDetails( group, clientId))
 			.altitude(alt)
 			.lat(lat)
+			.timestamp("105413.15")
+			.timeCreated(LocalDateTime.now())
 			.lon(lon).build();
 	}
 	
@@ -24,6 +26,7 @@ public class PositionUtil {
 			.speed("0.041155555552")
 			.status("D")
 			.timestamp("105413.15")
+			.timeCreated(LocalDateTime.now())
 			.build();
 	}
 }

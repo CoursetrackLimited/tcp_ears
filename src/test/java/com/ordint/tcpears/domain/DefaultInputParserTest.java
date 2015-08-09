@@ -6,9 +6,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
 
 import java.time.Clock;
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -18,20 +16,27 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.ordint.tcpears.service.ClientDetailsResolver;
+import com.ordint.tcpears.util.Timestamper;
+import com.ordint.tcpears.util.TimeProvider;
+
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultInputParserTest {
 	
 	@Mock
 	private ClientDetailsResolver clientDetailsResolver;
-	
-	private Clock clock = Clock.fixed(Instant.now(), ZoneId.systemDefault());
+	@Mock
+	private TimeProvider systemClock;
 	
 	private DefaultInputParser defaultInputParser;
+	
+	private Timestamper timestamper;
 	
 	
 	@Before
 	public void setUp() throws Exception {
-		defaultInputParser = new DefaultInputParser(clientDetailsResolver, clock);
+
+		timestamper = Timestamper.fixedTimestamper();
+		defaultInputParser = new DefaultInputParser(clientDetailsResolver, timestamper);
 	}
 
 	@Test
@@ -51,7 +56,7 @@ public class DefaultInputParserTest {
 				.lon("-0.00832")
 				.speed("0.041155555552")
 				.status("-1")
-				.timeCreated(LocalDateTime.now(clock))
+				.timeCreated(timestamper.now())
 				.timestamp("110338.40")
 				.build();
 		
@@ -74,12 +79,13 @@ public class DefaultInputParserTest {
 				.lon("-0.32454")
 				.speed("0.041155555552")
 				.status("D")
-				.timeCreated(LocalDateTime.now(clock))
+				.timeCreated(timestamper.now())
 				.timestamp("105413.15")
 				.build();
 		
 		assertThat(defaultInputParser.parse(input), equalTo(expected));
 		
 	}
+	
 
 }

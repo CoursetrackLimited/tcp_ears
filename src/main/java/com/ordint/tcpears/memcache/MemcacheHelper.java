@@ -38,11 +38,17 @@ public class MemcacheHelper {
 		//return (Map<String, String>) json;
 	}
 	public Future<Boolean> set(String namespace, String objectKey, Map<?,?> map) throws IOException {
-		String key = getNamespaceKey(namespace, objectKey);
-		
 		String json = objectMapper.writeValueAsString(map);
-		return memcachedClient.set(key, 0, json);
-	}	
+		return set(namespace, objectKey, json);
+	}
+	public Future<Boolean> set(String namespace, String objectKey, Map<?,?> map, int timeout) throws IOException {
+		String json = objectMapper.writeValueAsString(map);
+		return set(namespace, objectKey, json, timeout);
+	}
+	public Future<Boolean> set(String namespace, String objectKey, Object object, int timeout) {
+		String key = getNamespaceKey(namespace, objectKey);
+		return memcachedClient.set(key, timeout, object);
+	}
 	public Future<Boolean> set(String namespace, String objectKey, Object object) {
 		String key = getNamespaceKey(namespace, objectKey);
 		return memcachedClient.set(key, 0, object);

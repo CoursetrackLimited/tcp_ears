@@ -1,17 +1,10 @@
 package com.ordint.tcpears.service.impl;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
-
-
-
-
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.slf4j.Logger;
@@ -21,7 +14,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import com.ordint.tcpears.domain.Position;
-import com.ordint.tcpears.memcache.MemcacheHelper;
 import com.ordint.tcpears.service.PositionLogger;
 @Component
 public class MySqlPositionLogger implements PositionLogger {

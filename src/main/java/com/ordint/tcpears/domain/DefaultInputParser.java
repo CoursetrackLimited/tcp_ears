@@ -5,23 +5,23 @@ import static com.ordint.tcpears.util.ConversionUtil.posToDec;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ordint.tcpears.server.StringHandler;
 import com.ordint.tcpears.service.ClientDetailsResolver;
+import com.ordint.tcpears.util.Timestamper;
 
 public class DefaultInputParser implements InputParser {
 	private final static Logger log = LoggerFactory.getLogger(DefaultInputParser.class);
-	private ClientDetailsResolver clientDetailsResolver;
-	//private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hhmmss.SS");
-	private Clock clock = Clock.systemUTC();
+	private ClientDetailsResolver clientDetailsResolver;	
+	private Timestamper timestamper;
 	
-	public DefaultInputParser(ClientDetailsResolver clientDetailsResolver, Clock clock) {
+	public DefaultInputParser(ClientDetailsResolver clientDetailsResolver, Timestamper timestamper) {
 		super();
 		this.clientDetailsResolver = clientDetailsResolver;
-		this.clock = clock;
+		this.timestamper = timestamper;
 	}	
 	/**
 	 * Parses the following message formats into Position objects
@@ -41,8 +41,8 @@ public class DefaultInputParser implements InputParser {
 				.lat(posToDec(parts[2]))
 				.lon(posToDec(parts[3]))
 				.speed(formatDouble(Double.parseDouble(parts[4])*0.5144444444))
-				.timeCreated(LocalDateTime.now(clock));
-		
+				.timeCreated(timestamper.now().truncatedTo(ChronoUnit.MICROS));
+				
 		if (parts.length == 10) {
 			builder = builder.heading(formatDouble(parts[5]))
 					.horizontalAccuracy(formatDouble(parts[6]))

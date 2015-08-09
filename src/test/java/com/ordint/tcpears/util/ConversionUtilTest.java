@@ -3,12 +3,7 @@ package com.ordint.tcpears.util;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
 
-import org.hamcrest.Matchers;
-import org.junit.Before;
 import org.junit.Test;
-
-import com.ordint.tcpears.domain.ClientDetails;
-import com.ordint.tcpears.domain.Position;
 
 public class ConversionUtilTest {
 

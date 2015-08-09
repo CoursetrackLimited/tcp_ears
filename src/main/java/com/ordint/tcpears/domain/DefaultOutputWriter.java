@@ -22,6 +22,7 @@ public class DefaultOutputWriter implements OutputWriter {
 		cells[8] = p.getAltitude();
 		cells[i - 1] = p.getLon();
 		cells[i - 2] = p.getLat();
+		cells[i - 3] = String.valueOf(p.getLag());
 		return StringUtils.join(cells, ",");
 
 	}

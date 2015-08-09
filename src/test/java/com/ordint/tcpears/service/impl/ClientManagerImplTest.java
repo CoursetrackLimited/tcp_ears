@@ -7,7 +7,6 @@ import static org.hamcrest.Matchers.hasKey;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.verifyZeroInteractions;
 
 import java.time.Clock;
@@ -22,7 +21,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -33,7 +31,6 @@ import com.ordint.tcpears.domain.DefaultOutputWriter;
 import com.ordint.tcpears.domain.DefaultTrackWriter;
 import com.ordint.tcpears.domain.Position;
 import com.ordint.tcpears.memcache.MemcacheHelper;
-import com.ordint.tcpears.service.impl.ClientManagerImpl;
 @SuppressWarnings("all")
 @RunWith(MockitoJUnitRunner.class)
 public class ClientManagerImplTest {
@@ -153,12 +150,14 @@ public class ClientManagerImplTest {
 			.altitude("2")
 			.lat("22.2")
 			.lon("33.2")
+			.timestamp("105413.15")
 			.timeCreated(LocalDateTime.now(clock).minusSeconds(301))
 			.build();
 		Position p2 = Position.builder().clientDetails(new ClientDetails("groupId", "newClient"))
 			.altitude("32")
 			.lat("122.2")
 			.lon("323.2")
+			.timestamp("105413.15")
 			.timeCreated(LocalDateTime.now(clock))
 			.build();
 		clientManager.updatePostion(p1);

@@ -8,8 +8,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 
-public class DefaultOutputWriterTest {
+import com.ordint.tcpears.util.Timestamper;
 
+public class DefaultOutputWriterTest {
+	
+	private Timestamper timestamper = Timestamper.fixedTimestamper();
+	
 	@Before
 	public void setUp() throws Exception {
 	}
@@ -39,6 +43,7 @@ public class DefaultOutputWriterTest {
 				.lat("50.1")
 				.lon("34.32")
 				.timestamp("010330.30")
+				.timeCreated(timestamper.now())
 				.status("A")
 				.build();
 		DefaultOutputWriter out = new DefaultOutputWriter();
