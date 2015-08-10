@@ -40,7 +40,7 @@ public class DefaultInputParser implements InputParser {
 				.timestamp(parts[1])
 				.lat(posToDec(parts[2]))
 				.lon(posToDec(parts[3]))
-				.speed(formatDouble(Double.parseDouble(parts[4])*0.5144444444))
+				.speed(formatDouble(Double.parseDouble(parts[4])))
 				.timeCreated(timestamper.now().truncatedTo(ChronoUnit.MICROS));
 				
 		if (parts.length == 10) {

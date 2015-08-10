@@ -9,6 +9,7 @@ public class PositionUtil {
 			.altitude(alt)
 			.lat(lat)
 			.timestamp("105413.15")
+			.speed("10.4")
 			.timeCreated(LocalDateTime.now())
 			.lon(lon).build();
 	}
@@ -23,7 +24,7 @@ public class PositionUtil {
 			.verticalAccuracy("0.6")
 			.lat(lat)
 			.lon(lon)
-			.speed("0.041155555552")
+			.speed("10.4")
 			.status("D")
 			.timestamp("105413.15")
 			.timeCreated(LocalDateTime.now())

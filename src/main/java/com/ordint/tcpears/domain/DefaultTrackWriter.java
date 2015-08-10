@@ -26,7 +26,7 @@ public class DefaultTrackWriter implements TrackWriter{
 		this.maxLength = maxLength;
 	}
 
-	private String shortenIfRequired(String value) {
+	protected String shortenIfRequired(String value) {
 		StringBuilder strTracks = new StringBuilder(value);
 		if(strTracks.length() > maxLength) {
 			int lastTripleIndex = strTracks.lastIndexOf(" ", maxLength -(MAX_TUPLE_SIZE * 3));
@@ -35,10 +35,8 @@ public class DefaultTrackWriter implements TrackWriter{
 		return strTracks.toString();
 	}
 	
-	private String concatTrack(Position position, String existingTrack, boolean alwaysConcat) {
-		StringBuilder newPosition = new StringBuilder();
-		newPosition.append(position.getLon()).append(",").append(position.getLat())
-			.append(",").append(adjustAltitiude(position, existingTrack)).append(" ");
+	protected String concatTrack(Position position, String existingTrack, boolean alwaysConcat) {
+		StringBuilder newPosition = buildTrackPosition(position, existingTrack);
 		//only append if its different from the last one
 		if(!alwaysConcat) {
 			String lastPosition = existingTrack.substring(0, existingTrack.indexOf(" ") + 1);
@@ -48,8 +46,14 @@ public class DefaultTrackWriter implements TrackWriter{
 		}
 		return newPosition.append(existingTrack).toString();		
 	}
-
-	private String adjustAltitiude(Position position, String existingTrack) {
+	
+	protected StringBuilder buildTrackPosition(Position position, String existingTrack) {
+		StringBuilder newPosition = new StringBuilder();
+		newPosition.append(position.getLon()).append(",").append(position.getLat())
+			.append(",").append(adjustAltitiude(position, existingTrack)).append(" ");
+		return newPosition;
+	} 
+	protected String adjustAltitiude(Position position, String existingTrack) {
 		if (position.getAltitude().equals("-1")) {
             int firstTripleIndex=existingTrack.indexOf(" ");
             if (firstTripleIndex > 0) {
@@ -72,6 +76,7 @@ public class DefaultTrackWriter implements TrackWriter{
 		
 	}
 	
+
 	
 	private int calculateMaxTrackLength(int clientCount) {
 		return (int)Math.ceil(((3 *1024 * 1024) - (261 * clientCount)) / clientCount);
