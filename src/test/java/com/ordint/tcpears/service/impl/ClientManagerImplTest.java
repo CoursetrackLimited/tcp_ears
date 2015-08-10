@@ -74,9 +74,9 @@ public class ClientManagerImplTest {
 		ArgumentCaptor<Map> captor2 = ArgumentCaptor.forClass(Map.class);
 		
 		verify(memcacheHelper).set(Mockito.eq("/ggps/locations/groupId"), Mockito.eq("/ggps/locations/groupId"), 
-				captor1.capture());
+				captor1.capture(), Mockito.eq(5));
 		verify(memcacheHelper).set(Mockito.eq("/ggps/locations/groupId2"), Mockito.eq("/ggps/locations/groupId2"), 
-				captor2.capture());	
+				captor2.capture(), Mockito.eq(5));	
 		
 		
 		
@@ -162,10 +162,9 @@ public class ClientManagerImplTest {
 			.build();
 		clientManager.updatePostion(p1);
 		clientManager.updatePostion(p2);
-		clientManager.removeStaleClients();
 		clientManager.publishPositions();
 		verify(memcacheHelper).set(Mockito.eq("/ggps/locations/groupId"), Mockito.eq("/ggps/locations/groupId"), 
-				mapCaptor.capture());
+				mapCaptor.capture(),  Mockito.eq(5));
 		
 		assertThat(mapCaptor.getValue(), not(hasKey("oldClient")));
 		

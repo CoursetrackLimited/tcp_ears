@@ -104,7 +104,7 @@ public class ClientManagerImpl implements ClientManager {
 			//save to memcache
 			String groupKeyName = "/ggps/locations/" + groupId;
 			
-			memcacheHelper.set(groupKeyName, groupKeyName, postionMap);
+			memcacheHelper.set(groupKeyName, groupKeyName, postionMap, 5);
 		}	
 		
 	}
@@ -112,6 +112,7 @@ public class ClientManagerImpl implements ClientManager {
 	private ConcurrentMap<String, List<Position>> getAllGroups() {
 		return clients.values()
 				.stream()
+				.filter(p -> !isOld(p))
 				.collect(Collectors.groupingByConcurrent(Position::getGroupId));
 	}
 	
@@ -178,10 +179,7 @@ public class ClientManagerImpl implements ClientManager {
 	}
 	
 	private boolean isOld(Position p) {
-		if(p.getTimeCreated().until(LocalDateTime.now(clock), ChronoUnit.SECONDS) > 300) {
-			Timestamp t = Timestamp.valueOf(p.getTimeCreated());
-			jdbcTemplate.update("insert into clients (client_ident, last_seen) values (?, ?) " +
-                " on duplicate key UPDATE last_seen=?", p.getClientId(), t, t);
+		if(p.getTimeCreated().until(LocalDateTime.now(clock), ChronoUnit.SECONDS) > 5) {
 			return true;
 		}
 		return false;
