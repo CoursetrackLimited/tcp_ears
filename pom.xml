@@ -74,6 +74,11 @@
 			<artifactId>commons-lang3</artifactId>
 			<version>3.4</version>
 		</dependency>
+		<dependency>
+    <groupId>org.apache.commons</groupId>
+    <artifactId>commons-math3</artifactId>
+    <version>3.5</version>
+</dependency>
     <dependency>
         <groupId>org.projectlombok</groupId>
         <artifactId>lombok</artifactId>
@@ -86,6 +91,12 @@
             <artifactId>jsonrpc4j</artifactId>
             <version>1.1</version>
         </dependency>
+        
+	<dependency>
+	  <groupId>com.javadocmd</groupId>
+	  <artifactId>simplelatlng</artifactId>
+	  <version>RELEASE</version>
+	</dependency>        
         <!--  test deps -->
         <dependency>
             <groupId>junit</groupId>

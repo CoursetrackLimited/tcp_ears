@@ -22,6 +22,7 @@ import com.ordint.tcpears.domain.DefaultOutputWriter;
 import com.ordint.tcpears.domain.DefaultTrackWriter;
 import com.ordint.tcpears.domain.OutputWriter;
 import com.ordint.tcpears.domain.Position;
+import com.ordint.tcpears.domain.SimplePredictingTrackWriter;
 import com.ordint.tcpears.domain.TrackWriter;
 import com.ordint.tcpears.memcache.MemcacheHelper;
 import com.ordint.tcpears.service.ClientManager;
@@ -32,7 +33,7 @@ import com.ordint.tcpears.service.ClientManager;
  * @author Tom
  *
  */
-public class ClientManagerImpl implements ClientManager {
+public class ClientManagerImpl2 implements ClientManager {
 	private static final String TRACK_PREFIX = "/ggps/tracks/";
 
 	private final static Logger log = LoggerFactory.getLogger(ClientManagerImpl.class);
@@ -42,8 +43,6 @@ public class ClientManagerImpl implements ClientManager {
 	private final ConcurrentMap<String, Position> clients = new ConcurrentHashMap<>();
 	//map of map of client tracks, keeyed on groupId
 	private ConcurrentMap<String, ConcurrentMap<String, String>> groupTracks = new ConcurrentHashMap<>();
-	
-	private final ConcurrentMap<String, String> predictions = new ConcurrentHashMap<>();
 	
 	private OutputWriter outputBuilder = new DefaultOutputWriter();
 	
@@ -57,7 +56,7 @@ public class ClientManagerImpl implements ClientManager {
 	
 	private JdbcTemplate jdbcTemplate;
 
-	public ClientManagerImpl(MemcacheHelper memcacheHelper, JdbcTemplate jdbcTempalate) {
+	public ClientManagerImpl2(MemcacheHelper memcacheHelper, JdbcTemplate jdbcTempalate) {
 		this.memcacheHelper = memcacheHelper;
 		this.jdbcTemplate = jdbcTempalate;
 		
@@ -87,7 +86,7 @@ public class ClientManagerImpl implements ClientManager {
 		
 	}
 	
-	public ClientManagerImpl(MemcacheHelper memcacheHelper, Clock clock, JdbcTemplate jdbcTempalate) {
+	public ClientManagerImpl2(MemcacheHelper memcacheHelper, Clock clock, JdbcTemplate jdbcTempalate) {
 		this.memcacheHelper = memcacheHelper;
 		this.clock = clock;
 		this.jdbcTemplate = jdbcTempalate;
@@ -106,7 +105,7 @@ public class ClientManagerImpl implements ClientManager {
 			//save to memcache
 			String groupKeyName = "/ggps/locations/" + groupId;
 			
-			memcacheHelper.set(groupKeyName, groupKeyName, postionMap, 5);
+			memcacheHelper.set(groupKeyName, groupKeyName, postionMap);
 		}	
 		
 	}
@@ -114,7 +113,6 @@ public class ClientManagerImpl implements ClientManager {
 	private ConcurrentMap<String, List<Position>> getAllGroups() {
 		return clients.values()
 				.stream()
-				.filter(p -> !isOld(p))
 				.collect(Collectors.groupingByConcurrent(Position::getGroupId));
 	}
 	
@@ -133,6 +131,7 @@ public class ClientManagerImpl implements ClientManager {
 					.map(p -> p.getClientId())
 					.collect(Collectors.toSet());
 			publishTrack(groupId, clientsInGroup);
+			publishTrack(groupId + "PX", clientsInGroup);
 		
 		}
  	}
@@ -161,12 +160,14 @@ public class ClientManagerImpl implements ClientManager {
 	public void trackGroup(String groupId) {
 		log.debug("Tracking group {}", groupId);
 		groupsToTrack.put(groupId, new DefaultTrackWriter());
+		groupsToTrack.put(groupId + "PX", new SimplePredictingTrackWriter());
 	}
 	
 	@Override
 	public void stopTrackingGroup(String groupId) {
 		log.debug("Stop Tracking group {}", groupId);
 		groupsToTrack.remove(groupId);
+		groupsToTrack.remove(groupId + "PX");
 	}
 	
 	@Override
@@ -181,7 +182,10 @@ public class ClientManagerImpl implements ClientManager {
 	}
 	
 	private boolean isOld(Position p) {
-		if(p.getTimeCreated().until(LocalDateTime.now(clock), ChronoUnit.SECONDS) > 5) {
+		if(p.getTimeCreated().until(LocalDateTime.now(clock), ChronoUnit.SECONDS) > 300) {
+			Timestamp t = Timestamp.valueOf(p.getTimeCreated());
+			jdbcTemplate.update("insert into clients (client_ident, last_seen) values (?, ?) " +
+                " on duplicate key UPDATE last_seen=?", p.getClientId(), t, t);
 			return true;
 		}
 		return false;
@@ -191,15 +195,14 @@ public class ClientManagerImpl implements ClientManager {
 		TrackWriter trackWriter = groupsToTrack.get(p.getGroupId());
 		
 		if (trackWriter != null) {
-			ConcurrentMap<String, String> map = getTrackMap(p.getGroupId());
-			String track = map.computeIfPresent(p.getClientId(), (key,value) -> trackWriter.write(p, value));
-			if (track == null) {
-				track = map.computeIfAbsent(p.getClientId(), value -> trackWriter.write(p, ""));
-			}
-			//calculate predictions
+			addToTrackMap(getTrackMap(p.getGroupId()), trackWriter, p);
+			addToTrackMap(getTrackMap(p.getGroupId() + "PX"),  groupsToTrack.get(p.getGroupId() + "PX"), p);
 		}
 	}
-	
+	private void addToTrackMap(ConcurrentMap<String, String> map, TrackWriter trackWriter, Position p) {
+		map.computeIfPresent(p.getClientId(), (key,value) -> trackWriter.write(p, value));			
+		map.computeIfAbsent(p.getClientId(), value -> trackWriter.write(p, ""));
+	}
 	
 	private ConcurrentMap<String, String> getTrackMap(String groupId) {
 		return groupTracks.computeIfAbsent(groupId, map -> new ConcurrentHashMap<>());
@@ -210,6 +213,8 @@ public class ClientManagerImpl implements ClientManager {
 		String groupTracksName = TRACK_PREFIX + groupId;
 		memcacheHelper.clear(groupTracksName, groupTracksName);
 		groupTracks.remove(groupId);
+		memcacheHelper.clear(groupTracksName + "PX", groupTracksName+ "PX");
+		groupTracks.remove(groupId + "PX");
 	}
 	
 	
