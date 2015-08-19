@@ -1,12 +1,10 @@
 package com.ordint.tcpears.service.impl;
 
 import java.io.IOException;
-import java.sql.Timestamp;
 import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -26,7 +24,6 @@ import com.ordint.tcpears.domain.Position;
 import com.ordint.tcpears.domain.TrackWriter;
 import com.ordint.tcpears.memcache.MemcacheHelper;
 import com.ordint.tcpears.service.ClientManager;
-import com.ordint.tcpears.util.PredictionUtil;
 import com.ordint.tcpears.util.prediction.PositionPredictor;
 import com.ordint.tcpears.util.prediction.StaticTrackPathBuilder;
 import com.ordint.tcpears.util.prediction.TrackBasedPredictor;

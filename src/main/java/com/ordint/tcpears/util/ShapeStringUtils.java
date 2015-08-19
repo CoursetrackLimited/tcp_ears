@@ -21,7 +21,6 @@ package com.ordint.tcpears.util;
  */
 
 import java.awt.Shape;
-import java.awt.geom.GeneralPath;
 import java.awt.geom.PathIterator;
 
 /** This is a small set of static methods that translate shape data into

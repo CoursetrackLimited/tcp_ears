@@ -3,8 +3,6 @@ package com.ordint.tcpears.domain;
 import static com.ordint.tcpears.util.ConversionUtil.formatDouble;
 import static com.ordint.tcpears.util.ConversionUtil.posToDec;
 
-import java.time.Clock;
-import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 import org.slf4j.Logger;

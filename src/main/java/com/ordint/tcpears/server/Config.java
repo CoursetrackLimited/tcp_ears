@@ -43,7 +43,6 @@ import com.ordint.tcpears.service.PositionService;
 import com.ordint.tcpears.service.ReplayService;
 import com.ordint.tcpears.service.impl.AdministrationServiceImpl;
 import com.ordint.tcpears.service.impl.ClientManagerImpl;
-import com.ordint.tcpears.service.impl.ClientManagerImpl2;
 import com.ordint.tcpears.service.impl.HorseDetailsResolver;
 import com.ordint.tcpears.service.impl.MySqlPositionLogger;
 import com.ordint.tcpears.service.impl.MySqlReplayService;

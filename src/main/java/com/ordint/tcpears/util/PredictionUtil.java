@@ -2,19 +2,10 @@ package com.ordint.tcpears.util;
 
 import static java.lang.Double.parseDouble;
 
-import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.math3.analysis.polynomials.PolynomialFunctionLagrangeForm;
 
-
-
-import com.javadocmd.simplelatlng.LatLng;
-import com.javadocmd.simplelatlng.LatLngTool;
-import com.javadocmd.simplelatlng.util.LengthUnit;
 import com.ordint.tcpears.domain.Position;
 
 public class PredictionUtil {

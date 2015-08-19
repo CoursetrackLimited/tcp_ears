@@ -1,7 +1,6 @@
 package com.ordint.tcpears.service.impl;
 
 import static com.ordint.tcpears.domain.PositionUtil.createPosition;
-import static java.util.Arrays.asList;
 import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.hasEntry;
 import static org.junit.Assert.assertThat;
@@ -19,7 +18,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
-import org.mockito.BDDMockito;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -27,7 +25,6 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.ordint.tcpears.domain.DefaultOutputWriter;
-import com.ordint.tcpears.domain.DefaultTrackWriter;
 import com.ordint.tcpears.domain.Position;
 import com.ordint.tcpears.memcache.MemcacheHelper;
 import com.ordint.tcpears.service.PositionDataProvider;

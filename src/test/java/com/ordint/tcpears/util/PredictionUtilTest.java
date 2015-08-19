@@ -1,27 +1,8 @@
 package com.ordint.tcpears.util;
 
-import static org.junit.Assert.assertThat;
-import io.netty.handler.codec.UnsupportedMessageTypeException;
-
-import java.awt.MouseInfo;
-import java.awt.Point;
-import java.awt.PointerInfo;
-import java.awt.Robot;
 import java.awt.geom.Point2D;
-import java.util.Scanner;
 
-import org.apache.commons.math3.analysis.polynomials.PolynomialFunction;
-import org.apache.commons.math3.analysis.polynomials.PolynomialFunctionLagrangeForm;
-import org.apache.commons.math3.fitting.PolynomialCurveFitter;
-
-import org.hamcrest.Matchers;
 import org.junit.Test;
-
-import com.javadocmd.simplelatlng.LatLng;
-import com.javadocmd.simplelatlng.LatLngTool;
-import com.javadocmd.simplelatlng.util.LengthUnit;
-import com.ordint.tcpears.domain.Position;
-import com.ordint.tcpears.domain.PositionUtil;
 
 public class PredictionUtilTest {
 	

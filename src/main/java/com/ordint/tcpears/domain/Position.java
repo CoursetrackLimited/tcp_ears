@@ -6,11 +6,11 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
-import org.apache.commons.lang3.StringUtils;
-
 import lombok.Builder;
 import lombok.Value;
 import lombok.experimental.NonFinal;
+
+import org.apache.commons.lang3.StringUtils;
 
 @Value
 @Builder

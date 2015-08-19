@@ -4,7 +4,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.ordint.tcpears.domain.Position;
-import com.ordint.tcpears.util.PredictionUtil;
 
 public class TrackBasedPredictorTest {
 	

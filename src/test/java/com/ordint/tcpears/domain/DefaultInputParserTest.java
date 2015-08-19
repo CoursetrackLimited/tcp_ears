@@ -5,9 +5,6 @@ package com.ordint.tcpears.domain;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
 
-import java.time.Clock;
-import java.time.LocalDateTime;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,8 +13,8 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.ordint.tcpears.service.ClientDetailsResolver;
-import com.ordint.tcpears.util.Timestamper;
 import com.ordint.tcpears.util.TimeProvider;
+import com.ordint.tcpears.util.Timestamper;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultInputParserTest {

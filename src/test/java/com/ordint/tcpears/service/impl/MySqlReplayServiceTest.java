@@ -6,16 +6,13 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import com.ordint.tcpears.server.Config;
-import com.ordint.tcpears.service.ClientManager;
 @RunWith(SpringJUnit4ClassRunner.class)
 //ApplicationContext will be loaded from the static inner ContextConfiguration class
 @Ignore

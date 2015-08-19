@@ -11,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.ordint.tcpears.domain.Position;
-import com.ordint.tcpears.service.impl.ClientManagerImpl;
 import com.ordint.tcpears.util.MeasuredShape;
 import com.ordint.tcpears.util.PredictionUtil;
 

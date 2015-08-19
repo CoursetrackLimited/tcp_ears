@@ -1,9 +1,6 @@
 package com.ordint.tcpears.domain;
 
-import java.util.Deque;
-import java.util.List;
 import java.util.concurrent.ConcurrentLinkedDeque;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class GPSClient {
 	

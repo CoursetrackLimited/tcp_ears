@@ -1,18 +1,11 @@
 package com.ordint.tcpears.service.impl;
 
 import static com.ordint.tcpears.domain.PositionUtil.createPosition;
-import static org.hamcrest.Matchers.anyOf;
-import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasEntry;
-import static org.hamcrest.Matchers.hasKey;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.isNull;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
 
 import java.time.Clock;
 import java.time.Instant;
@@ -29,13 +22,10 @@ import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.ordint.tcpears.domain.ClientDetails;
-import com.ordint.tcpears.domain.DefaultOutputWriter;
-import com.ordint.tcpears.domain.DefaultTrackWriter;
 import com.ordint.tcpears.domain.Position;
 import com.ordint.tcpears.memcache.MemcacheHelper;
 @SuppressWarnings("all")

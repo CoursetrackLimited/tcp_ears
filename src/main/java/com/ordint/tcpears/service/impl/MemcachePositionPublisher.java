@@ -2,14 +2,9 @@ package com.ordint.tcpears.service.impl;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
-
-import javax.annotation.PostConstruct;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,10 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.ordint.tcpears.domain.DefaultOutputWriter;
-import com.ordint.tcpears.domain.DefaultTrackWriter;
 import com.ordint.tcpears.domain.OutputWriter;
 import com.ordint.tcpears.domain.Position;
-import com.ordint.tcpears.domain.TrackWriter;
 import com.ordint.tcpears.memcache.MemcacheHelper;
 import com.ordint.tcpears.service.PositionDataProvider;
 import com.ordint.tcpears.service.PositionPublisher;
