@@ -33,7 +33,7 @@ public class PositionServiceImpl implements PositionService {
 	public void update(String positionInfo) {
 		
 		Position p = inputParser.parse(positionInfo);
-		//positionLogger.log(p, "horse", "boxes");
+		positionLogger.log(p, "horse", "boxes");
 		clientManager.updatePostion(p);	
 
 	}

@@ -27,6 +27,9 @@ import java.awt.geom.Path2D;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Vector;
 
 /** This represents a single closed path.
@@ -56,7 +59,7 @@ public class MeasuredShape implements Serializable {
 	 * @param spacing the spacing to be used for each <code>MeasuredShape</code>
 	 * @return a MeasuredShape object for each subpath in <code>i</code>
 	 */
-	public static MeasuredShape[] getSubpaths(Shape s,float spacing) {
+	public static MeasuredShape[] getSubpaths(Shape s,double spacing) {
 		return getSubpaths(s.getPathIterator(null),spacing);
 	}
 	
@@ -78,10 +81,10 @@ public class MeasuredShape implements Serializable {
 	 * @param i a path, possibly containing multiple subpaths
 	 * @return a MeasuredShape object for each subpath in <code>i</code>
 	 */
-	public static MeasuredShape[] getSubpaths(PathIterator i,float spacing) {
+	public static MeasuredShape[] getSubpaths(PathIterator i,double spacing) {
 		Vector<MeasuredShape> v = new Vector<MeasuredShape>();
 		GeneralPath path = null;
-		float[] coords = new float[6];
+		double[] coords = new double[6];
 		while(i.isDone()==false) {
 			int k = i.currentSegment(coords);
 			if(k==PathIterator.SEG_MOVETO) {
@@ -113,11 +116,11 @@ public class MeasuredShape implements Serializable {
 		private static final long serialVersionUID = 1L;
 		
 		int type;
-		float[] data;
-		float realDistance;
-		float normalizedDistance;
+		double[] data;
+		double realDistance;
+		double normalizedDistance;
 		
-		public void write(PathWriter path,float t0,float t1) {
+		public void write(PathWriter path,double t0,double t1) {
 			if(t0==0 && t1==1) {
 				if(type==PathIterator.SEG_MOVETO) {
 					path.moveTo(data[0], data[1]);
@@ -150,23 +153,23 @@ public class MeasuredShape implements Serializable {
 			} else if(type==PathIterator.SEG_LINETO) {
 				path.lineTo(getX(t1),getY(t1));
 			} else if(type==PathIterator.SEG_QUADTO) {
-				float ax = data[0]-2*data[2]+data[4];
-	 			float bx = -2*data[0]+2*data[2];
-				float cx = data[0];
-				float ay = data[1]-2*data[3]+data[5];
-				float by = -2*data[1]+2*data[3];
-				float cy = data[1];
+				double ax = data[0]-2*data[2]+data[4];
+	 			double bx = -2*data[0]+2*data[2];
+				double cx = data[0];
+				double ay = data[1]-2*data[3]+data[5];
+				double by = -2*data[1]+2*data[3];
+				double cy = data[1];
 				
 				PathWriter.quadTo(path, t0, t1, ax, bx, cx, ay, by, cy);
 			} else if(type==PathIterator.SEG_CUBICTO) {
-				float ax = -data[0]+3*data[2]-3*data[4]+data[6];
-				float bx = 3*data[0]-6*data[2]+3*data[4];
-				float cx = -3*data[0]+3*data[2];
-				float dx = data[0];
-				float ay = -data[1]+3*data[3]-3*data[5]+data[7];
-				float by = 3*data[1]-6*data[3]+3*data[5];
-				float cy = -3*data[1]+3*data[3];
-				float dy = data[1];
+				double ax = -data[0]+3*data[2]-3*data[4]+data[6];
+				double bx = 3*data[0]-6*data[2]+3*data[4];
+				double cx = -3*data[0]+3*data[2];
+				double dx = data[0];
+				double ay = -data[1]+3*data[3]-3*data[5]+data[7];
+				double by = 3*data[1]-6*data[3]+3*data[5];
+				double cy = -3*data[1]+3*data[3];
+				double dy = data[1];
 				PathWriter.cubicTo(path, t0, t1, ax, bx, cx, dx, ay, by, cy, dy);
 			} else if(type==PathIterator.SEG_CLOSE) {
 				path.closePath();
@@ -175,25 +178,25 @@ public class MeasuredShape implements Serializable {
 			}
 		}
 		
-		public float getTangentSlope(float t) {
+		public double getTangentSlope(double t) {
 			if(type==PathIterator.SEG_LINETO) {
-				float ax = data[2]-data[0];
-				float ay = data[3]-data[1];
-				return (float)Math.atan2(ay, ax);
+				double ax = data[2]-data[0];
+				double ay = data[3]-data[1];
+				return (double)Math.atan2(ay, ax);
 			} else if(type==PathIterator.SEG_QUADTO) {
-				float ax = data[0]-2*data[2]+data[4];
-				float bx = -2*data[0]+2*data[2];
-				float ay = data[1]-2*data[3]+data[5];
-				float by = -2*data[1]+2*data[3];
-				return (float)Math.atan2( 2*ay*t+by, 2*ax*t+bx  );
+				double ax = data[0]-2*data[2]+data[4];
+				double bx = -2*data[0]+2*data[2];
+				double ay = data[1]-2*data[3]+data[5];
+				double by = -2*data[1]+2*data[3];
+				return (double)Math.atan2( 2*ay*t+by, 2*ax*t+bx  );
 			} else if(type==PathIterator.SEG_CUBICTO) {
-				float ax = -data[0]+3*data[2]-3*data[4]+data[6];
-				float bx = 3*data[0]-6*data[2]+3*data[4];
-				float cx = -3*data[0]+3*data[2];
-				float ay = -data[1]+3*data[3]-3*data[5]+data[7];
-				float by = 3*data[1]-6*data[3]+3*data[5];
-				float cy = -3*data[1]+3*data[3];
-				return (float)Math.atan2( 3*ay*t*t+2*by*t+cy, 3*ax*t*t+2*bx*t+cx );
+				double ax = -data[0]+3*data[2]-3*data[4]+data[6];
+				double bx = 3*data[0]-6*data[2]+3*data[4];
+				double cx = -3*data[0]+3*data[2];
+				double ay = -data[1]+3*data[3]-3*data[5]+data[7];
+				double by = 3*data[1]-6*data[3]+3*data[5];
+				double cy = -3*data[1]+3*data[3];
+				return (double)Math.atan2( 3*ay*t*t+2*by*t+cy, 3*ax*t*t+2*bx*t+cx );
 			} else if(type==PathIterator.SEG_MOVETO) {
 				return data[0];
 			} else if(type==PathIterator.SEG_CLOSE) {
@@ -203,20 +206,20 @@ public class MeasuredShape implements Serializable {
 			}
 		}
 		
-		public float getX(float t) {
+		public double getX(double t) {
 			if(type==PathIterator.SEG_LINETO) {
-				float ax = data[2]-data[0];
+				double ax = data[2]-data[0];
 				return ax*t+data[0];
 			} else if(type==PathIterator.SEG_QUADTO) {
-				float ax = data[0]-2*data[2]+data[4];
-				float bx = -2*data[0]+2*data[2];
-				float cx = data[0];
+				double ax = data[0]-2*data[2]+data[4];
+				double bx = -2*data[0]+2*data[2];
+				double cx = data[0];
 				return (ax*t+bx)*t+cx;
 			} else if(type==PathIterator.SEG_CUBICTO) {
-				float ax = -data[0]+3*data[2]-3*data[4]+data[6];
-				float bx = 3*data[0]-6*data[2]+3*data[4];
-				float cx = -3*data[0]+3*data[2];
-				float dx = data[0];
+				double ax = -data[0]+3*data[2]-3*data[4]+data[6];
+				double bx = 3*data[0]-6*data[2]+3*data[4];
+				double cx = -3*data[0]+3*data[2];
+				double dx = data[0];
 				return ((ax*t+bx)*t+cx)*t+dx;
 			} else if(type==PathIterator.SEG_MOVETO) {
 				return data[0];
@@ -227,20 +230,20 @@ public class MeasuredShape implements Serializable {
 			}
 		}
 
-		public float getY(float t) {
+		public double getY(double t) {
 			if(type==PathIterator.SEG_LINETO) {
-				float ay = data[3]-data[1];
+				double ay = data[3]-data[1];
 				return ay*t+data[1];
 			} else if(type==PathIterator.SEG_QUADTO) {
-				float ay = data[1]-2*data[3]+data[5];
-				float by = -2*data[1]+2*data[3];
-				float cy = data[1];
+				double ay = data[1]-2*data[3]+data[5];
+				double by = -2*data[1]+2*data[3];
+				double cy = data[1];
 				return (ay*t+by)*t+cy;
 			} else if(type==PathIterator.SEG_CUBICTO) {
-				float ay = -data[1]+3*data[3]-3*data[5]+data[7];
-				float by = 3*data[1]-6*data[3]+3*data[5];
-				float cy = -3*data[1]+3*data[3];
-				float dy = data[1];
+				double ay = -data[1]+3*data[3]-3*data[5]+data[7];
+				double by = 3*data[1]-6*data[3]+3*data[5];
+				double cy = -3*data[1]+3*data[3];
+				double dy = data[1];
 				return ((ay*t+by)*t+cy)*t+dy;
 			} else if(type==PathIterator.SEG_MOVETO) {
 				return data[1];
@@ -251,17 +254,17 @@ public class MeasuredShape implements Serializable {
 			}
 		}
 		
-		public Segment(int type,float lastX,float lastY,float[] coords,float spacing) {
+		public Segment(int type,double lastX,double lastY,double[] coords,double spacing) {
 			this.type = type;
 			if(type==PathIterator.SEG_MOVETO) {
-				data = new float[] {coords[0],coords[1]};
+				data = new double[] {coords[0],coords[1]};
 				realDistance = 0;
 			} else if(type==PathIterator.SEG_LINETO) {
-				data = new float[] {lastX, lastY, coords[0],coords[1]};
-				realDistance = (float)(Math.sqrt(
+				data = new double[] {lastX, lastY, coords[0],coords[1]};
+				realDistance = (double)(Math.sqrt(
 						(coords[0]-lastX)*(coords[0]-lastX) + (coords[1]-lastY)*(coords[1]-lastY) ));
 			} else if(type==PathIterator.SEG_CLOSE) {
-				data = new float[0];
+				data = new double[0];
 			} else {
 				double ax, bx, cx, dx, ay, by, cy, dy;
 				if(type==PathIterator.SEG_QUADTO) {
@@ -274,7 +277,7 @@ public class MeasuredShape implements Serializable {
 					bx = lastX-2*coords[0]+coords[2];
 					cx = -2*lastX+2*coords[0];
 					dx = lastX;
-					data = new float[] {lastX, lastY, coords[0], coords[1], coords[2], coords[3]};
+					data = new double[] {lastX, lastY, coords[0], coords[1], coords[2], coords[3]};
 				} else if(type==PathIterator.SEG_CUBICTO) {
 					ay = -lastY+3*coords[1]-3*coords[3]+coords[5];
 					by = 3*lastY-6*coords[1]+3*coords[3];
@@ -285,7 +288,7 @@ public class MeasuredShape implements Serializable {
 					bx = 3*lastX-6*coords[0]+3*coords[2];
 					cx = -3*lastX+3*coords[0];
 					dx = lastX;
-					data = new float[] {lastX, lastY, coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]};
+					data = new double[] {lastX, lastY, coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]};
 				} else {
 					throw new RuntimeException("Unrecognized type: "+type);
 				}
@@ -293,8 +296,8 @@ public class MeasuredShape implements Serializable {
 			}
 		}
 		
-		private float calculateDistance(double ax,double bx,double cx,double dx,
-				double ay,double by,double cy,double dy,float spacing) {
+		private double calculateDistance(double ax,double bx,double cx,double dx,
+				double ay,double by,double cy,double dy,double spacing) {
 			double x0 = dx;
 			double y0 = dy;
 			double x1, y1;
@@ -307,7 +310,7 @@ public class MeasuredShape implements Serializable {
 				x0 = x1;
 				y0 = y1;
 			}
-			return (float)sum;
+			return (double)sum;
 		}
 	}
 
@@ -317,11 +320,13 @@ public class MeasuredShape implements Serializable {
 	 * meaning quadratic and cubic curves are converted to linear segments
 	 * connecting at t = 0, t = .05, t = .1, ... t = .95, t = 1.
 	 */
-	public static final float DEFAULT_SPACING = .05f;
+	public static final double DEFAULT_SPACING = .05f;
+
+	private static final double EIGHT_DP = 0.00000001;
 	
 	Segment[] segments;
-	float closedDistance = 0;
-	float originalDistance;
+	double closedDistance = 0;
+	double originalDistance;
 
 	/** Construct a <code>MeasuredShape</code> from a <code>Shape</code>,
 	 * using the default spacing.
@@ -340,7 +345,7 @@ public class MeasuredShape implements Serializable {
 	 * The default value is .05.
 	 * @throws IllegalArgumentException if the shape has more than 1 path.
 	 */
-	public MeasuredShape(Shape s,float spacing) {
+	public MeasuredShape(Shape s,double spacing) {
 		this(s.getPathIterator(null),spacing);
 	}
 
@@ -361,16 +366,16 @@ public class MeasuredShape implements Serializable {
 	 * The default value is .05.
 	 * @throws IllegalArgumentException if the shape has more than 1 path.
 	 */
-	public MeasuredShape(PathIterator i,float spacing) {
+	public MeasuredShape(PathIterator i,double spacing) {
 		Vector<Segment> v = new Vector<Segment>();
-		float lastX = 0;
-		float lastY = 0;
-		float moveX = 0;
-		float moveY = 0;
+		double lastX = 0;
+		double lastY = 0;
+		double moveX = 0;
+		double moveY = 0;
 		int pathCount = 0; 
 		boolean closed = false;
 		
-		float[] coords = new float[6];
+		double[] coords = new double[6];
 		while(i.isDone()==false) {
 			int k = i.currentSegment(coords);
 			if(k==PathIterator.SEG_CLOSE) {
@@ -396,7 +401,7 @@ public class MeasuredShape implements Serializable {
 			}
 			i.next();
 		}
-		float t = closedDistance;
+		double t = closedDistance;
 		if(v.size()>0) {
 			Segment last = v.get(v.size()-1);
 			if(Math.abs(last.data[last.data.length-2]-moveX)>.001 ||
@@ -438,7 +443,7 @@ public class MeasuredShape implements Serializable {
 	 * 
 	 * @see #getOriginalDistance()
 	 */
-	public float getClosedDistance() {
+	public double getClosedDistance() {
 		return closedDistance;
 	}
 	
@@ -451,7 +456,7 @@ public class MeasuredShape implements Serializable {
 	 * 
 	 * @see #getClosedDistance()
 	 */
-	public float getOriginalDistance() {
+	public double getOriginalDistance() {
 		return originalDistance;
 	}
 
@@ -473,7 +478,7 @@ public class MeasuredShape implements Serializable {
 	 * 
 	 * @return the x-value of where this path begins.
 	 */
-	public float getMoveToX() {
+	public double getMoveToX() {
 		Segment s = segments[0];
 		return s.getX(0);
 	}
@@ -485,7 +490,7 @@ public class MeasuredShape implements Serializable {
 	 * 
 	 * @return the y-value of where this path begins.
 	 */
-	public float getMoveToY() {
+	public double getMoveToY() {
 		Segment s = segments[0];
 		return s.getY(0);
 	}
@@ -498,7 +503,7 @@ public class MeasuredShape implements Serializable {
 	 * If this value is negative then the shape will be traced backwards.
 	 * @param w the destination to write to
 	 */
-	public void writeShape(float position,float length,PathWriter w) {
+	public void writeShape(double position,double length,PathWriter w) {
 		writeShape(position,length,w,true);
 	}
 
@@ -513,7 +518,7 @@ public class MeasuredShape implements Serializable {
 	 * Note setting this to <code>false</code> means its the caller's responsibility
 	 * to make sure the path is in the correct position.
 	 */
-	public void writeShape(float position,float length,PathWriter w,boolean includeMoveTo) {
+	public void writeShape(double position,double length,PathWriter w,boolean includeMoveTo) {
 		if(length>=.999999f) {
 			writeShape(w);
 			return;
@@ -572,12 +577,12 @@ public class MeasuredShape implements Serializable {
 	 * @return the point at a certain distance from the beginning of this shape.
 	 * Note this will be <code>dest</code> if <code>dest</code> is non-null.
 	 */
-	public Point2D getPoint(float distance,Point2D dest) {
+	public Point2D getPoint(double distance) {
 		if(distance<0) throw new IllegalArgumentException("distance ("+distance+") must not be negative");
 		if(distance>closedDistance) throw new IllegalArgumentException("distance ("+distance+") must not be greater than the total distance of this shape ("+closedDistance+")");
-		if(dest==null) dest = new Point2D.Float();
+		Point2D dest = new Point2D.Double();
 		for(int a = 0; a<segments.length; a++) {
-			float t = distance/segments[a].realDistance;
+			double t = distance/segments[a].realDistance;
 			if(t>=1) {
 				distance = distance - segments[a].realDistance;
 			} else {
@@ -588,7 +593,52 @@ public class MeasuredShape implements Serializable {
 		dest.setLocation(segments[0].getX(0),segments[0].getY(0)); //a fluke case, where we're basically at the end of the shape
 		return dest;
 	}
+	public List<Point2D> getPoints(double distance, int numberOfPoints) {
+		List<Point2D> points = new ArrayList<>();
+		for(int i = 0; i < numberOfPoints; i++) {
+			points.add(getPoint(distance  - (i * distance / numberOfPoints)));
+		}
+		return points;
+	}
+	
 
+
+	public double getPointDistance(Point2D point) {
+		double distance = 0;
+		double x = (double) point.getX();
+		double y = (double) point.getY();
+		for(int a = 0; a<segments.length; a++) {
+			double t1 = (segments[a].getX(1) - segments[a].getX(0)) / (segments[a].getY(1) - segments[a].getY(0)) ;
+			double t2 = (x - segments[a].getX(0) ) / (y-segments[a].getY(0)) ;
+			if (Math.abs(t1 - t2) < EIGHT_DP) {
+				distance = distance + distance(point, segments[a]);
+				return distance;
+			}
+			distance = distance + segments[a].realDistance;
+		}
+		
+		
+		return 0;
+	}
+	
+	public Point2D getPoint(double distance, Point2D start) {
+		double offset = getPointDistance(start);
+		return getPoint(distance + offset);
+	}
+	
+	public List<Point2D> getPoints(double distance, Point2D start, int numberOfPoints) {
+		double startFrom = getPointDistance(start);
+		List<Point2D> points = new ArrayList<>();
+		for(int i = 0; i < numberOfPoints; i++) {
+			points.add(getPoint(distance + startFrom - (i * distance / numberOfPoints)));
+		}
+		return points;
+	}
+    private double distance(Point2D pt, Segment a) {
+        double px = pt.getX() - a.getX(0);
+        double py = pt.getY() - a.getY(0);
+        return Math.sqrt(px * px + py * py);
+    }
 	
 	/** Returns the tangent slope at a certain distance from the beginning of this shape.
 	 * The behavior of this method when the point you request falls exactly on an edge
@@ -597,11 +647,11 @@ public class MeasuredShape implements Serializable {
 	 * @param distance the distance from the beginning of this shape to measure
 	 * @return the tangent slope (in radians) at a specific position
 	 */
-	public float getTangentSlope(float distance) {
+	public double getTangentSlope(double distance) {
 		if(distance<0) throw new IllegalArgumentException("distance ("+distance+") must not be negative");
 		if(distance>closedDistance) throw new IllegalArgumentException("distance ("+distance+") must not be greater than the total distance of this shape ("+closedDistance+")");
 		for(int a = 0; a<segments.length; a++) {
-			float t = distance/segments[a].realDistance;
+			double t = distance/segments[a].realDistance;
 			if(t>=1) {
 				distance = distance - segments[a].realDistance;
 			} else {
@@ -611,8 +661,8 @@ public class MeasuredShape implements Serializable {
 		return segments[0].getTangentSlope(0); //a fluke case, where we're basically at the end of the shape
 	}
 	
-	private static boolean equal(float f1,float f2) {
-		float d = f1-f2;
+	private static boolean equal(double f1,double f2) {
+		double d = f1-f2;
 		if(d<0) d = -d;
 		return d<.0001;
 	}
@@ -622,8 +672,8 @@ public class MeasuredShape implements Serializable {
 	 * direction.
 	 * @param s
 	 */
-	public float getCommonDistance(MeasuredShape s) {
-		float distance = 0;
+	public double getCommonDistance(MeasuredShape s) {
+		double distance = 0;
 		int m = Math.min(segments.length, s.segments.length);
 		for(int a = 0; a<m; a++) {
 			if(segments[a].type!=PathIterator.SEG_MOVETO &&
@@ -654,7 +704,7 @@ public class MeasuredShape implements Serializable {
 	 * If this value is negative then the shape will be traced backwards.
 	 * @return a new path
 	 */
-	public GeneralPath getShape(float position,float length) {
+	public GeneralPath getShape(double position,double length) {
 		GeneralPath dest = new GeneralPath(Path2D.WIND_NON_ZERO);
 		PathWriter w = new GeneralPathWriter(dest);
 		writeShape(position,length,w,true);
@@ -663,9 +713,9 @@ public class MeasuredShape implements Serializable {
 	
 	static class Position {
 		int i;
-		float innerPosition;
+		double innerPosition;
 		
-		public Position(int segmentIndex,float p) {
+		public Position(int segmentIndex,double p) {
 			this.i = segmentIndex;
 			this.innerPosition = p;
 		}
@@ -676,14 +726,14 @@ public class MeasuredShape implements Serializable {
 		}
 	}
 	
-	private Position getIndexOfPosition(float p) {
+	private Position getIndexOfPosition(double p) {
 		while(p<0) p+=1;
 		while(p>1) p-=1;
 		if(p>.99999f)
 			p = 0;
 		
 		int i = 0;
-		float original = p;
+		double original = p;
 		while(i<segments.length) {
 			if(p<=segments[i].normalizedDistance && segments[i].normalizedDistance!=0) {
 				return new Position(i,p/segments[i].normalizedDistance);

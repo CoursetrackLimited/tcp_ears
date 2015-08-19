@@ -29,7 +29,7 @@ public class RpcInvoker {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public void invoke(String rpcString) {
+	public Object invoke(String rpcString) {
 			
 		Map<String, Object> request = (Map<String, Object>) mapper.fromJson(rpcString);
 		String methodName = request.get("method").toString();
@@ -43,7 +43,7 @@ public class RpcInvoker {
 		}
 		//args = new Object[] {new String[] {"TC1", "TC2"}, "1"};
 
-		ReflectionUtils.invokeMethod(m, adminService, args);
+		return ReflectionUtils.invokeMethod(m, adminService, args);
 				
 	}
 	

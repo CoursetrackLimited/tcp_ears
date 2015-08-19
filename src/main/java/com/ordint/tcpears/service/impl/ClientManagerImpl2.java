@@ -6,6 +6,7 @@ import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -22,10 +23,13 @@ import com.ordint.tcpears.domain.DefaultOutputWriter;
 import com.ordint.tcpears.domain.DefaultTrackWriter;
 import com.ordint.tcpears.domain.OutputWriter;
 import com.ordint.tcpears.domain.Position;
-import com.ordint.tcpears.domain.SimplePredictingTrackWriter;
 import com.ordint.tcpears.domain.TrackWriter;
 import com.ordint.tcpears.memcache.MemcacheHelper;
 import com.ordint.tcpears.service.ClientManager;
+import com.ordint.tcpears.util.PredictionUtil;
+import com.ordint.tcpears.util.prediction.PositionPredictor;
+import com.ordint.tcpears.util.prediction.StaticTrackPathBuilder;
+import com.ordint.tcpears.util.prediction.TrackBasedPredictor;
 
 
 /**
@@ -34,21 +38,30 @@ import com.ordint.tcpears.service.ClientManager;
  *
  */
 public class ClientManagerImpl2 implements ClientManager {
+	//TODO:remove
 	private static final String TRACK_PREFIX = "/ggps/tracks/";
 
-	private final static Logger log = LoggerFactory.getLogger(ClientManagerImpl.class);
+	private final static Logger log = LoggerFactory.getLogger(ClientManagerImpl2.class);
 	
 	private final static String TRACKING_LIST = "/ggps/trackinglist";
+	
+	private final static String PREDICTIONS_KEY = "/ggps/predictions/";
 	//map of position keyed on clientId
 	private final ConcurrentMap<String, Position> clients = new ConcurrentHashMap<>();
 	//map of map of client tracks, keeyed on groupId
 	private ConcurrentMap<String, ConcurrentMap<String, String>> groupTracks = new ConcurrentHashMap<>();
 	
+	private final ConcurrentMap<String, String> predictions = new ConcurrentHashMap<>();
+	
+	//TODO:REMOVE
 	private OutputWriter outputBuilder = new DefaultOutputWriter();
 	
+	//TODO:REMOVE
 	private MemcacheHelper memcacheHelper;
 	
 	private ConcurrentMap<String, TrackWriter> groupsToTrack = new ConcurrentHashMap<>();
+	
+	private PositionPredictor predictor = new TrackBasedPredictor (new StaticTrackPathBuilder().build("KEMPTON_740"));
 	
 	private Clock clock = Clock.systemUTC();
 	
@@ -56,9 +69,12 @@ public class ClientManagerImpl2 implements ClientManager {
 	
 	private JdbcTemplate jdbcTemplate;
 
-	public ClientManagerImpl2(MemcacheHelper memcacheHelper, JdbcTemplate jdbcTempalate) {
+	private int maxPredictionTime = 10000;
+	private int numberOfPoints = 5;
+
+	public ClientManagerImpl2(MemcacheHelper memcacheHelper) {
 		this.memcacheHelper = memcacheHelper;
-		this.jdbcTemplate = jdbcTempalate;
+
 		
 		executor.scheduleAtFixedRate(new Runnable() {
 			@Override
@@ -105,37 +121,64 @@ public class ClientManagerImpl2 implements ClientManager {
 			//save to memcache
 			String groupKeyName = "/ggps/locations/" + groupId;
 			
-			memcacheHelper.set(groupKeyName, groupKeyName, postionMap);
+			memcacheHelper.set(groupKeyName, groupKeyName, postionMap, 5);
 		}	
 		
 	}
 	
-	private ConcurrentMap<String, List<Position>> getAllGroups() {
+	protected ConcurrentMap<String, List<Position>> getAllGroups() {
 		return clients.values()
 				.stream()
+				.filter(p -> !isOld(p))
 				.collect(Collectors.groupingByConcurrent(Position::getGroupId));
 	}
 	
-	private  ConcurrentMap<String, List<Position>> getGroups(Set<String> groupsToInclude) {
+	protected  ConcurrentMap<String, List<Position>> getGroups(Set<String> groupsToInclude) {
 		return clients.values()
 				.stream()
 				.filter(p -> groupsToInclude.contains(p.getGroupId()))
 				.collect(Collectors.groupingByConcurrent(Position::getGroupId));		
 	}
+	protected  ConcurrentMap<String, List<Position>> getTrackedGroups() {
+		 return getGroups(groupsToTrack.keySet());
+	}
 	
+
+
+	//TODO:remove
 	protected void publishTracks() throws Exception {
 		ConcurrentMap<String, List<Position>> groups =  getGroups(groupsToTrack.keySet());
 		for(String groupId : groups.keySet()) {
-			Set<String> clientsInGroup =  groups.get(groupId)
+			List<Position> positions = groups.get(groupId);
+			Set<String> clientsInGroup =  positions
 					.stream()
 					.map(p -> p.getClientId())
 					.collect(Collectors.toSet());
+			//predictPositions(groupId, positions);	
 			publishTrack(groupId, clientsInGroup);
-			publishTrack(groupId + "PX", clientsInGroup);
-		
+			
 		}
+		if (!groupsToTrack.isEmpty()) {
+			memcacheHelper.set(PREDICTIONS_KEY, PREDICTIONS_KEY, predictions);
+		}
+		
  	}
 	
+	//TODO:remove
+	protected void predictPositions(String groupId, List<Position> positions) {
+		for(Position p : positions) {
+			int currentLag = (int) p.getCurrentLag();
+			if ( p.getCurrentLag() > maxPredictionTime) {
+				currentLag = maxPredictionTime;
+			} 	
+		   predictions.put(p.getClientId(), getPredictor(groupId).predict(p, currentLag, numberOfPoints, null));
+		}
+		
+	}
+	
+	private PositionPredictor getPredictor(String groupId) {
+		return predictor;
+	}
 	private void publishTrack(String groupId, Set<String> clientsInGroup) throws IOException {
 		String groupTracksName= TRACK_PREFIX + groupId;
 		TrackWriter trackWriter = groupsToTrack.get(groupId);
@@ -149,6 +192,7 @@ public class ClientManagerImpl2 implements ClientManager {
 			
 			//save to memcache
 			//TODO: how do we handle failure
+			
 			memcacheHelper.set(groupTracksName, groupTracksName, trackMap);
 			//replace existing track map with latest
 			groupTracks.put(groupId, trackMap);
@@ -160,19 +204,18 @@ public class ClientManagerImpl2 implements ClientManager {
 	public void trackGroup(String groupId) {
 		log.debug("Tracking group {}", groupId);
 		groupsToTrack.put(groupId, new DefaultTrackWriter());
-		groupsToTrack.put(groupId + "PX", new SimplePredictingTrackWriter());
 	}
 	
 	@Override
 	public void stopTrackingGroup(String groupId) {
 		log.debug("Stop Tracking group {}", groupId);
 		groupsToTrack.remove(groupId);
-		groupsToTrack.remove(groupId + "PX");
 	}
 	
 	@Override
 	public void updatePostion(Position position) {
-		Position previousPosition = clients.put(position.getClientId(), position);
+		clients.compute(position.getClientId(), (k, v) -> (v==null) ? position : position.smoothAltitude(v));
+		
 		updateTracks(position);
 	}
 	
@@ -182,10 +225,7 @@ public class ClientManagerImpl2 implements ClientManager {
 	}
 	
 	private boolean isOld(Position p) {
-		if(p.getTimeCreated().until(LocalDateTime.now(clock), ChronoUnit.SECONDS) > 300) {
-			Timestamp t = Timestamp.valueOf(p.getTimeCreated());
-			jdbcTemplate.update("insert into clients (client_ident, last_seen) values (?, ?) " +
-                " on duplicate key UPDATE last_seen=?", p.getClientId(), t, t);
+		if(p.getTimeCreated().until(LocalDateTime.now(clock), ChronoUnit.SECONDS) > 5) {
 			return true;
 		}
 		return false;
@@ -195,26 +235,27 @@ public class ClientManagerImpl2 implements ClientManager {
 		TrackWriter trackWriter = groupsToTrack.get(p.getGroupId());
 		
 		if (trackWriter != null) {
-			addToTrackMap(getTrackMap(p.getGroupId()), trackWriter, p);
-			addToTrackMap(getTrackMap(p.getGroupId() + "PX"),  groupsToTrack.get(p.getGroupId() + "PX"), p);
+			ConcurrentMap<String, String> map = getTrackMap(p.getGroupId());
+			String track = map.computeIfPresent(p.getClientId(), (key,value) -> trackWriter.write(p, value));
+			if (track == null) {
+				track = map.computeIfAbsent(p.getClientId(), value -> trackWriter.write(p, ""));
+			}
+	  
 		}
 	}
-	private void addToTrackMap(ConcurrentMap<String, String> map, TrackWriter trackWriter, Position p) {
-		map.computeIfPresent(p.getClientId(), (key,value) -> trackWriter.write(p, value));			
-		map.computeIfAbsent(p.getClientId(), value -> trackWriter.write(p, ""));
-	}
 	
-	private ConcurrentMap<String, String> getTrackMap(String groupId) {
+	
+	protected ConcurrentMap<String, String> getTrackMap(String groupId) {
 		return groupTracks.computeIfAbsent(groupId, map -> new ConcurrentHashMap<>());
 	}
 
 	@Override
 	public void clearTrack(String groupId) {
-		String groupTracksName = TRACK_PREFIX + groupId;
-		memcacheHelper.clear(groupTracksName, groupTracksName);
 		groupTracks.remove(groupId);
-		memcacheHelper.clear(groupTracksName + "PX", groupTracksName+ "PX");
-		groupTracks.remove(groupId + "PX");
+	}
+
+	public ConcurrentMap<String, ConcurrentMap<String, String>> getGroupTracks() {
+		return groupTracks;
 	}
 	
 	

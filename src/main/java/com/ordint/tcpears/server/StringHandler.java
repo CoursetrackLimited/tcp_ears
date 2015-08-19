@@ -26,7 +26,7 @@ public class StringHandler extends SimpleChannelInboundHandler<String> {
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-        cause.printStackTrace();
+        log.warn("Error handling input", cause);
         ctx.close();
     }
 

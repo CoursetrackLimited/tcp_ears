@@ -30,7 +30,7 @@ public class RpcServer implements Runnable{
 	        // the "config.properties" file contains the port we are listening on 
 	    	server.getHttpRequest();
 	        invoker.invoke(server.payload);
-	       
+	        
 
 	      }
 	    }

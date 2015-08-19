@@ -40,14 +40,14 @@ public abstract class PathWriter {
 	 * @param x the x-coordinate to move to
 	 * @param y the y-coordinate to move to
 	 */
-	public abstract void moveTo(float x,float y);
+	public abstract void moveTo(double x,double y);
 	
 	/** Adds a point to the path by drawing a straight line from the current coordinates to the new specified coordinates.
 	 *
 	 *  @param x the x-coordinate of the end point.
 	 *  @param y the y-coordinate of the end point. 
 	 */
-	public abstract void lineTo(float x,float y);
+	public abstract void lineTo(double x,double y);
 	
 	/** Adds a curved segment, defined by two new points, to the path by drawing a Quadratic curve that intersects both the current coordinates and the coordinates (x2, y2), using the specified point (x1, y1) as a quadratic parametric control point.
 	 *
@@ -56,7 +56,7 @@ public abstract class PathWriter {
 	 *  @param x the x-coordinate of the end point.
 	 *  @param y the y-coordinate of the end point.
 	 */
-	public abstract void quadTo(float cx,float cy,float x,float y);
+	public abstract void quadTo(double cx,double cy,double x,double y);
 	
 	/** Adds a curved segment, defined by three new points, to the path by drawing a Bezier curve that intersects both the current coordinates and the coordinates (x3, y3), using the specified points (x1, y1) and (x2, y2) as Bezier control points.
 	 * 
@@ -67,7 +67,7 @@ public abstract class PathWriter {
 	 *  @param x the x-coordinate of the end point.
 	 *  @param y the y-coordinate of the end point.
 	 *  */
-	public abstract void curveTo(float cx1,float cy1,float cx2,float cy2,float x,float y);
+	public abstract void curveTo(double cx1,double cy1,double cx2,double cy2,double x,double y);
 	
 	/** Closes the current subpath by drawing a straight line back to the coordinates of the last moveTo. */
 	public abstract void closePath();
@@ -101,7 +101,7 @@ public abstract class PathWriter {
 	 * @param i the path to write.
 	 */
 	public void write(PathIterator i) {
-		float[] coords = new float[6];
+		double[] coords = new double[6];
 		int k;
 		while(i.isDone()==false) {
 			k = i.currentSegment(coords);
@@ -189,13 +189,13 @@ public abstract class PathWriter {
         double x1 = ax2+dx2-3*cx0+3*cx1;
         
         if(obj instanceof GeneralPath) {
-	        ((GeneralPath)obj).curveTo((float)cx0, (float)cy0, 
-	        		(float)cx1, (float)cy1, 
-	        		(float)x1, (float)y1);
+	        ((GeneralPath)obj).curveTo((double)cx0, (double)cy0, 
+	        		(double)cx1, (double)cy1, 
+	        		(double)x1, (double)y1);
         } else if(obj instanceof PathWriter) {
-        	((PathWriter)obj).curveTo((float)cx0, (float)cy0, 
-	        		(float)cx1, (float)cy1, 
-	        		(float)x1, (float)y1);
+        	((PathWriter)obj).curveTo((double)cx0, (double)cy0, 
+	        		(double)cx1, (double)cy1, 
+	        		(double)x1, (double)y1);
         }
 	}
 	
@@ -257,11 +257,11 @@ public abstract class PathWriter {
         double x1 = ax2-cx2+2*ctrlX;
         
         if(obj instanceof GeneralPath) {
-	        ((GeneralPath)obj).quadTo((float)ctrlX, (float)ctrlY,
-	        		(float)x1, (float)y1);
+	        ((GeneralPath)obj).quadTo((double)ctrlX, (double)ctrlY,
+	        		(double)x1, (double)y1);
         } else if(obj instanceof PathWriter) {
-	        ((PathWriter)obj).quadTo((float)ctrlX, (float)ctrlY,
-	        		(float)x1, (float)y1);
+	        ((PathWriter)obj).quadTo((double)ctrlX, (double)ctrlY,
+	        		(double)x1, (double)y1);
         }
 	}
 }

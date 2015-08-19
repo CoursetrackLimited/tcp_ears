@@ -31,7 +31,7 @@ import java.awt.geom.GeneralPath;
  */
 public class GeneralPathWriter extends PathWriter {
 	GeneralPath p;
-	float lastX, lastY;
+	double lastX, lastY;
 	boolean dataWritten = false;
 	boolean debug = false;
 	boolean eliminateRedundantLines = true;
@@ -71,8 +71,8 @@ public class GeneralPathWriter extends PathWriter {
 	}
 
 	@Override
-	public void curveTo(float cx1, float cy1, float cx2, float cy2, float x,
-			float y) {
+	public void curveTo(double cx1, double cy1, double cx2, double cy2, double x,
+			double y) {
 		if(debug)
 			System.out.println("curveTo( "+cx1+", "+cy1+", "+cx2+", "+cy2+", "+x+", "+y+")");
 		p.curveTo(cx1,cy1,cx2,cy2,x,y);
@@ -82,7 +82,7 @@ public class GeneralPathWriter extends PathWriter {
 	}
 
 	@Override
-	public void lineTo(float x, float y) {
+	public void lineTo(double x, double y) {
 		if(eliminateRedundantLines && equals(lastX,x) && equals(lastY,y))
 			return;
 		if(debug)
@@ -94,7 +94,7 @@ public class GeneralPathWriter extends PathWriter {
 	}
 	
 	@Override
-	public void moveTo(float x, float y) {
+	public void moveTo(double x, double y) {
 		p.moveTo(x,y);
 		if(debug)
 			System.out.println("moveTo( "+x+", "+y+")");
@@ -104,7 +104,7 @@ public class GeneralPathWriter extends PathWriter {
 	}
 
 	@Override
-	public void quadTo(float cx, float cy, float x, float y) {
+	public void quadTo(double cx, double cy, double x, double y) {
 		p.quadTo(cx, cy, x, y);
 		if(debug)
 			System.out.println("quadTo( "+cx+", "+cy+", "+x+", "+y+")");
@@ -123,8 +123,8 @@ public class GeneralPathWriter extends PathWriter {
 		}
 	}
 	
-	private static boolean equals(float z1,float z2) {
-		float d = z2-z1;
+	private static boolean equals(double z1,double z2) {
+		double d = z2-z1;
 		if(d<0) d = -d;
 		if(d<.001f)
 			return true;

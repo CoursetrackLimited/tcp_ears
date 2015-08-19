@@ -40,10 +40,13 @@ import com.ordint.tcpears.service.ClientDetailsResolver;
 import com.ordint.tcpears.service.ClientManager;
 import com.ordint.tcpears.service.PositionLogger;
 import com.ordint.tcpears.service.PositionService;
+import com.ordint.tcpears.service.ReplayService;
 import com.ordint.tcpears.service.impl.AdministrationServiceImpl;
 import com.ordint.tcpears.service.impl.ClientManagerImpl;
+import com.ordint.tcpears.service.impl.ClientManagerImpl2;
 import com.ordint.tcpears.service.impl.HorseDetailsResolver;
 import com.ordint.tcpears.service.impl.MySqlPositionLogger;
+import com.ordint.tcpears.service.impl.MySqlReplayService;
 import com.ordint.tcpears.service.impl.PositionServiceImpl;
 @Configuration
 @ComponentScan("com.ordint.tcpears")
@@ -156,7 +159,7 @@ public class Config {
 	}
 	@Bean
 	public ClientManager clientManager() throws Exception {
-		return new ClientManagerImpl(memcacheHelper(), jdbcTemplate());
+		return new ClientManagerImpl();
 	}
 	@Bean
 	public PositionLogger positionLogger() {
@@ -167,9 +170,16 @@ public class Config {
 		return new PositionServiceImpl(clientManager(), clientDetailsResolver(), positionLogger());
 	}
 	@Bean
+	@Autowired
 	public AdministrationService administrationService() throws Exception {
-		return new AdministrationServiceImpl(clientManager(), clientDetailsResolver());
+		return new AdministrationServiceImpl();
 	}
+	@Bean
+	@Autowired
+	public ReplayService replayService() throws Exception {
+		return new MySqlReplayService();
+	}
+	
 	private final class DefaultChannelInitializer extends ChannelInitializer<SocketChannel> {
 
 		@Override

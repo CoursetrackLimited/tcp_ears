@@ -4,6 +4,8 @@ package com.ordint.tcpears.domain;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
 
+import java.time.LocalDate;
+
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -50,13 +52,13 @@ public class DefaultOutputWriterTest {
 		String actual = out.write(p);
 		
 		String cells[] =StringUtils.splitByWholeSeparatorPreserveAllTokens(actual, ",");
-		
+		LocalDate t = LocalDate.now();
 		assertThat(cells[cells.length-1], equalTo("34.32"));
 		assertThat(cells[cells.length-2], equalTo("50.1"));
 		assertThat(cells[cells.length-12], equalTo("11"));
 		assertThat(cells[cells.length-6], equalTo("99"));
 		assertThat(cells[cells.length-13], equalTo("A"));
-		assertThat(cells[cells.length-19], equalTo("010330.30"));
+		assertThat(cells[cells.length-19], equalTo(t + "T01:03:30.300"));
 		
 		
 	}

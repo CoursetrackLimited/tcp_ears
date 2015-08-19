@@ -1,20 +1,33 @@
 package com.ordint.tcpears.service.impl;
 
+import java.time.LocalDateTime;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.ordint.tcpears.domain.ClientDetails;
 import com.ordint.tcpears.service.AdministrationService;
 import com.ordint.tcpears.service.ClientDetailsResolver;
 import com.ordint.tcpears.service.ClientManager;
+import com.ordint.tcpears.service.PositionPublisher;
+import com.ordint.tcpears.service.ReplayService;
 
-
+@Component
 public class AdministrationServiceImpl implements AdministrationService {
-	
-	private final ClientManager clientManager;
-	private final ClientDetailsResolver clientDetailsResolver;
-	
-	public AdministrationServiceImpl(ClientManager clientManager, ClientDetailsResolver clientDetailsResolver) {
-		this.clientManager = clientManager;
-		this.clientDetailsResolver = clientDetailsResolver;
-	}	
+	private final static Logger log = LoggerFactory.getLogger(AdministrationServiceImpl.class);
+	@Autowired
+	private  ClientManager clientManager;
+	@Autowired
+	private  ClientDetailsResolver clientDetailsResolver;
+	@Autowired
+	private  ReplayService replayService;
+	@Autowired
+	private PositionPublisher positionPublisher;
+
+
+
 
 	@Override
 	public void startTracking(String groupId) {
@@ -35,18 +48,31 @@ public class AdministrationServiceImpl implements AdministrationService {
 		for(String clientId : clientIds) {
 			setClientGroup(clientId, groupId);
 		}
-		
+
 	}
 
 	@Override
 	public void setDefaultGroup(String groupId) {
-		clientDetailsResolver.setDefaultGroup(groupId);		
+		clientDetailsResolver.setDefaultGroup(groupId);
 	}
 
 	@Override
 	public void clearTrack(String groupId) {
 		clientManager.clearTrack(groupId);
+		positionPublisher.clearTrack(groupId);
 	}
-	
+
+	@Override
+	public String replay(String start, String numberOfSeconds) {
+		String id = replayService.replayFrom(LocalDateTime.parse(start), Integer.parseInt(numberOfSeconds));
+		log.info("returning replay id {}", id);
+		return id;
+	}
+
+	@Override
+	public void cancelReplay(String replayId) {
+		replayService.endReplay(replayId);
+	}
+
 
 }

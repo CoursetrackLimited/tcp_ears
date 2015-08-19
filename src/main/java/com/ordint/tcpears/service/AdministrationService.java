@@ -13,4 +13,8 @@ public interface AdministrationService {
 	void setDefaultGroup(String groupId);
 	
 	void clearTrack(String groupId);
+	
+	String replay(String start, String numberOfSeconds);
+	
+	void cancelReplay(String replayId);
 }
