@@ -29,21 +29,12 @@ import com.ordint.tcpears.domain.ClientDetails;
 import com.ordint.tcpears.domain.Position;
 import com.ordint.tcpears.memcache.MemcacheHelper;
 @SuppressWarnings("all")
-@RunWith(MockitoJUnitRunner.class)
 public class ClientManagerImplTest {
-	@Mock
-	private MemcacheHelper memcacheHelper;
-	
-	@Mock
-	private JdbcTemplate jdbcTemplate;
-	
-	@Captor
-	private ArgumentCaptor<Map<String, String>> mapCaptor;
-	
-	
+
 	private ClientManagerImpl clientManager;
 	
 	private Clock clock = Clock.fixed(Instant.now(), ZoneId.systemDefault());
+	
 	@Before
 	public void setUp() throws Exception {
 		 clientManager = new ClientManagerImpl(clock);
@@ -92,24 +83,12 @@ public class ClientManagerImplTest {
 		clientManager.updatePostion(p4);
 		clientManager.updatePostion(p5);
 		
+		ConcurrentMap<String, ConcurrentMap<String, String>> actual = clientManager.getGroupTracks();
 		
-		
-		//clientManager.publishTracks();
-		
-		ConcurrentMap<String, ConcurrentMap<String, String>> allTracks = clientManager.getGroupTracks();
-		
-		assertThat(allTracks.get("groupId"), Matchers.allOf(
-				hasEntry("clientId1", "111,99,-1 88,77,-1 22,11,-1 ")));
-				//hasEntry("clientId2", "44,33,-1 ")));
-		
-		//Map<String, List<Position>> clientsByGroup = clientManager.groupClientsByTrackedGroup();
-		
-		//assertThat(clientsByGroup.get("groupId"), containsInAnyOrder(p5,p2));
-		
-		//assertThat(clientsByGroup.get("groupId2"), is(nullValue()));		
-		
-
-		
+		assertThat(actual.get("groupId"), Matchers.allOf(
+				hasEntry("clientId1", "111,99,-1 88,77,-1 22,11,-1 "),
+				hasEntry("clientId2", "44,33,-1 ")));
+		assertThat(actual.get("groupId").size(), equalTo(2));
 	}
 	
 	@Test
@@ -147,17 +126,11 @@ public class ClientManagerImplTest {
 		clientManager.updatePostion(p4);
 		clientManager.updatePostion(p5);
 		
-		
-		
-		//clientManager.publishTracks();
-		
-		
-		
 		clientManager.clearTrack("groupId");
 		
-		ConcurrentMap<String, ConcurrentMap<String, String>> allTracks = clientManager.getGroupTracks();
+		ConcurrentMap<String, ConcurrentMap<String, String>> actual = clientManager.getGroupTracks();
 		
-		assertThat(allTracks.get("groupId"),is(nullValue()));		
+		assertThat(actual.get("groupId"),is(nullValue()));		
 		
 	}
 	@Test

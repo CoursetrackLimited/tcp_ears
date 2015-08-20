@@ -1,39 +1,71 @@
 package com.ordint.tcpears.util;
 
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.nullValue;
+import static org.junit.Assert.assertThat;
+
 import java.awt.geom.Point2D;
 
+import org.hamcrest.Matchers;
+import org.junit.Before;
 import org.junit.Test;
 
+import com.ordint.tcpears.domain.Position;
+import com.ordint.tcpears.domain.PositionUtil;
+
 public class PredictionUtilTest {
-	
-	String track ="-0.406451,51.420073,10 -0.406448,51.420102,10 -0.406446,51.420127,10 -0.406445,51.420153,10 -0.406443,51.420203,10 -0.406442,51.420230,10 ";  
 
-	PredictionUtil util = new PredictionUtil();
-	
-	
+	@Before
+	public void setUp() throws Exception {
+	}
 
-	
 	@Test
-	public void doh() throws Exception {
+	public void shouldConvertTrackPositionToPoint() throws Exception {
+		Point2D actual = PredictionUtil.toPoint("12.33,04.00004,10.90 ");
+		Point2D expected = new Point2D.Double(12.33, 04.00004);
 		
-		Point2D p1 = new Point2D.Double(-4, 4);
-		
-		Point2D p2 = new Point2D.Double(-1, 6);
-		
-		double length = Math.sqrt(Math.pow( (p1.getX() - p2.getX()), 2) + Math.pow((p1.getY() - p2.getY()), 2));
-		
-		System.out.println(length);
-		
-		double unitSlopeX = (p1.getX() - p2.getX()) / length;
-		double unitSlopeY = (p1.getY() - p2.getY()) / length;
-		
-		
-		System.out.println(unitSlopeX);
-		System.out.println(unitSlopeY);
-		
-		
+		assertThat(actual, equalTo(expected));
 		
 	}
-	
 
+	@Test
+	public void shouldConvertLatLongToPoint() throws Exception {
+		Point2D actual = PredictionUtil.toPoint(04.00004, 12.33);
+		Point2D expected = new Point2D.Double(12.33, 04.00004);
+		
+		assertThat(actual, equalTo(expected));
+	}
+
+	@Test
+	public void shouldConvertPositionToPoint() throws Exception {
+		Position p = PositionUtil.createPosition("04.00004", "12.33", "-1");
+		Point2D actual = PredictionUtil.toPoint(p);
+		Point2D expected = new Point2D.Double(12.33, 04.00004);
+		
+		assertThat(actual, equalTo(expected));
+	}
+
+	@Test
+	public void shouldConvertToTrackPosition() throws Exception {
+		String trackPosition = PredictionUtil.toTrackPosition(new Point2D.Double(12.33, 04.00004), "-1");
+		assertThat(trackPosition, equalTo("12.33,4.00004,-1 "));
+	}
+
+	@Test
+	public void getMostRecentTrackPositionShouldReturnNull() throws Exception {
+		String actual = PredictionUtil.getMostRecentPosition("");
+		assertThat(actual, nullValue());
+	}
+	@Test
+	public void getMostRecentTrackPositionShouldReturnOnlyPosition() throws Exception {
+		String actual = PredictionUtil.getMostRecentPosition("12.33,04.00004,10.90 ");
+		
+		assertThat(actual, equalTo("12.33,04.00004,10.90 "));
+	}
+	@Test
+	public void getMostRecentTrackPositionShouldReturnFirstPosition() throws Exception {
+		String actual = PredictionUtil.getMostRecentPosition("12.33,04.00004,10.90 32.3333,12.333,-1 ");
+		
+		assertThat(actual, equalTo("12.33,04.00004,10.90 "));
+	}
 }

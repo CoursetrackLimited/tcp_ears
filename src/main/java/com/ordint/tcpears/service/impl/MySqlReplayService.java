@@ -100,7 +100,7 @@ public class MySqlReplayService implements ReplayService {
 						} while(startPoint + interval >= stop);
 					} else {
 						try {
-							Thread.currentThread().sleep(milli);
+							Thread.sleep(milli);
 						} catch (InterruptedException e) {
 							
 						}
