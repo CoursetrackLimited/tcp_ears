@@ -9,6 +9,9 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.LineBasedFrameDecoder;
+import io.netty.handler.codec.http.HttpObjectAggregator;
+import io.netty.handler.codec.http.HttpRequestDecoder;
+import io.netty.handler.codec.http.HttpResponseEncoder;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
@@ -33,8 +36,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import com.ordint.rpc.JsonRpcChannelHandler;
+import com.ordint.rpc.JsonRpcHandler;
 import com.ordint.tcpears.memcache.MemcacheHelper;
-import com.ordint.tcpears.rpc.RpcServer;
 import com.ordint.tcpears.service.AdministrationService;
 import com.ordint.tcpears.service.ClientDetailsResolver;
 import com.ordint.tcpears.service.ClientManager;
@@ -68,7 +72,10 @@ public class Config {
 	private Environment environment;	
 	
 	@Autowired
-	private PositionChannelHandler positionChannelHandler;
+	private PositionChannelInitializer positionChannelInitializer;
+	
+	@Autowired
+	private AdminChannelInitializer adminChannelInitializer;
 	
 	@Bean
 	public DataSource dataSource() {
@@ -102,7 +109,7 @@ public class Config {
 		b.group(bossGroup(), workerGroup())
 					.channel(NioServerSocketChannel.class)
 					.handler(new LoggingHandler(LogLevel.DEBUG))
-				.childHandler(positionChannelHandler);
+				.childHandler(positionChannelInitializer);
 		/*
 		Map<ChannelOption<?>, Object> tcpChannelOptions = tcpChannelOptions();
 		Set<ChannelOption<?>> keySet = tcpChannelOptions.keySet();
@@ -113,12 +120,26 @@ public class Config {
 		*/
 		return b;
 	}
-	
-	@Bean(destroyMethod="interrupt", initMethod="start")
-	public Thread restService() throws Exception {
-		return new Thread(new RpcServer(administrationService(), adminPort));
-	}
-	
+	@SuppressWarnings("unchecked")
+	@Bean(name = "adminServerBootstrap")
+	public ServerBootstrap adminBootstrap() {
+		ServerBootstrap b = new ServerBootstrap();
+		b.option(ChannelOption.SO_BACKLOG, 1024);
+		b.group(bossGroup(), workerGroup())
+					.channel(NioServerSocketChannel.class)
+					.handler(new LoggingHandler(LogLevel.DEBUG))
+				.childHandler(adminChannelInitializer);
+		/*
+		Map<ChannelOption<?>, Object> tcpChannelOptions = tcpChannelOptions();
+		Set<ChannelOption<?>> keySet = tcpChannelOptions.keySet();
+		for (@SuppressWarnings("rawtypes")
+		ChannelOption option : keySet) {
+			b.option(option, tcpChannelOptions.get(option));
+		}
+		*/
+		return b;
+	}	
+
 	@Bean(name = "bossGroup", destroyMethod = "shutdownGracefully")
 	public NioEventLoopGroup bossGroup() {
 		return new NioEventLoopGroup(bossCount);
@@ -137,11 +158,6 @@ public class Config {
 		return options;
 	}
 	
-	@Bean
-	@Scope("prototype")
-	public ChannelHandler channelHandler() {
-		return new DefaultChannelInitializer();
-	}
 	@Bean
 	public static PropertySourcesPlaceholderConfigurer propertyPlaceholderConfigurer() {
 		return new PropertySourcesPlaceholderConfigurer();
@@ -178,15 +194,11 @@ public class Config {
 	public ReplayService replayService() throws Exception {
 		return new MySqlReplayService();
 	}
+	@Bean
+	public JsonRpcHandler jsonRpcHandler() throws Exception {
+		return new JsonRpcHandler(administrationService());	
+	}
 	
-	private final class DefaultChannelInitializer extends ChannelInitializer<SocketChannel> {
 
-		@Override
-		protected void initChannel(SocketChannel ch) throws Exception {
-			ChannelPipeline pipeline = ch.pipeline();
-			pipeline.addLast("frameDecoder", new LineBasedFrameDecoder(255));
-			pipeline.addLast("stringDecoder", new StringDecoder(CharsetUtil.UTF_8));
-			pipeline.addLast(new StringHandler(positionService()));
-		}
-	}	
+	
 }

@@ -23,12 +23,17 @@ public class TCPServer {
 	private final static Logger log = LoggerFactory.getLogger(TCPServer.class); 
 	
 	@Autowired
-	@Qualifier("serverBootstrap")
-	
+	@Qualifier("serverBootstrap")	
 	private ServerBootstrap bootstrap;
+	
+	@Autowired
+	@Qualifier("adminServerBootstrap")	
+	private ServerBootstrap adminBootstrap;
 	@Value("#{T(java.util.Arrays).asList('${tcp.ports}')}") 
 	private List<Integer> tcpPorts;
-
+	@Value("${admin.port}")
+	private int adminPort;
+	
 	private List<ChannelFuture> serverChannelFutures = new ArrayList<>();
 
 	@PostConstruct
@@ -39,6 +44,8 @@ public class TCPServer {
 			serverChannelFutures.add(bootstrap.bind(port));
 			
 		}
+		log.info("Admin rest server listening on {}", adminPort);
+		serverChannelFutures.add(adminBootstrap.bind(adminPort));
 		for(ChannelFuture f : serverChannelFutures) {
 			f.sync();
 		}
