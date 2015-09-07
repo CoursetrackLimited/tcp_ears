@@ -54,7 +54,7 @@ public class DefaultInputParserTest {
 				.speed("0.08")
 				.status("-1")
 				.timeCreated(timestamper.now())
-				.timestamp("110338.40")
+				.timestampFromTime("110338.40")
 				.build();
 		
 		assertThat(defaultInputParser.parse(input), equalTo(expected));
@@ -77,7 +77,7 @@ public class DefaultInputParserTest {
 				.speed("0.08")
 				.status("D")
 				.timeCreated(timestamper.now())
-				.timestamp("105413.15")
+				.timestampFromTime("105413.15")
 				.build();
 		
 		assertThat(defaultInputParser.parse(input), equalTo(expected));

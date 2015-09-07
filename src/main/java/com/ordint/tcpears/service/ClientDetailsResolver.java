@@ -10,4 +10,6 @@ public interface ClientDetailsResolver {
 	
 	void setDefaultGroup(String groupId);
 	
+	void refresh();
+	
 }

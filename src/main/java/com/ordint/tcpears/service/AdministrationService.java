@@ -17,4 +17,6 @@ public interface AdministrationService {
 	String replay(String start, String numberOfSeconds);
 	
 	void cancelReplay(String replayId);
+	
+	void refreshClientDetails();
 }

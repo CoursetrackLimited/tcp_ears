@@ -15,7 +15,7 @@ public class DefaultOutputWriter implements OutputWriter {
 		String[] cells = new String[22];
 		int i = cells.length;
 		cells[1] = p.getClientId();
-		cells[i - 19] = p.getTimestamp();
+		cells[i - 19] = p.getGPSTimestamp();
 		cells[i - 13] = p.getStatus();
 		cells[i - 12] = p.getHorizontalAccuracy();
 		cells[i - 6] = p.getSpeed();

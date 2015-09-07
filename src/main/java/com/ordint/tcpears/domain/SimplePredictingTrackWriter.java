@@ -50,7 +50,7 @@ public class SimplePredictingTrackWriter extends DefaultTrackWriter {
 				.altitude(adjustAltitiude(position, existingTrack))
 				.lat(String.valueOf(predicted.getLatitude()))
 				.lon(String.valueOf(predicted.getLongitude()))
-				.timestamp(position.getTimestamp())
+				.timestampFromTime(position.getGPSTimestamp())
 				.build();
 	}
 	

@@ -44,7 +44,7 @@ public class DefaultOutputWriterTest {
 				.horizontalAccuracy("11")
 				.lat("50.1")
 				.lon("34.32")
-				.timestamp("010330.30")
+				.timestampFromTime("10330.30")
 				.timeCreated(timestamper.now())
 				.status("A")
 				.build();
@@ -63,4 +63,33 @@ public class DefaultOutputWriterTest {
 		
 	}
 
+	@Test
+	public void writeShouldReturnCorrectFormatWith2DigitHourInput() throws Exception {
+
+		
+		Position p = Position.builder()
+				.altitude("10")
+				.clientDetails(new ClientDetails("groupId", "clientId"))
+				.speed("99")
+				.horizontalAccuracy("11")
+				.lat("50.1")
+				.lon("34.32")
+				.timestampFromTime("110330.30")
+				.timeCreated(timestamper.now())
+				.status("A")
+				.build();
+		DefaultOutputWriter out = new DefaultOutputWriter();
+		String actual = out.write(p);
+		
+		String cells[] =StringUtils.splitByWholeSeparatorPreserveAllTokens(actual, ",");
+		LocalDate t = LocalDate.now();
+		assertThat(cells[cells.length-1], equalTo("34.32"));
+		assertThat(cells[cells.length-2], equalTo("50.1"));
+		assertThat(cells[cells.length-12], equalTo("11"));
+		assertThat(cells[cells.length-6], equalTo("99"));
+		assertThat(cells[cells.length-13], equalTo("A"));
+		assertThat(cells[cells.length-19], equalTo(t + "T11:03:30.300"));
+		
+		
+	}
 }

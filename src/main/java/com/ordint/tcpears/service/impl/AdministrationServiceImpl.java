@@ -74,5 +74,11 @@ public class AdministrationServiceImpl implements AdministrationService {
 		replayService.endReplay(replayId);
 	}
 
+	@Override
+	public void refreshClientDetails() {
+		clientDetailsResolver.refresh();
+		
+	}
+
 
 }

@@ -81,7 +81,7 @@ public class MySqlPositionLoggerTest {
 				.speed("0.041155555552")
 				.status("D")
 				.timeCreated(LocalDateTime.now(clock))
-				.timestamp("105413.15")
+				.timestampFromTime("105413.15")
 				.build();		
 
 		final Position p2 = Position.builder()
@@ -95,7 +95,7 @@ public class MySqlPositionLoggerTest {
 				.speed("0.041155555552")
 				.status("-1")
 				.timeCreated(LocalDateTime.now(clock))
-				.timestamp("110338.40")
+				.timestampFromTime("110338.40")
 				.build();
 		MySqlPositionLogger logger =  new MySqlPositionLogger(jdbcTemplate);
 		
@@ -129,8 +129,8 @@ public class MySqlPositionLoggerTest {
 		
 		verify(jdbcTemplate, times(2)).batchUpdate(Mockito.anyString(), Mockito.anyList());
 		actualArgs.forEach(o -> System.out.println(o));
-		assertThat(actualArgs.size(), equalTo(30));
-		assertThat(actualSql.toString(), equalTo("INSERT INTO `positionHistory` (`altitude`,`clientId`,`groupId`, `heading`,`horizontalAccuracy`,`lat`,`lon`,`speed`,`status`,`gpsTimeStamp`,`timeReceived`,`verticalAccuracy`,`lag`,`vehicleType`,`source`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"));
+		assertThat(actualArgs.size(), equalTo(36));
+		assertThat(actualSql.toString(), equalTo("INSERT INTO `positionHistory` (`altitude`,`clientId`,`groupId`,`groupName`, `heading`,`horizontalAccuracy`,`lat`,`lon`,`speed`,`status`,`gpsTimeStamp`,`timeReceived`,`verticalAccuracy`,`lag`,`vehicleType`,`source`,`friendlyName`,`tempName`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"));
 		
 	}
 }

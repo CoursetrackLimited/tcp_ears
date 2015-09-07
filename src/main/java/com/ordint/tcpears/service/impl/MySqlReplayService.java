@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +38,7 @@ public class MySqlReplayService implements ReplayService {
 	private ClientManager clientManager;
 	
 	private ExecutorService executor = Executors.newSingleThreadExecutor();
-	protected DateTimeFormatter timestampFormatter = DateTimeFormatter.ofPattern("HHmmss.SS");
+	protected DateTimeFormatter timestampFormatter = DateTimeFormatter.ofPattern("Hmmss.SS");
 	
 	private Map<String, Future<?>> runningReplays = new HashMap<>();
 	
@@ -63,6 +64,8 @@ public class MySqlReplayService implements ReplayService {
 				new RowMapper<Position>() {
 					@Override
 					public Position mapRow(ResultSet rs, int rowNum) throws SQLException {
+						LocalDateTime timeCreated = LocalDateTime.parse(rs.getString("timeReceived"));
+						long lag = rs.getLong("lag");
 						return Position.builder()
 							.clientDetails(clientDetailsResolver.resolveClientDetails(rs.getString("clientId")))
 							.heading(rs.getString("heading"))
@@ -71,9 +74,9 @@ public class MySqlReplayService implements ReplayService {
 							.lon(rs.getString("lon"))
 							.speed(rs.getString("speed"))
 							.status(rs.getString("status"))
-							.lag(rs.getLong("lag"))
-							.timestamp(rs.getString("gpsTimestamp"))
-							.timeCreated(LocalDateTime.parse(rs.getString("timeReceived")))
+							.lag(lag)
+							.timestampFromDateTime(timeCreated.minus(lag, ChronoUnit.MILLIS))
+							.timeCreated(timeCreated)
 							.verticalAccuracy(rs.getString("verticalAccuracy"))
 							.altitude(rs.getString("altitude"))
 							.build();
@@ -118,7 +121,7 @@ public class MySqlReplayService implements ReplayService {
 						.lon(p.getLon())
 						.speed(p.getSpeed())
 						.status(p.getStatus())
-						.timestamp(timestampFormatter.format(timestamp.minusNanos(p.getLag() * 1_000_000)))
+						.timestampFromDateTime(timestamp.minus(p.getLag(), ChronoUnit.MILLIS))
 						.timeCreated(timestamp)
 						.verticalAccuracy(p.getVerticalAccuracy())
 						.altitude(p.getAltitude())

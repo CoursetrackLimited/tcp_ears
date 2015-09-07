@@ -24,5 +24,9 @@ public class AirplaneClientDetailsResolver implements ClientDetailsResolver {
 	public void setDefaultGroup(String groupId) {
 		
 	}
+	@Override
+	public void refresh() {
+		
+	}
 
 }

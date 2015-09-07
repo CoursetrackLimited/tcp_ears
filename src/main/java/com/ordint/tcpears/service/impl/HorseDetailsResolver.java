@@ -1,5 +1,8 @@
 package com.ordint.tcpears.service.impl;
 
+import static org.apache.commons.lang3.StringUtils.defaultIfBlank;
+import static org.apache.commons.lang3.StringUtils.isBlank;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -8,6 +11,7 @@ import java.util.concurrent.ConcurrentMap;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,12 +32,19 @@ public class HorseDetailsResolver implements ClientDetailsResolver {
 	private JdbcTemplate jdbcTemplate;
 	
 	@PostConstruct
-	protected void init() {
-		List<ClientDetails> details = jdbcTemplate.query("select * from clients where group_id is not null", new RowMapper<ClientDetails>() {
+	@Override
+	public void refresh() {
+		List<ClientDetails> details = jdbcTemplate.query("SELECT client_ident, friendly_name, group_name, c.group_id  "
+				+ "FROM clients c LEFT JOIN groups g ON c.group_id = g.group_id", new RowMapper<ClientDetails>() {
 			@Override
 			public ClientDetails mapRow(ResultSet rs, int rowNum) throws SQLException {
-				return new ClientDetails(rs.getString("group_id"), rs.getString("client_ident"));
-			}});	
+				return new ClientDetails(defaultIfBlank(rs.getString("group_id"), defaultGroupId), 
+						rs.getString("client_ident"),
+						rs.getString("friendly_name"),
+						null,
+						defaultIfBlank(rs.getString("group_name"), defaultGroupId));
+			}});
+		
 		for(ClientDetails d : details) {clientDetailsMap.put(d.getClientId(), d);}
 	}
 

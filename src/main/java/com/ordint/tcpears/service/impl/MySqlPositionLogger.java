@@ -20,7 +20,9 @@ public class MySqlPositionLogger implements PositionLogger {
 	private final static Logger log = LoggerFactory.getLogger(MySqlPositionLogger.class);
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
-	private final static String INSERT = "INSERT INTO `positionHistory` (`altitude`,`clientId`,`groupId`, `heading`,`horizontalAccuracy`,`lat`,`lon`,`speed`,`status`,`gpsTimeStamp`,`timeReceived`,`verticalAccuracy`,`lag`,`vehicleType`,`source`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+	private final static String INSERT = "INSERT INTO `positionHistory` (`altitude`,`clientId`,`groupId`,`groupName`, `heading`,`horizontalAccuracy`,"
+			+ "`lat`,`lon`,`speed`,`status`,`gpsTimeStamp`,`timeReceived`,`verticalAccuracy`,`lag`,`vehicleType`,`source`,"
+			+ "`friendlyName`,`tempName`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 	//$sql='INSERT INTO `locationHistory` (`recievedDateTime`,`groupId`,`clientId`,`sourceType`,`sourceSubType`,`timeStamp`,`impLat`,`northIndicator`,`impLon`,`eastIndicator`,`altitude`,`status`,`accuracyX`,`accuracyY`,`SOG`,`COG`,`VD`,`GPSAge`,`HDOP`,`VDOP`,`SVsUsed`,`DRStatus`,`lat`,`lon`) VALUES (';
 
 	private ConcurrentLinkedQueue<Object[]> batchOne = new ConcurrentLinkedQueue<>();
@@ -63,20 +65,23 @@ public class MySqlPositionLogger implements PositionLogger {
 		
 		return new Object[] {
 				p.getAltitude(),
-				p.getClientDetails().getCurrentName(),
+				p.getClientId(),
 				p.getGroupId(),
+				p.getClientDetails().getGroupName(),
 				p.getHeading(),
 				p.getHorizontalAccuracy(),
 				p.getLat(),
 				p.getLon(),
 				p.getSpeed(),
 				p.getStatus(),
-				p.getTimestamp(),
+				p.getGPSTimestamp(),
 				p.getTimeCreated().toString(),				
 				p.getVerticalAccuracy(),
 				p.getLag(),
 				vehicleType,
-				source
+				source,
+				p.getClientDetails().getFixedName(),
+				p.getClientDetails().getTempName()
 				
 		};
 	}

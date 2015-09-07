@@ -35,7 +35,7 @@ public class DefaultInputParser implements InputParser {
 		String parts[] = message.split(",");
 		Position.PositionBuilder builder = Position.builder()
 				.clientDetails(clientDetailsResolver.resolveClientDetails(parts[0]))
-				.timestamp(parts[1])
+				.timestampFromTime(parts[1])
 				.lat(posToDec(parts[2]))
 				.lon(posToDec(parts[3]))
 				.speed(formatDouble(Double.parseDouble(parts[4])))

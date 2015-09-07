@@ -8,7 +8,7 @@ public class PositionUtil {
 		 return Position.builder().clientDetails(new ClientDetails( group, clientId))
 			.altitude(alt)
 			.lat(lat)
-			.timestamp("105413.15")
+			.timestampFromTime("105413.15")
 			.speed("10.4")
 			.timeCreated(LocalDateTime.now())
 			.lon(lon).build();
@@ -26,7 +26,7 @@ public class PositionUtil {
 			.lon(lon)
 			.speed("10.4")
 			.status("D")
-			.timestamp("105413.15")
+			.timestampFromTime("105413.15")
 			.timeCreated(LocalDateTime.now())
 			.build();
 	}

@@ -27,7 +27,7 @@ import com.ordint.tcpears.service.PositionDataProvider;
 public class ClientManagerImpl implements ClientManager, PositionDataProvider {
 
 
-	private static final int OLD_CLIENT_TIMEOUT_SECONDS = 10;
+	private static final int OLD_CLIENT_TIMEOUT_SECONDS = 3600;
 
 	private final static Logger log = LoggerFactory.getLogger(ClientManagerImpl.class);
 	
@@ -75,9 +75,9 @@ public class ClientManagerImpl implements ClientManager, PositionDataProvider {
 	}
 	
 	private boolean isOld(Position p) {
-		if(p.getTimeCreated().until(LocalDateTime.now(clock), ChronoUnit.SECONDS) > OLD_CLIENT_TIMEOUT_SECONDS) {
+/*		if(p.getTimeCreated().until(LocalDateTime.now(clock), ChronoUnit.SECONDS) > OLD_CLIENT_TIMEOUT_SECONDS) {
 			return true;
-		}
+		}*/
 		return false;
 	}
 	
