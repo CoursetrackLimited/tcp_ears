@@ -63,7 +63,7 @@ public class MySqlPositionLogger implements PositionLogger {
 		
 		return new Object[] {
 				p.getAltitude(),
-				p.getClientId(),
+				p.getClientDetails().getCurrentName(),
 				p.getGroupId(),
 				p.getHeading(),
 				p.getHorizontalAccuracy(),
