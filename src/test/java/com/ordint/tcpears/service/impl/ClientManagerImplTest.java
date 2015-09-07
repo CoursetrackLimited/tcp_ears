@@ -18,16 +18,9 @@ import java.util.concurrent.ConcurrentMap;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.ordint.tcpears.domain.ClientDetails;
 import com.ordint.tcpears.domain.Position;
-import com.ordint.tcpears.memcache.MemcacheHelper;
 @SuppressWarnings("all")
 public class ClientManagerImplTest {
 

@@ -1,9 +1,6 @@
 package com.ordint.tcpears.domain;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
-
-import org.apache.commons.lang3.StringUtils;
-
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
@@ -12,7 +9,6 @@ import lombok.experimental.NonFinal;
 @Value
 @RequiredArgsConstructor
 @AllArgsConstructor
-
 public class ClientDetails {
 	private String groupId;
 	private String clientId;

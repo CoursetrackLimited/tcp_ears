@@ -1,10 +1,6 @@
 package com.ordint.tcpears.rpc;
 
-import static org.junit.Assert.*;
-
 import java.net.URL;
-
-import org.junit.Test;
 
 import com.ordint.rpc.JsonRpcHttpClient;
 import com.ordint.rpc.ProxyUtil;

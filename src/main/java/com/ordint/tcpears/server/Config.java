@@ -1,21 +1,11 @@
 package com.ordint.tcpears.server;
 
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.ChannelHandler;
-import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
-import io.netty.channel.ChannelPipeline;
 import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.codec.LineBasedFrameDecoder;
-import io.netty.handler.codec.http.HttpObjectAggregator;
-import io.netty.handler.codec.http.HttpRequestDecoder;
-import io.netty.handler.codec.http.HttpResponseEncoder;
-import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
-import io.netty.util.CharsetUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,14 +19,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.annotation.Scope;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 
-import com.ordint.rpc.JsonRpcChannelHandler;
 import com.ordint.rpc.JsonRpcHandler;
 import com.ordint.tcpears.memcache.MemcacheHelper;
 import com.ordint.tcpears.service.AdministrationService;
@@ -101,7 +89,6 @@ public class Config {
 		return new JdbcTemplate(dataSource());
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Bean(name = "serverBootstrap")
 	public ServerBootstrap bootstrap() {
 		ServerBootstrap b = new ServerBootstrap();
@@ -120,7 +107,6 @@ public class Config {
 		*/
 		return b;
 	}
-	@SuppressWarnings("unchecked")
 	@Bean(name = "adminServerBootstrap")
 	public ServerBootstrap adminBootstrap() {
 		ServerBootstrap b = new ServerBootstrap();
