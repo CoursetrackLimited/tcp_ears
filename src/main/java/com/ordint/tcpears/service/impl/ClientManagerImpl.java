@@ -25,7 +25,7 @@ import com.ordint.tcpears.service.PositionDataProvider;
 public class ClientManagerImpl implements ClientManager, PositionDataProvider {
 
 
-	private static final int OLD_CLIENT_TIMEOUT_SECONDS = 3600;
+	private static final int OLD_CLIENT_TIMEOUT_SECONDS = 7200;
 
 	private final static Logger log = LoggerFactory.getLogger(ClientManagerImpl.class);
 	
@@ -40,7 +40,7 @@ public class ClientManagerImpl implements ClientManager, PositionDataProvider {
 	public ClientManagerImpl(){
 	}
 	
-	public ClientManagerImpl( Clock clock) {
+	public ClientManagerImpl(Clock clock) {
 
 		this.clock = clock;
 

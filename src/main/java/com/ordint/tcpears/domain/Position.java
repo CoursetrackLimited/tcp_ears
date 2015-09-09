@@ -1,5 +1,7 @@
 package com.ordint.tcpears.domain;
 
+import static java.lang.Double.parseDouble;
+
 import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -7,15 +9,34 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
+import javax.jws.HandlerChain;
+
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
 import lombok.Value;
 import lombok.experimental.NonFinal;
 
 import org.apache.commons.lang3.StringUtils;
 
-@Value
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.ordint.tcpears.domain.json.JsonLocalDateTimeDeserializer;
+import com.ordint.tcpears.domain.json.JsonLocalDateTimeSerialiser;
+
+@Getter
+@AllArgsConstructor
+@ToString
+@EqualsAndHashCode
+@JsonIgnoreProperties({"groupId","clientId","currentLag", "gpstimestamp","speedValue"})
 public class Position {
 	private static final DateTimeFormatter GPS_TIMESTAMP_FORMAT = DateTimeFormatter.ofPattern("Hmmss.SS");
 	@NonFinal
+	@JsonSerialize(using=JsonLocalDateTimeSerialiser.class)
+	@JsonDeserialize(using=JsonLocalDateTimeDeserializer.class)
 	private LocalDateTime timestamp;
 	private String lat;
 	private String lon;
@@ -27,10 +48,13 @@ public class Position {
 	private String verticalAccuracy;
 	private String status;
 	private ClientDetails clientDetails;
+	@JsonSerialize(using=JsonLocalDateTimeSerialiser.class)
+	@JsonDeserialize(using=JsonLocalDateTimeDeserializer.class)
 	private LocalDateTime timeCreated;
 	@NonFinal
 	private Long lag;
-	private LocalDate currentDate = LocalDate.now(Clock.systemUTC());
+	@JsonCreator
+	public Position() {}
 
 	public String getGroupId() {
 		return clientDetails.getGroupId();
@@ -45,7 +69,6 @@ public class Position {
 			lag = getCurrentLag();
 		}
 		return lag.longValue();
-
 	}
 
 	public long getCurrentLag() {
@@ -65,7 +88,7 @@ public class Position {
 	}
 
 	public double getSpeedValue() {
-		return Double.parseDouble(speed);
+		return parseDouble(speed);
 	}
 
 	public static class PositionBuilder {
@@ -93,8 +116,7 @@ public class Position {
 			this.timestamp = LocalDateTime.of(LocalDate.now(clock), LocalTime.parse(time, GPS_TIMESTAMP_FORMAT));
 			return this;
 		}
-		public PositionBuilder timestampFromDateTime(final LocalDateTime timestamp) {
-			
+		public PositionBuilder timestampFromDateTime(final LocalDateTime timestamp) {			
 			this.timestamp = timestamp;
 			return this;
 		}

@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import com.ordint.tcpears.domain.DefaultOutputWriter;
@@ -20,6 +21,7 @@ import com.ordint.tcpears.service.PositionPublisher;
 
 @Component
 public class MemcachePositionPublisher implements PositionPublisher {
+	
 	private final static Logger log = LoggerFactory.getLogger(MemcachePositionPublisher.class);
 	private final static String TRACK_PREFIX = "/ggps/tracks/%s";
 	private final static String LOCATION_PREFIX = "/ggps/locations/%s";
@@ -31,6 +33,7 @@ public class MemcachePositionPublisher implements PositionPublisher {
 	@Autowired
 	private MemcacheHelper memcacheHelper;
 	@Autowired
+	@Qualifier("clientManager")
 	private PositionDataProvider dataProvider;
 	@Autowired
 	private PredictionServiceImpl predictionService;
@@ -46,7 +49,7 @@ public class MemcachePositionPublisher implements PositionPublisher {
 		//build memecache objects for each of the groups of positions	
 		for(String groupId : positionGroups.keySet()) {
 			List<Position> positions = positionGroups.get(groupId);
-			predictions.putAll(predictionService.predictPositions(groupId, positions));
+			//predictions.putAll(predictionService.predictPositions(groupId, positions));
 			ConcurrentMap<String, String> postionMap = positions
 					.stream()
 					.collect(Collectors.toConcurrentMap(Position::getClientId, p -> outputBuilder.write(p)));
@@ -70,8 +73,7 @@ public class MemcachePositionPublisher implements PositionPublisher {
 		for(String groupId : groupTracks.keySet()) {
 			String groupKeyName = String.format(TRACK_PREFIX, groupId);		
 			memcacheHelper.set(groupKeyName, groupKeyName, groupTracks.get(groupId));
-			atLeastOne = true;
-			
+			atLeastOne = true;			
 		}
 		if (atLeastOne) {
 			memcacheHelper.set(PREDICTIONS_KEY, PREDICTIONS_KEY, predictions);

@@ -1,6 +1,14 @@
 package com.ordint.tcpears.domain;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
+
+
+
+
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
@@ -9,6 +17,7 @@ import lombok.experimental.NonFinal;
 @Value
 @RequiredArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties({"currentName","currentGroupName"})
 public class ClientDetails {
 	private String groupId;
 	private String clientId;
@@ -18,7 +27,11 @@ public class ClientDetails {
 	private String tempName;
 	@NonFinal
 	private String groupName;
-	
+	@JsonCreator
+	public ClientDetails() {
+		clientId = "";
+		groupId = "";
+	}	
 	public String getCurrentName() {
 		if (!isBlank(tempName)) {
 			return tempName;

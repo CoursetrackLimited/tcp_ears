@@ -64,7 +64,6 @@ public class DefaultTrackWriter implements TrackWriter{
 		return position.getAltitude();
 	}
 
-
 	@Override
 	public void calculateTrackLength(int clientCount) {
 		if (clientCount > DEFAULT_CLIENT_COUNT) {
@@ -75,8 +74,6 @@ public class DefaultTrackWriter implements TrackWriter{
 		}
 		
 	}
-	
-
 	
 	private int calculateMaxTrackLength(int clientCount) {
 		return (int)Math.ceil(((3 *1024 * 1024) - (261 * clientCount)) / clientCount);
