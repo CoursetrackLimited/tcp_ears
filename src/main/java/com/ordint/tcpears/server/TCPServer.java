@@ -1,5 +1,7 @@
 package com.ordint.tcpears.server;
 
+import io.netty.bootstrap.AbstractBootstrap;
+import io.netty.bootstrap.Bootstrap;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 
@@ -22,9 +24,13 @@ import org.springframework.stereotype.Component;
 public class TCPServer {
 	private final static Logger log = LoggerFactory.getLogger(TCPServer.class); 
 	
+	@SuppressWarnings("rawtypes")
 	@Autowired
-	@Qualifier("serverBootstrap")	
-	private ServerBootstrap bootstrap;
+	@Qualifier("tcpBootstrap")	
+	private ServerBootstrap tcpBootstrap;
+	@Autowired
+	@Qualifier("udpBootstrap")	
+	private Bootstrap udpBootstrap;	
 	
 	@Autowired
 	@Qualifier("adminServerBootstrap")	
@@ -39,10 +45,13 @@ public class TCPServer {
 	@PostConstruct
 	public void start() throws Exception {
 		log.info("Starting server....");
-		for(Integer port : tcpPorts) {
-			log.info("Listening on port {}", port);
-			serverChannelFutures.add(bootstrap.bind(port));
-			
+		if (tcpBootstrap != null) {
+			log.info("Binding tcp ports");
+			bindPorts(tcpBootstrap);
+		}
+		if (udpBootstrap != null) {
+			log.info("Binding udp ports");
+			bindPorts(udpBootstrap);
 		}
 		log.info("Admin rest server listening on {}", adminPort);
 		serverChannelFutures.add(adminBootstrap.bind(adminPort));
@@ -50,7 +59,14 @@ public class TCPServer {
 			f.sync();
 		}
 	}
-
+	
+	private void bindPorts(@SuppressWarnings("rawtypes") AbstractBootstrap bootstrap) {
+		for(Integer port : tcpPorts) {
+			log.info("Listening on port {}", port);
+			serverChannelFutures.add(bootstrap.bind(port));	
+		}		
+	}
+	
 	@PreDestroy
 	public void stop() {
 		serverChannelFutures.forEach(f -> f.channel().close());

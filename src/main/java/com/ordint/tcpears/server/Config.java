@@ -1,8 +1,10 @@
 package com.ordint.tcpears.server;
 
+import io.netty.bootstrap.Bootstrap;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.nio.NioDatagramChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
@@ -18,6 +20,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.env.Environment;
@@ -56,14 +59,21 @@ public class Config {
 
 	@Value("${so.backlog}")
 	private int backlog;
+	
+	@Value("${listener.mode}")
+	private String mode;
+	
 	@Autowired
 	private Environment environment;	
 	
 	@Autowired
-	private PositionChannelInitializer positionChannelInitializer;
+	private TcpPositionChannelInitializer tcpPositionChannelInitializer;
 	
 	@Autowired
 	private AdminChannelInitializer adminChannelInitializer;
+	
+	@Autowired
+	private UdpPositionChannelInitializer udpPositionChannelInitializer;
 	
 	@Bean
 	public DataSource dataSource() {
@@ -89,14 +99,17 @@ public class Config {
 		return new JdbcTemplate(dataSource());
 	}
 	
-	@Bean(name = "serverBootstrap")
+	@Bean(name = "tcpBootstrap")
 	public ServerBootstrap bootstrap() {
+		if (!mode.contains("tcp")) {
+			return null;
+		}
 		ServerBootstrap b = new ServerBootstrap();
 		b.option(ChannelOption.SO_BACKLOG, 1024);
 		b.group(bossGroup(), workerGroup())
 					.channel(NioServerSocketChannel.class)
 					.handler(new LoggingHandler(LogLevel.DEBUG))
-				.childHandler(positionChannelInitializer);
+				.childHandler(tcpPositionChannelInitializer);
 		/*
 		Map<ChannelOption<?>, Object> tcpChannelOptions = tcpChannelOptions();
 		Set<ChannelOption<?>> keySet = tcpChannelOptions.keySet();
@@ -105,6 +118,18 @@ public class Config {
 			b.option(option, tcpChannelOptions.get(option));
 		}
 		*/
+		return b;
+	}
+	
+	@Bean(name = "udpBootstrap")
+	public Bootstrap udpBootstrap() {
+		if(!mode.contains("udp")) {
+			return null;
+		}
+		Bootstrap b = new Bootstrap();
+		b.group(new NioEventLoopGroup(bossCount))
+			.channel(NioDatagramChannel.class)
+			.handler(udpPositionChannelInitializer);
 		return b;
 	}
 	@Bean(name = "adminServerBootstrap")

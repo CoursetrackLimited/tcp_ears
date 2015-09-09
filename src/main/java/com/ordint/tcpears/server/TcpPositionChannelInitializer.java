@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 import com.ordint.tcpears.service.PositionService;
 @Component
 @Scope("prototype")
-public class PositionChannelInitializer extends ChannelInitializer<SocketChannel> {
+public class TcpPositionChannelInitializer extends ChannelInitializer<SocketChannel> {
 	
 	@Autowired
 	private PositionService positionService;
