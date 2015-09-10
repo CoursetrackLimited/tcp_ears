@@ -67,13 +67,13 @@ public class Config {
 	private Environment environment;	
 	
 	@Autowired
-	private TcpPositionChannelInitializer tcpPositionChannelInitializer;
+	private TcpChannelInitializer tcpChannelInitializer;
 	
 	@Autowired
 	private AdminChannelInitializer adminChannelInitializer;
 	
 	@Autowired
-	private UdpPositionChannelInitializer udpPositionChannelInitializer;
+	private UdpChannelInitializer udpChannelInitializer;
 	
 	@Bean
 	public DataSource dataSource() {
@@ -109,7 +109,7 @@ public class Config {
 		b.group(bossGroup(), workerGroup())
 					.channel(NioServerSocketChannel.class)
 					.handler(new LoggingHandler(LogLevel.DEBUG))
-				.childHandler(tcpPositionChannelInitializer);
+				.childHandler(tcpChannelInitializer);
 		/*
 		Map<ChannelOption<?>, Object> tcpChannelOptions = tcpChannelOptions();
 		Set<ChannelOption<?>> keySet = tcpChannelOptions.keySet();
@@ -129,7 +129,7 @@ public class Config {
 		Bootstrap b = new Bootstrap();
 		b.group(new NioEventLoopGroup(bossCount))
 			.channel(NioDatagramChannel.class)
-			.handler(udpPositionChannelInitializer);
+			.handler(udpChannelInitializer);
 		return b;
 	}
 	@Bean(name = "adminServerBootstrap")

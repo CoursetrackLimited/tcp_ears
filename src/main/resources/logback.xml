@@ -58,6 +58,7 @@
 	</logger>
 	
     <logger name="com.ordint.tcpears.domain.DefaultInputParser" level="debug" additivity="false"> 
+        <appender-ref ref="consoleAppender" />
         <appender-ref ref="INPUT" />
     </logger>
 	

@@ -52,12 +52,13 @@
         </encoder>
     </appender> 
 
-    <logger name="com.ordint" level="debug"> 
+    <logger name="com.ordint" level="info"> 
         <appender-ref ref="consoleAppender" />
         <appender-ref ref="FILE" />
     </logger>
     
     <logger name="com.ordint.tcpears.domain.DefaultInputParser" level="debug" additivity="false"> 
+        <appender-ref ref="consoleAppender" />
         <appender-ref ref="INPUT" />
     </logger>
 </configuration>

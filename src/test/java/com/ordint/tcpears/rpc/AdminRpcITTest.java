@@ -10,7 +10,7 @@ import com.ordint.tcpears.service.AdministrationService;
 
 public class AdminRpcITTest {
 
-	@Test
+	
 	public void test() throws Exception {
 		JsonRpcHttpClient client = new JsonRpcHttpClient(new URL("http://localhost:6013"));
 		
