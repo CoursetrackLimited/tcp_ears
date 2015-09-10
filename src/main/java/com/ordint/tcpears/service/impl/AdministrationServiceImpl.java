@@ -13,7 +13,6 @@ import com.ordint.tcpears.domain.ClientDetails;
 import com.ordint.tcpears.domain.Position;
 import com.ordint.tcpears.service.AdministrationService;
 import com.ordint.tcpears.service.ClientDetailsResolver;
-import com.ordint.tcpears.service.ClientManager;
 import com.ordint.tcpears.service.PositionPublisher;
 import com.ordint.tcpears.service.ReplayService;
 
