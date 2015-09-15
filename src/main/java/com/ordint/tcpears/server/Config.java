@@ -9,12 +9,12 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 
+import java.beans.PropertyVetoException;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.sql.DataSource;
 
-import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -27,6 +27,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import com.mchange.v2.c3p0.ComboPooledDataSource;
 import com.ordint.rpc.JsonRpcHandler;
 import com.ordint.tcpears.memcache.MemcacheHelper;
 import com.ordint.tcpears.service.AdministrationService;
@@ -76,14 +77,23 @@ public class Config {
 	
 	@Bean
 	public DataSource dataSource() {
-		BasicDataSource ds = new BasicDataSource();
-		ds.setUsername(environment.getProperty("user", "root"));
-		ds.setUrl("jdbc:mysql://"
+		ComboPooledDataSource ds = new ComboPooledDataSource();
+		ds.setUser(environment.getProperty("user", "root"));
+		ds.setJdbcUrl("jdbc:mysql://"
 				+ environment.getProperty("dbhost", "localhost")
 				+ "/ggps01?useServerPrepStmts=false&rewriteBatchedStatements=true");
-		ds.setDriverClassName("com.mysql.jdbc.Driver");
-		ds.setDefaultAutoCommit(true);
+		try {
+			ds.setDriverClass("com.mysql.jdbc.Driver");
+		} catch (PropertyVetoException e) {
+			throw new RuntimeException("Error creating c3p0 datasource", e);
+		}
+		ds.setAutoCommitOnClose(true);
 		ds.setPassword(environment.getProperty("password", "Grotto1Frop"));
+		ds.setMaxPoolSize(10);
+		ds.setMinPoolSize(5);
+		ds.setMaxStatements(100);
+		
+		
 		//ds.setPassword(environment.getProperty("password", "sqlgod"));
 		return ds;
 	}
@@ -94,7 +104,7 @@ public class Config {
 	}
 	
 	@Bean
-	public JdbcTemplate jdbcTemplate() {
+	public JdbcTemplate jdbcTemplate() { 
 		return new JdbcTemplate(dataSource());
 	}
 	
