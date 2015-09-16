@@ -35,4 +35,6 @@ public interface AdministrationService {
 	void startRace(long raceId);
 	
 	void finishRace(long raceId);
+	
+	String replayRace(long raceId);
 }

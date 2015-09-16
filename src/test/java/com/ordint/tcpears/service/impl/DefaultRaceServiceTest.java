@@ -24,6 +24,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
 import com.ordint.tcpears.domain.ClientDetails;
+import com.ordint.tcpears.memcache.MemcacheHelper;
 import com.ordint.tcpears.service.ClientDetailsResolver;
 import com.ordint.tcpears.service.ClientManager;
 
@@ -37,6 +38,10 @@ public class DefaultRaceServiceTest {
 	
 	@Mock
 	private JdbcTemplate jdbcTemplate;
+	
+	@Mock
+	private MemcacheHelper memcacheHelper;
+	
 	@InjectMocks
 	private DefaultRaceService defaultRaceService;
 	

@@ -102,7 +102,7 @@ public class AdministrationServiceImpl implements AdministrationService {
 	public void startRace(long raceId) {
 		try {
 			raceService.startRace(raceId);
-		} catch (DataAccessException e) {
+		} catch (DataAccessException | RaceServiceException e) {
 			log.error("Error starting race with id {}", raceId, e);
 		}
 		
@@ -112,6 +112,12 @@ public class AdministrationServiceImpl implements AdministrationService {
 	public void finishRace(long raceId) {
 		raceService.finishRace(raceId);
 		
+	}
+
+	@Override
+	public String replayRace(long raceId) {
+		
+		return raceService.replayRace(raceId);
 	}
 
 

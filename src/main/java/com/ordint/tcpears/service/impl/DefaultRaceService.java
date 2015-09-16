@@ -1,21 +1,26 @@
 package com.ordint.tcpears.service.impl;
 
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalUnit;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
 import com.ordint.tcpears.domain.ClientDetails;
+import com.ordint.tcpears.memcache.MemcacheHelper;
 import com.ordint.tcpears.service.ClientDetailsResolver;
 import com.ordint.tcpears.service.ClientManager;
 import com.ordint.tcpears.service.RaceService;
@@ -24,6 +29,10 @@ import com.ordint.tcpears.service.ReplayService;
 @Component
 public class DefaultRaceService implements RaceService {
 	
+	private static final String RACE_DETAILS_MEMCACHE_KEY = "/ggps/RaceDetails";
+	private static final Logger log = LoggerFactory.getLogger(DefaultRaceService.class);
+
+
 	public enum RaceStatus {NOT_STARTED, STARTED, FINISHED}
 	
 	private static final String CLIENT_DETAILS_FOR_RACE_SQL = 
@@ -51,22 +60,46 @@ public class DefaultRaceService implements RaceService {
 	private ReplayService replayService;
 	@Autowired
 	private ClientManager clientManager;
+	@Autowired
+	private MemcacheHelper memcacheHelper;
 	
 	@Override
-	public void startRace(long raceId) {
+	public void startRace(long raceId) throws RaceServiceException {
 		//update race status in db
 		checkRaceStatus(raceId, RaceStatus.NOT_STARTED);
 		jdbcTemplate.update("update races set status ='STARTED', actualStartTime = NOW() where race_id=?", raceId);
 		//publish??
 		
 		//update the clientDetailsResolver with runner details
-		String groupId = updateClientDetails(CLIENT_DETAILS_FOR_RACE_SQL, raceId);
+		List<ClientDetails> clientDetails = updateClientDetails(CLIENT_DETAILS_FOR_RACE_SQL, raceId);
+		String groupId = clientDetails.get(0).getGroupId();
 		
 		clientManager.trackGroup(groupId);
 		
-
+		try {
+			publishRaceDetails(groupId, clientDetails);
+		} catch (IOException e) {
+			log.error("Error publishing race details for race with id {}", raceId, e);
+			throw new RaceServiceException(e);
+		}
+		
 	}
-
+	
+	
+	private void publishRaceDetails(String groupId, List<ClientDetails> clientDetails) throws IOException {
+		//clients.client_ident, runners.name AS friendly_name, groups.group_id , groups.name AS group_name 
+		HashMap<String, Object> raceDetails = new HashMap<>();
+		raceDetails.put("race_group_id", groupId);
+		raceDetails.put("race_name", clientDetails.get(0).getCurrentGroupName());
+		for(ClientDetails cd : clientDetails) {
+			HashMap<String, String> runner = new HashMap<>();
+			runner.put("client_ident", cd.getClientId());
+			runner.put("friendly_name", cd.getCurrentName());
+			raceDetails.put(cd.getClientId(), runner);
+		}
+		
+		memcacheHelper.set(RACE_DETAILS_MEMCACHE_KEY, RACE_DETAILS_MEMCACHE_KEY, raceDetails);
+	}
 
 
 	private void checkRaceStatus(long raceId, RaceStatus requirdStatus) {
@@ -79,7 +112,7 @@ public class DefaultRaceService implements RaceService {
 	
 	
 	
-	private String updateClientDetails(String sql, long raceId) {
+	private List<ClientDetails> updateClientDetails(String sql, long raceId) {
 		 List<ClientDetails> clientDetails =jdbcTemplate.query(sql, new RowMapper<ClientDetails>() {
 			@Override
 			public ClientDetails mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -88,7 +121,7 @@ public class DefaultRaceService implements RaceService {
 			}}, raceId);
 		 	
 		 	clientDetails.forEach(cd -> clientDetailsResolver.updateClientDetails(cd));
-		 	return clientDetails.get(0).getGroupId();
+		 	return clientDetails;
 		
 	}
 	
@@ -111,11 +144,11 @@ public class DefaultRaceService implements RaceService {
 	
 	
 	@Override
-	public void replayRace(long raceId) {
+	public String replayRace(long raceId) {
 		checkRaceStatus(raceId, RaceStatus.FINISHED);
 		//get start and end of race
 		
-		Map<String, Object> row = jdbcTemplate.queryForMap("select actualStartTime, finishTime from races where race_id =?", raceId);
+		Map<String, Object> row = jdbcTemplate.queryForMap("select group_id, actualStartTime, finishTime from races where race_id =?", raceId);
 		
 		LocalDateTime start = LocalDateTime.parse(row.get("actualStartTime").toString());
 		LocalDateTime finish = LocalDateTime.parse(row.get("finishTime").toString());
@@ -123,11 +156,9 @@ public class DefaultRaceService implements RaceService {
 		int timeInSecs = (int) start.until(finish, ChronoUnit.SECONDS);
 		
 		updateClientDetails(CLIENT_DETAILS_FOR_RACE_SQL, raceId);
+		clientManager.clearTrack(row.get("group_id").toString());
+		return replayService.replayFrom(start, timeInSecs, true);
 		
-		replayService.replayFrom(start, timeInSecs, true);
-		
-		
-
 	}
 
 }
