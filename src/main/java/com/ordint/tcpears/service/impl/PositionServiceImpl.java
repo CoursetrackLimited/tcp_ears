@@ -37,6 +37,11 @@ public class PositionServiceImpl implements PositionService {
 		clientManager.updatePostion(p);	
 
 	}
+	
+	void update(Position p) {
+		positionLogger.log(p, "horse", "replay");
+		clientManager.updatePostion(p);			
+	}
 
 
 

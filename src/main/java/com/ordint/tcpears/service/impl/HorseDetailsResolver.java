@@ -32,7 +32,7 @@ public class HorseDetailsResolver implements ClientDetailsResolver {
 	@PostConstruct
 	@Override
 	public void refresh() {
-		List<ClientDetails> details = jdbcTemplate.query("SELECT client_ident, friendly_name, group_name, c.group_id  "
+		List<ClientDetails> details = jdbcTemplate.query("SELECT client_ident, friendly_name, name as group_name, c.group_id  "
 				+ "FROM clients c LEFT JOIN groups g ON c.group_id = g.group_id", new RowMapper<ClientDetails>() {
 			@Override
 			public ClientDetails mapRow(ResultSet rs, int rowNum) throws SQLException {

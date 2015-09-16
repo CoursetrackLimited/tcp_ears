@@ -7,6 +7,7 @@ import java.util.concurrent.ConcurrentMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
 
 import com.ordint.tcpears.domain.ClientDetails;
@@ -14,6 +15,7 @@ import com.ordint.tcpears.domain.Position;
 import com.ordint.tcpears.service.AdministrationService;
 import com.ordint.tcpears.service.ClientDetailsResolver;
 import com.ordint.tcpears.service.PositionPublisher;
+import com.ordint.tcpears.service.RaceService;
 import com.ordint.tcpears.service.ReplayService;
 
 @Component("administrationService")
@@ -27,6 +29,9 @@ public class AdministrationServiceImpl implements AdministrationService {
 	private  ReplayService replayService;
 	@Autowired
 	private PositionPublisher positionPublisher;
+	
+	@Autowired
+	private RaceService raceService;
 
 	@Override
 	public void startTracking(String groupId) {
@@ -60,10 +65,14 @@ public class AdministrationServiceImpl implements AdministrationService {
 		clientManager.clearTrack(groupId);
 		positionPublisher.clearTrack(groupId);
 	}
-
 	@Override
-	public String replay(String start, String numberOfSeconds) {
-		String id = replayService.replayFrom(LocalDateTime.parse(start), Integer.parseInt(numberOfSeconds));
+	public void clearAllTracks() {
+		clientManager.clearAllTracks();
+		positionPublisher.clearAllTracks();
+	}
+	@Override
+	public String replay(String start, String numberOfSeconds, boolean userOriginalTimeStamp) {
+		String id = replayService.replayFrom(LocalDateTime.parse(start), Integer.parseInt(numberOfSeconds), userOriginalTimeStamp);
 		log.info("returning replay id {}", id);
 		return id;
 	}
@@ -87,6 +96,22 @@ public class AdministrationServiceImpl implements AdministrationService {
 	@Override
 	public ConcurrentMap<String, List<Position>> groupClientsByGroup() {
 		return clientManager.groupClientsByGroup();
+	}
+
+	@Override
+	public void startRace(long raceId) {
+		try {
+			raceService.startRace(raceId);
+		} catch (DataAccessException e) {
+			log.error("Error starting race with id {}", raceId, e);
+		}
+		
+	}
+
+	@Override
+	public void finishRace(long raceId) {
+		raceService.finishRace(raceId);
+		
 	}
 
 

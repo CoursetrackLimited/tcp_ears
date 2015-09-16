@@ -98,6 +98,13 @@ public class MemcachePositionPublisher implements PositionPublisher {
 		String groupKeyName = String.format(LOCATION_PREFIX, groupId);
 		memcacheHelper.clear(groupKeyName, groupKeyName);			
 	}
+
+	@Override
+	public void clearAllTracks() {
+		ConcurrentMap<String, ConcurrentMap<String, String>> groupTracks = dataProvider.getGroupTracks();
+		groupTracks.keySet().forEach(groupId -> clearTrack(groupId));
+		
+	}
 	
 
 

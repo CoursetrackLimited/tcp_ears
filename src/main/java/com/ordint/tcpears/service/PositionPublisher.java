@@ -9,6 +9,8 @@ public interface PositionPublisher {
 	void publishTracks() throws Exception;
 
 	void clearTrack(String groupId);
+	
+	void clearAllTracks();
 
 	void clearPositions(String groupId);
 

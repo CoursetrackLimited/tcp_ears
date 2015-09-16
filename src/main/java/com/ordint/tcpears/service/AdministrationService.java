@@ -19,7 +19,9 @@ public interface AdministrationService {
 	
 	void clearTrack(String groupId);
 	
-	String replay(String start, String numberOfSeconds);
+	void clearAllTracks();
+	
+	String replay(String start, String numberOfSeconds, boolean useOriginalTimeStamp);
 	
 	void cancelReplay(String replayId);
 	
@@ -28,4 +30,9 @@ public interface AdministrationService {
 	ConcurrentMap<String, ConcurrentMap<String, String>> getGroupTracks();
 
 	ConcurrentMap<String, List<Position>> groupClientsByGroup();
+	
+	
+	void startRace(long raceId);
+	
+	void finishRace(long raceId);
 }

@@ -33,7 +33,7 @@ public class MySqlReplayServiceTest {
 	@Test
 	public void test() throws Exception {
 		
-		replayService.replayFrom(LocalDateTime.parse("2015-08-12T19:10:20.686"), 600);
+		replayService.replayFrom(LocalDateTime.parse("2015-08-12T18:38:03.261"), 330, true);
 	}
 
 }

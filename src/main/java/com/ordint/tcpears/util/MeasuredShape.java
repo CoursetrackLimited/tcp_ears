@@ -592,6 +592,14 @@ public class MeasuredShape implements Serializable {
 		dest.setLocation(segments[0].getX(0),segments[0].getY(0)); //a fluke case, where we're basically at the end of the shape
 		return dest;
 	}
+	/** 
+	 * Returns an evenly spaced number of points over a distance from the start of the
+	 * track, the first point beeing the futherest away
+	 * 
+	 * @param distance
+	 * @param numberOfPoints
+	 * @return
+	 */
 	public List<Point2D> getPoints(double distance, int numberOfPoints) {
 		List<Point2D> points = new ArrayList<>();
 		for(int i = 0; i < numberOfPoints; i++) {
@@ -600,7 +608,12 @@ public class MeasuredShape implements Serializable {
 		return points;
 	}
 	
-
+	/**
+	 * Returns the distance from the start of the track of this point
+	 * 
+	 * @param point
+	 * @return
+	 */
 
 	public double getPointDistance(Point2D point) {
 		double distance = 0;
@@ -619,12 +632,24 @@ public class MeasuredShape implements Serializable {
 		
 		return 0;
 	}
-	
+	/**
+	 * Returns the point the given distance on from the give point
+	 * 
+	 * @param distance
+	 * @param start
+	 * @return
+	 */
 	public Point2D getPoint(double distance, Point2D start) {
 		double offset = getPointDistance(start);
 		return getPoint(distance + offset);
 	}
-	
+	/**
+	 * 
+	 * @param distance
+	 * @param start
+	 * @param numberOfPoints
+	 * @return
+	 */
 	public List<Point2D> getPoints(double distance, Point2D start, int numberOfPoints) {
 		double startFrom = getPointDistance(start);
 		List<Point2D> points = new ArrayList<>();

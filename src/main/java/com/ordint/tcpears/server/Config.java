@@ -89,9 +89,14 @@ public class Config {
 		}
 		ds.setAutoCommitOnClose(true);
 		ds.setPassword(environment.getProperty("password", "Grotto1Frop"));
-		ds.setMaxPoolSize(10);
+		ds.setMaxPoolSize(15);
 		ds.setMinPoolSize(5);
 		ds.setMaxStatements(100);
+		ds.setMaxConnectionAge(7200);
+		ds.setMaxIdleTime(7200);
+		ds.setAutomaticTestTable("c3p0");
+		ds.setTestConnectionOnCheckout(true);
+		ds.setIdleConnectionTestPeriod(3600);
 		
 		
 		//ds.setPassword(environment.getProperty("password", "sqlgod"));

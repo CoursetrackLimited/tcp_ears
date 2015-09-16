@@ -101,7 +101,10 @@ public class ClientManagerImpl implements ClientManager, PositionDataProvider {
 	public void clearTrack(String groupId) {
 		groupTracks.remove(groupId);
 	}
-
+	@Override
+	public void clearAllTracks() {
+		groupTracks.clear();
+	}
 	/* (non-Javadoc)
 	 * @see com.ordint.tcpears.service.impl.PositionDataProvider#getGroupTracks()
 	 */

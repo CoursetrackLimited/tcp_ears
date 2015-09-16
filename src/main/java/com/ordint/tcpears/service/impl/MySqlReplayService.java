@@ -22,6 +22,7 @@ import org.springframework.stereotype.Component;
 import com.ordint.tcpears.domain.Position;
 import com.ordint.tcpears.service.ClientDetailsResolver;
 import com.ordint.tcpears.service.ClientManager;
+import com.ordint.tcpears.service.PositionService;
 import com.ordint.tcpears.service.ReplayService;
 
 
@@ -35,11 +36,14 @@ public class MySqlReplayService implements ReplayService {
 	private ClientDetailsResolver clientDetailsResolver;
 	@Autowired
 	private ClientManager clientManager;
+	@Autowired
+	private PositionServiceImpl positionService;
+
 	
 	private ExecutorService executor = Executors.newSingleThreadExecutor();
 	protected DateTimeFormatter timestampFormatter = DateTimeFormatter.ofPattern("Hmmss.SS");
 	
-	private Map<String, Future<?>> runningReplays = new HashMap<>();
+	private Map<String, ReplayDetails> runningReplays = new HashMap<>();
 	
 	public MySqlReplayService() {
 	
@@ -52,7 +56,7 @@ public class MySqlReplayService implements ReplayService {
 
 
 	@Override
-	public String replayFrom(LocalDateTime startDateTime, int numberOfSeconds) {
+	public String replayFrom(LocalDateTime startDateTime, int numberOfSeconds, boolean useOriginalTimestamp) {
 		
 		
 		String start = startDateTime.toString();
@@ -93,6 +97,7 @@ public class MySqlReplayService implements ReplayService {
 					//wait for the clock to tick over
 					long milli = ChronoUnit.MILLIS.between( lastTime, p.getTimeCreated());
 					if (milli < 20) {
+						//gap is too short for thread sleep, delay with a while loop
 						long interval = ChronoUnit.NANOS.between( lastTime, p.getTimeCreated());
 						long startPoint = System.nanoTime();
 						long stop = 0;
@@ -126,30 +131,50 @@ public class MySqlReplayService implements ReplayService {
 						.altitude(p.getAltitude())
 						.build();
 					
-					clientManager.updatePostion(position);
+					if(useOriginalTimestamp) {
+						clientManager.updatePostion(p);
+					} else {
+						positionService.update(position);
+					}
 					//System.out.println("P= " + p.getTimeCreated() + " " + interval);
 					lastTime = p.getTimeCreated();
 				}
 				
+				log.info("Finished replay!");
+				
 			}
+			
+			
 		});
 		String id = String.valueOf(replayFuture.hashCode());
-		runningReplays.put(id, replayFuture);
+		runningReplays.put(id, new ReplayDetails(replay.get(0).getGroupId(), replayFuture));
 		log.info("Replay id: {}", id);
 		return id;
 	}
 
 	@Override
 	public boolean endReplay(String replayId) {
-		Future<?> replay = runningReplays.remove(replayId);
+		ReplayDetails replay = runningReplays.remove(replayId);
 		if (replay != null) {
-			return replay.cancel(true);
+			return replay.replayFuture.cancel(true);
 		}
 		return false;
+	}
+	
+	public void clearReplayTrack(String replayId) {
+		
 	}
 
 
 	
-	
+	static class ReplayDetails {
+		final String groupId;
+		final Future<?> replayFuture;
+		ReplayDetails(String groupId, Future<?> replayFuture) { 
+			this.groupId = groupId;
+			this.replayFuture = replayFuture;
+		
+		}
+	}
 
 }

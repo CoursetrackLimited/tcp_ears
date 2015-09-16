@@ -254,6 +254,12 @@ public class ClientManagerImpl2 implements ClientManager {
 	public ConcurrentMap<String, ConcurrentMap<String, String>> getGroupTracks() {
 		return groupTracks;
 	}
+
+	@Override
+	public void clearAllTracks() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 	

@@ -11,7 +11,7 @@ public class PositionUtil {
 			.timestampFromTime("105413.15")
 			.speed("10.4")
 			.timeCreated(LocalDateTime.now())
-			.lon(lon).build();
+			.lon(lon).build(); 
 	}
 	
 	public static Position createPosition(String lat, String lon, String alt) {

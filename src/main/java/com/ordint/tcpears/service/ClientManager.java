@@ -9,6 +9,8 @@ public interface ClientManager {
 	void stopTrackingGroup(String groupId);
 	
 	void clearTrack(String groupId);
+	
+	void clearAllTracks();
 
 	void updatePostion(Position position);
 
