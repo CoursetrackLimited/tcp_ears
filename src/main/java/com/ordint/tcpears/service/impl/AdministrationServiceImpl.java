@@ -99,11 +99,12 @@ public class AdministrationServiceImpl implements AdministrationService {
 	}
 
 	@Override
-	public void startRace(long raceId) {
+	public void startRace(long raceId) throws RaceServiceException{
 		try {
 			raceService.startRace(raceId);
 		} catch (DataAccessException | RaceServiceException e) {
 			log.error("Error starting race with id {}", raceId, e);
+			throw e;
 		}
 		
 	}
@@ -115,9 +116,14 @@ public class AdministrationServiceImpl implements AdministrationService {
 	}
 
 	@Override
-	public String replayRace(long raceId) {
+	public String replayRace(long raceId) throws RaceServiceException{
 		
-		return raceService.replayRace(raceId);
+		try {
+			return raceService.replayRace(raceId);
+		} catch (RaceServiceException e) {
+			log.error("Error replaying race with id {}", raceId, e);
+			throw e;
+		}
 	}
 
 

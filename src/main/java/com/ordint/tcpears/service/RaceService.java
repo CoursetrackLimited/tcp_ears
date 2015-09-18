@@ -8,5 +8,5 @@ public interface RaceService {
 	
 	void finishRace(long raceId);
 	
-	String replayRace(long raceId);
+	String replayRace(long raceId) throws RaceServiceException;
 }

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.concurrent.ConcurrentMap;
 
 import com.ordint.tcpears.domain.Position;
+import com.ordint.tcpears.service.impl.RaceServiceException;
 
 public interface AdministrationService {
 	
@@ -32,9 +33,9 @@ public interface AdministrationService {
 	ConcurrentMap<String, List<Position>> groupClientsByGroup();
 	
 	
-	void startRace(long raceId);
+	void startRace(long raceId) throws RaceServiceException;
 	
 	void finishRace(long raceId);
 	
-	String replayRace(long raceId);
+	String replayRace(long raceId) throws RaceServiceException;
 }

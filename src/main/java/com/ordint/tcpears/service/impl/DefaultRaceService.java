@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalUnit;
 import java.util.HashMap;
@@ -23,6 +24,7 @@ import com.ordint.tcpears.domain.ClientDetails;
 import com.ordint.tcpears.memcache.MemcacheHelper;
 import com.ordint.tcpears.service.ClientDetailsResolver;
 import com.ordint.tcpears.service.ClientManager;
+import com.ordint.tcpears.service.PositionPublisher;
 import com.ordint.tcpears.service.RaceService;
 import com.ordint.tcpears.service.ReplayService;
 
@@ -35,7 +37,7 @@ public class DefaultRaceService implements RaceService {
 
 	public enum RaceStatus {NOT_STARTED, STARTED, FINISHED}
 	
-	private static final String CLIENT_DETAILS_FOR_RACE_SQL = 
+	static final String CLIENT_DETAILS_FOR_RACE_SQL = 
 			"SELECT clients.client_ident as clientId, friendly_name as fixedName, "
 			+ "groups.group_id as groupId, groups.name as groupName, runners.name as tempName "
 			+ "FROM clients "
@@ -44,7 +46,7 @@ public class DefaultRaceService implements RaceService {
 			+ "INNER JOIN groups ON races.group_id = groups.group_id "
 			+ "WHERE races.race_id = ?";
 	
-	private static final String RESET_CLIENT_DETAILS_SQL =
+	static final String RESET_CLIENT_DETAILS_SQL =
 			"SELECT clients.client_ident AS clientId, clients.friendly_name AS fixedName, "
 			+ "groups.group_id AS groupId, groups.name AS groupName, NULL AS tempName "
 			+ "FROM clients "
@@ -62,7 +64,10 @@ public class DefaultRaceService implements RaceService {
 	private ClientManager clientManager;
 	@Autowired
 	private MemcacheHelper memcacheHelper;
+	@Autowired
+	private PositionPublisher positionPublisher;
 	
+	private static final DateTimeFormatter MYSQL_DATETIME_FORMATTER =  DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 	@Override
 	public void startRace(long raceId) throws RaceServiceException {
 		//update race status in db
@@ -76,17 +81,14 @@ public class DefaultRaceService implements RaceService {
 		
 		clientManager.trackGroup(groupId);
 		
-		try {
-			publishRaceDetails(groupId, clientDetails);
-		} catch (IOException e) {
-			log.error("Error publishing race details for race with id {}", raceId, e);
-			throw new RaceServiceException(e);
-		}
+		
+		publishRaceDetails(raceId, groupId, clientDetails);
+		
 		
 	}
 	
 	
-	private void publishRaceDetails(String groupId, List<ClientDetails> clientDetails) throws IOException {
+	private void publishRaceDetails(long raceId , String groupId, List<ClientDetails> clientDetails) throws RaceServiceException {
 		//clients.client_ident, runners.name AS friendly_name, groups.group_id , groups.name AS group_name 
 		HashMap<String, Object> raceDetails = new HashMap<>();
 		raceDetails.put("race_group_id", groupId);
@@ -97,8 +99,12 @@ public class DefaultRaceService implements RaceService {
 			runner.put("friendly_name", cd.getCurrentName());
 			raceDetails.put(cd.getClientId(), runner);
 		}
-		
-		memcacheHelper.set(RACE_DETAILS_MEMCACHE_KEY, RACE_DETAILS_MEMCACHE_KEY, raceDetails);
+		try {
+			memcacheHelper.set(RACE_DETAILS_MEMCACHE_KEY, RACE_DETAILS_MEMCACHE_KEY, raceDetails);
+		} catch (IOException e) {
+			log.error("Error publishing race details for race with id {}", raceId, e);
+			throw new RaceServiceException(e);
+		}
 	}
 
 
@@ -144,19 +150,23 @@ public class DefaultRaceService implements RaceService {
 	
 	
 	@Override
-	public String replayRace(long raceId) {
+	public String replayRace(long raceId) throws RaceServiceException {
 		checkRaceStatus(raceId, RaceStatus.FINISHED);
 		//get start and end of race
 		
 		Map<String, Object> row = jdbcTemplate.queryForMap("select group_id, actualStartTime, finishTime from races where race_id =?", raceId);
 		
-		LocalDateTime start = LocalDateTime.parse(row.get("actualStartTime").toString());
-		LocalDateTime finish = LocalDateTime.parse(row.get("finishTime").toString());
+		LocalDateTime start = LocalDateTime.parse(row.get("actualStartTime").toString(), MYSQL_DATETIME_FORMATTER);
+		LocalDateTime finish = LocalDateTime.parse(row.get("finishTime").toString(), MYSQL_DATETIME_FORMATTER);
 		
 		int timeInSecs = (int) start.until(finish, ChronoUnit.SECONDS);
+		String groupId = row.get("group_id").toString();
+		List<ClientDetails> clientDetails = updateClientDetails(CLIENT_DETAILS_FOR_RACE_SQL, raceId);
+		positionPublisher.clearTrack(groupId);
+		clientManager.clearTrack(groupId);
+		clientManager.trackGroup(groupId);
+		publishRaceDetails(raceId, groupId, clientDetails);
 		
-		updateClientDetails(CLIENT_DETAILS_FOR_RACE_SQL, raceId);
-		clientManager.clearTrack(row.get("group_id").toString());
 		return replayService.replayFrom(start, timeInSecs, true);
 		
 	}
