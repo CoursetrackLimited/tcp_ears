@@ -12,8 +12,8 @@ public class AdminRpcITTest {
 
 	@Test
 	public void test() throws Exception {
-		JsonRpcHttpClient client = new JsonRpcHttpClient(new URL("http://10.10.0.148:6013"));
-		//JsonRpcHttpClient client = new JsonRpcHttpClient(new URL("http://localhost:6013"));
+		//JsonRpcHttpClient client = new JsonRpcHttpClient(new URL("http://10.10.0.148:6013"));
+		JsonRpcHttpClient client = new JsonRpcHttpClient(new URL("http://localhost:6013"));
 		
 		System.out.println("REsult = " );
 		AdministrationService admin = ProxyUtil.createClientProxy(AdminRpcITTest.class.getClassLoader(), AdministrationService.class, client);
@@ -21,11 +21,12 @@ public class AdminRpcITTest {
 		//System.out.println(admin.replay("2015-08-25T13:28:11.811", "10"));
 		
 		
-		System.out.println("REsult = " + admin.groupClientsByGroup());
+		//System.out.println("REsult = " + admin.groupClientsByGroup());
 		try {
-			admin.finishRace(134);
-		
-			//admin.replay("2015-08-12T18:37:33.261","330", false);
+			//admin.finishRace(132);
+			//System.out.println(admin.replayRace(134));
+			//admin.replay("2015-08-12T18:38:45.261","240", false);
+			admin.replayRace(132);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();

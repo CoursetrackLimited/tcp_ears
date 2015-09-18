@@ -10,6 +10,9 @@ import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.ordint.tcpears.util.prediction.StaticTrackPathBuilder;
+import com.ordint.tcpears.util.prediction.TrackBasedPredictor;
+
 public class MeasuredShapeTest {
 
 	@Before
@@ -90,4 +93,36 @@ public class MeasuredShapeTest {
 		System.out.println(shape.getPoints(10, p, 4));
 		
 	}
+	
+	
+	@Test
+	public void testGetClosesPoint() {
+		//this is assuming that the algo we copied from stackoverfloww works
+		StaticTrackPathBuilder builder = new  StaticTrackPathBuilder();
+		Path2D track = builder.build("KEMPTON_740");
+		
+		TrackBasedPredictor t = new TrackBasedPredictor(track);
+		
+		MeasuredShape shape = new  MeasuredShape(track);
+		
+		// this point is on the track -0.3982040560018652,51.41628861332551,0
+		
+		Point2D.Double p = new Point2D.Double(  -0.398032,  51.415837);
+		
+		System.out.println("CLosest Point 1 " + t.getClosestPoint(p));
+		
+		System.out.println("CLosest Point 2 " + shape.getClosestPoint(p));
+		
+
+			long l = System.nanoTime();
+		
+		for(int i =0; i < 100000; i++) {
+			
+			 Point2D p2 = shape.getClosestPoint(p);
+			 shape.getPointDistance(p2);
+		}
+		
+		System.out.println((System.nanoTime() - l) / 1_000_000);
+	}
+	
 }

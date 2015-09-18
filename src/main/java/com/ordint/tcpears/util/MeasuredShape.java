@@ -23,6 +23,7 @@ package com.ordint.tcpears.util;
 
 import java.awt.Shape;
 import java.awt.geom.GeneralPath;
+import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
@@ -657,6 +658,50 @@ public class MeasuredShape implements Serializable {
 			points.add(getPoint(distance + startFrom - (i * distance / numberOfPoints)));
 		}
 		return points;
+	}
+	/**
+	 * Returns the a Point on the track that is closes to specified point
+	 * 
+	 * @param externalPoint
+	 * @return
+	 */
+	public Point2D getClosestPoint(Point2D externalPoint) {
+		Point2D.Double closestPoint = new Point2D.Double(-1, -1);
+		Point2D.Double bestPoint = new Point2D.Double(-1, -1);
+		double lastX = segments[0].data[0];
+		double lastY= segments[0].data[1];
+		for (int i = 1 ; i< segments.length; i++) {
+			if(segments[i].type != PathIterator.SEG_LINETO) {
+				throw new IllegalArgumentException("Cant run getCLosestPoint on track not made of line segments");
+			}
+			Line2D.Double line = new Line2D.Double(lastX, lastY, segments[i].data[0], segments[i].data[1]);
+			//System.out.println(String.format("(%s,%s) -(%s,%s)", line.x1, line.y1, line.x2, line.y2));
+			lastX = segments[i].data[0];
+			lastY = segments[i].data[1];
+			// From: http://stackoverflow.com/questions/6176227
+			double u = ((externalPoint.getX() - line.x1) * (line.x2 - line.x1) + (externalPoint.getY() - line.y1)
+					* (line.y2 - line.y1))
+					/ ((line.x2 - line.x1) * (line.x2 - line.x1) + (line.y2 - line.y1) * (line.y2 - line.y1));
+
+			double xu = line.x1 + u * (line.x2 - line.x1);
+			double yu = line.y1 + u * (line.y2 - line.y1);
+
+			if (u < 0) {
+				closestPoint.setLocation(line.getP1());
+			} else if (u > 1) {
+				closestPoint.setLocation(line.getP2());
+			} else {
+				closestPoint.setLocation(xu, yu);
+			}
+
+			
+
+			if (closestPoint.distance(externalPoint) < bestPoint.distance(externalPoint)) {
+				bestPoint.setLocation(closestPoint);
+			}
+		}
+		return bestPoint;
+		
 	}
     private double distance(Point2D pt, Segment a) {
         double px = pt.getX() - a.getX(0);

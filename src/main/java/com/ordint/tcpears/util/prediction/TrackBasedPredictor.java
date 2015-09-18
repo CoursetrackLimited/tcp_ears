@@ -56,7 +56,7 @@ public class TrackBasedPredictor implements PositionPredictor<Object> {
 	
 	
 	
-	protected Point2D getClosestPoint(Point2D currentPoint) {
+	public Point2D getClosestPoint(Point2D currentPoint) {
 		Point2D.Double closestPoint = new Point2D.Double(-1, -1);
 		Point2D.Double bestPoint = new Point2D.Double(-1, -1);
 		ArrayList<Point2D.Double> closestPointList = new ArrayList<Point2D.Double>();
@@ -99,7 +99,7 @@ public class TrackBasedPredictor implements PositionPredictor<Object> {
 
 		// Calculate the nearest point on the edge
 		for (Line2D.Double line : areaSegments) {
-
+			//System.out.println(String.format("(%s,%s) -(%s,%s)",line.x1, line.y1, line.x2, line.y2));
 			// From: http://stackoverflow.com/questions/6176227
 			double u = ((currentPoint.getX() - line.x1) * (line.x2 - line.x1) + (currentPoint.getY() - line.y1)
 					* (line.y2 - line.y1))
