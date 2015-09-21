@@ -1,7 +1,10 @@
 package com.ordint.tcpears.util;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
+import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 
@@ -116,13 +119,52 @@ public class MeasuredShapeTest {
 
 			long l = System.nanoTime();
 		
-		for(int i =0; i < 100000; i++) {
+		for(int i =0; i < 10000; i++) {
 			
-			 Point2D p2 = shape.getClosestPoint(p);
-			 shape.getPointDistance(p2);
+			Point2D p2 = shape.getClosestPoint(p);
+			shape.getPointDistance(p2);
 		}
 		
 		System.out.println((System.nanoTime() - l) / 1_000_000);
 	}
+	
+	@Test
+	public void helpme() {
+        Point2D a = new Point2D.Double(-0.4018246066470643, 51.41986586173692);
+        Point2D b = new Point2D.Double(-0.4017332700389376, 51.41977387312371);
+        Point2D p = new Point2D.Double(-0.401862, 51.419764);
+        Point2D r = new Point2D.Double(-0.4017922407539071, 51.419833264800296);	
+        
+        double s1 = (b.getY()-a.getY()) / (b.getX()-a.getX());
+        double s2 = (p.getY()-r.getY()) / (r.getX()-p.getX());
+        
+        
+        System.out.println(s1);
+        
+        System.out.println(s2);
+        System.out.println(-1/s1);   
+        
+	}
+	
+	
+	public void isValidSgement() {
+		StaticTrackPathBuilder builder = new  StaticTrackPathBuilder();
+		Path2D track = builder.build("KEMPTON_740");	
+		MeasuredShape shape = new  MeasuredShape(track);
+		
+		//System.out.println(shape.validSegment(new Line2D.Double(0, 0, 6, 0), new Point2D.Double(3, 4)));
+		
+		//System.out.println(shape.validSegment(new Line2D.Double(0, 0, 6, 0), new Point2D.Double(30, 4)));
+		//System.out.println(shape.validSegment(new Line2D.Double(0, 0, 6, 0), new Point2D.Double(3, -4)));
+		assertTrue(shape.validSegment(new Line2D.Double(0, -1, -6, 0), new Point2D.Double(-3, -4)));
+		
+		assertTrue(shape.validSegment(new Line2D.Double(0, -1, -6, 0), new Point2D.Double(-8, -4)));
+		
+		assertFalse(shape.validSegment(new Line2D.Double(10, 10, 20, 10), new Point2D.Double(30, 9)));
+		assertFalse(shape.validSegment(new Line2D.Double(10, 10, 20, 10), new Point2D.Double(30, 11)));
+		
+		assertTrue(shape.validSegment(new Line2D.Double(-10, -10, -20, -5), new Point2D.Double(-11, -9)));
+	}
+	
 	
 }

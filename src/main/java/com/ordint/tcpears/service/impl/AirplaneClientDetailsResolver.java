@@ -1,5 +1,6 @@
 package com.ordint.tcpears.service.impl;
 
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -26,6 +27,11 @@ public class AirplaneClientDetailsResolver implements ClientDetailsResolver {
 	}
 	@Override
 	public void refresh() {
+		
+	}
+	@Override
+	public void updateClientDetails(List<ClientDetails> clientDetails) {
+		// TODO Auto-generated method stub
 		
 	}
 

@@ -116,7 +116,7 @@ public class AdministrationServiceImpl implements AdministrationService {
 	}
 
 	@Override
-	public String replayRace(long raceId) throws RaceServiceException{
+	public String replayRace(long raceId) throws RaceServiceException {
 		
 		try {
 			return raceService.replayRace(raceId);
@@ -124,6 +124,12 @@ public class AdministrationServiceImpl implements AdministrationService {
 			log.error("Error replaying race with id {}", raceId, e);
 			throw e;
 		}
+	}
+
+	@Override
+	public void updateClientDetails(ClientDetails clientDetails) {
+		clientDetailsResolver.updateClientDetails(clientDetails);
+		
 	}
 
 

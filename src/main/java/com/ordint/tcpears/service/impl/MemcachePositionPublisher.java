@@ -50,6 +50,8 @@ public class MemcachePositionPublisher implements PositionPublisher {
 		for(String groupId : positionGroups.keySet()) {
 			List<Position> positions = positionGroups.get(groupId);
 			//predictions.putAll(predictionService.predictPositions(groupId, positions));
+			//transform the postions here??
+			
 			ConcurrentMap<String, String> postionMap = positions
 					.stream()
 					.collect(Collectors.toConcurrentMap(Position::getClientId, p -> outputBuilder.write(p)));

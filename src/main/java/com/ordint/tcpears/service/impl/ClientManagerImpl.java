@@ -131,9 +131,14 @@ public class ClientManagerImpl implements ClientManager, PositionDataProvider {
 	 */
 	@Override
 	public ConcurrentMap<String, List<Position>> groupClientsByGroup() {
+		
+		/*
+		 * WE SHOULD DO THE PREDICITONS AND POSITIONING HERE
+		 */
 		return clients.values()
 				.stream()
 				.filter(p -> !isOld(p))
+				
 				.collect(Collectors.groupingByConcurrent(Position::getGroupId));
 	}
 	

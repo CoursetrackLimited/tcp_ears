@@ -4,6 +4,7 @@ package com.ordint.tcpears.domain;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
 
+import java.time.Clock;
 import java.time.LocalDate;
 
 import org.apache.commons.lang3.StringUtils;
@@ -52,7 +53,7 @@ public class DefaultOutputWriterTest {
 		String actual = out.write(p);
 		
 		String cells[] =StringUtils.splitByWholeSeparatorPreserveAllTokens(actual, ",");
-		LocalDate t = LocalDate.now();
+		LocalDate t = LocalDate.now(Clock.systemUTC());
 		assertThat(cells[cells.length-1], equalTo("34.32"));
 		assertThat(cells[cells.length-2], equalTo("50.1"));
 		assertThat(cells[cells.length-12], equalTo("11"));
@@ -82,9 +83,10 @@ public class DefaultOutputWriterTest {
 		String actual = out.write(p);
 		
 		String cells[] =StringUtils.splitByWholeSeparatorPreserveAllTokens(actual, ",");
-		LocalDate t = LocalDate.now();
+		LocalDate t = LocalDate.now(Clock.systemUTC());
 		assertThat(cells[cells.length-1], equalTo("34.32"));
 		assertThat(cells[cells.length-2], equalTo("50.1"));
+		//assertThat(cells[cells.length-11], equalTo("4"));
 		assertThat(cells[cells.length-12], equalTo("11"));
 		assertThat(cells[cells.length-6], equalTo("99"));
 		assertThat(cells[cells.length-13], equalTo("A"));

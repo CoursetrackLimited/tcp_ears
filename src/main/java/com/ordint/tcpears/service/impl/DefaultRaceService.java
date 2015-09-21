@@ -31,7 +31,8 @@ import com.ordint.tcpears.service.ReplayService;
 @Component
 public class DefaultRaceService implements RaceService {
 	
-	private static final String RACE_DETAILS_MEMCACHE_KEY = "/ggps/RaceDetails";
+	private static final String CURRENT_RACE_DETAILS_MEMCACHE_KEY = "/ggps/CurrentRaceDetails";
+	private static final String RACE_DETAILS_MEMCACHE_KEY = "/ggps/RaceDetails/%s";
 	private static final Logger log = LoggerFactory.getLogger(DefaultRaceService.class);
 
 
@@ -39,7 +40,7 @@ public class DefaultRaceService implements RaceService {
 	
 	static final String CLIENT_DETAILS_FOR_RACE_SQL = 
 			"SELECT clients.client_ident as clientId, friendly_name as fixedName, "
-			+ "groups.group_id as groupId, groups.name as groupName, runners.name as tempName "
+			+ "groups.group_id as groupId, groups.name as groupName, runners.name as tempName, runners.ident as runner_ident "
 			+ "FROM clients "
 			+ "INNER JOIN runners ON clients.client_id = runners.client_id "
 			+ "INNER JOIN races ON races.race_id = runners.race_id "
@@ -48,7 +49,7 @@ public class DefaultRaceService implements RaceService {
 	
 	static final String RESET_CLIENT_DETAILS_SQL =
 			"SELECT clients.client_ident AS clientId, clients.friendly_name AS fixedName, "
-			+ "groups.group_id AS groupId, groups.name AS groupName, NULL AS tempName "
+			+ "groups.group_id AS groupId, groups.name AS groupName, NULL AS tempName, NULL as runner_ident "
 			+ "FROM clients "
 			+ "INNER JOIN groups ON groups.group_id = clients.group_id "
 			+ "INNER JOIN runners ON clients.client_id = runners.client_id "
@@ -93,14 +94,11 @@ public class DefaultRaceService implements RaceService {
 		HashMap<String, Object> raceDetails = new HashMap<>();
 		raceDetails.put("race_group_id", groupId);
 		raceDetails.put("race_name", clientDetails.get(0).getCurrentGroupName());
-		for(ClientDetails cd : clientDetails) {
-			HashMap<String, String> runner = new HashMap<>();
-			runner.put("client_ident", cd.getClientId());
-			runner.put("friendly_name", cd.getCurrentName());
-			raceDetails.put(cd.getClientId(), runner);
-		}
+		raceDetails.put("client_details", clientDetails);
+		String raceMemcaheKey = String.format(RACE_DETAILS_MEMCACHE_KEY, groupId);
 		try {
-			memcacheHelper.set(RACE_DETAILS_MEMCACHE_KEY, RACE_DETAILS_MEMCACHE_KEY, raceDetails);
+			memcacheHelper.set(CURRENT_RACE_DETAILS_MEMCACHE_KEY, CURRENT_RACE_DETAILS_MEMCACHE_KEY, raceDetails);
+			memcacheHelper.set(raceMemcaheKey, raceMemcaheKey, raceDetails);
 		} catch (IOException e) {
 			log.error("Error publishing race details for race with id {}", raceId, e);
 			throw new RaceServiceException(e);
@@ -123,10 +121,11 @@ public class DefaultRaceService implements RaceService {
 			@Override
 			public ClientDetails mapRow(ResultSet rs, int rowNum) throws SQLException {
 				return new ClientDetails(rs.getString("groupId"), rs.getString("clientId"),
-						 rs.getString("fixedName"), rs.getString("tempName"), rs.getString("groupName"));
+						 rs.getString("fixedName"), rs.getString("tempName"), rs.getString("groupName"),
+						 rs.getString("runner_ident"));
 			}}, raceId);
 		 	
-		 	clientDetails.forEach(cd -> clientDetailsResolver.updateClientDetails(cd));
+		 	clientDetailsResolver.updateClientDetails(clientDetails);
 		 	return clientDetails;
 		
 	}
@@ -143,7 +142,6 @@ public class DefaultRaceService implements RaceService {
 		jdbcTemplate.update("update races set status ='FINISHED', finishTime = NOW() where race_id=?", raceId);
 		//update the clientDetailsResolver with default details
 		updateClientDetails(RESET_CLIENT_DETAILS_SQL, raceId);
-		//remove rece details to memcache
 
 	}
 	

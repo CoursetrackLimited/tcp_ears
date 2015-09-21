@@ -22,10 +22,16 @@ public class ClientDetails {
 	private String tempName;
 	@NonFinal
 	private String groupName;
+	@NonFinal
+	private String runnerIdent;
+	
+	
+	
 	@JsonCreator
 	public ClientDetails() {
 		clientId = "";
 		groupId = "";
+		runnerIdent = "";
 	}	
 	public String getCurrentName() {
 		if (!isBlank(tempName)) {

@@ -3,6 +3,7 @@ package com.ordint.tcpears.service;
 import java.util.List;
 import java.util.concurrent.ConcurrentMap;
 
+import com.ordint.tcpears.domain.ClientDetails;
 import com.ordint.tcpears.domain.Position;
 import com.ordint.tcpears.service.impl.RaceServiceException;
 
@@ -38,4 +39,6 @@ public interface AdministrationService {
 	void finishRace(long raceId);
 	
 	String replayRace(long raceId) throws RaceServiceException;
+	
+	void updateClientDetails(ClientDetails clientDetails);
 }

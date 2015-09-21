@@ -21,9 +21,13 @@ package com.ordint.tcpears.util;
  */
 
 
+import static java.lang.Math.abs;
+import static java.lang.Math.pow;
+
 import java.awt.Shape;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Line2D;
+import java.awt.geom.Line2D.Double;
 import java.awt.geom.Path2D;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
@@ -666,43 +670,87 @@ public class MeasuredShape implements Serializable {
 	 * @return
 	 */
 	public Point2D getClosestPoint(Point2D externalPoint) {
-		Point2D.Double closestPoint = new Point2D.Double(-1, -1);
-		Point2D.Double bestPoint = new Point2D.Double(-1, -1);
-		double lastX = segments[0].data[0];
-		double lastY= segments[0].data[1];
-		for (int i = 1 ; i< segments.length; i++) {
+
+		double shortestDistance = 1;
+		double currentDistance = 1; 
+		Line2D lineToUse = null;
+		
+		for (int i = 0 ; i< segments.length; i++) {
 			if(segments[i].type != PathIterator.SEG_LINETO) {
 				throw new IllegalArgumentException("Cant run getCLosestPoint on track not made of line segments");
 			}
-			Line2D.Double line = new Line2D.Double(lastX, lastY, segments[i].data[0], segments[i].data[1]);
-			//System.out.println(String.format("(%s,%s) -(%s,%s)", line.x1, line.y1, line.x2, line.y2));
-			lastX = segments[i].data[0];
-			lastY = segments[i].data[1];
-			// From: http://stackoverflow.com/questions/6176227
-			double u = ((externalPoint.getX() - line.x1) * (line.x2 - line.x1) + (externalPoint.getY() - line.y1)
-					* (line.y2 - line.y1))
-					/ ((line.x2 - line.x1) * (line.x2 - line.x1) + (line.y2 - line.y1) * (line.y2 - line.y1));
-
-			double xu = line.x1 + u * (line.x2 - line.x1);
-			double yu = line.y1 + u * (line.y2 - line.y1);
-
-			if (u < 0) {
-				closestPoint.setLocation(line.getP1());
-			} else if (u > 1) {
-				closestPoint.setLocation(line.getP2());
-			} else {
-				closestPoint.setLocation(xu, yu);
-			}
-
+			Line2D.Double line = new Line2D.Double(segments[i].data[0], segments[i].data[1], segments[i].data[2], segments[i].data[3]);
 			
-
-			if (closestPoint.distance(externalPoint) < bestPoint.distance(externalPoint)) {
-				bestPoint.setLocation(closestPoint);
-			}
+			//if(validSegment(line, externalPoint)) {
+				currentDistance = line.ptSegDist(externalPoint);
+				if (currentDistance < shortestDistance) {
+					shortestDistance =  currentDistance;
+					//System.out.println(shortestDistance);
+					//System.out.println("--- " + externalPoint.distance(line.getP1()) + " -- " + externalPoint.distance(line.getP2()));
+					lineToUse = line;
+				}
+			//}
 		}
-		return bestPoint;
+		return calculateClosestPoint(lineToUse, shortestDistance, externalPoint);
+		
+		
 		
 	}
+	public static boolean validSegment(Line2D line1, Point2D externalPoint) {
+		double x1,x2,x3,y1,y2,y3;
+		if(true)return true;
+		x1 = line1.getX1();
+		x2 = line1.getX2();
+		x3 = externalPoint.getX();
+		y1 = line1.getY1();
+		y2 = line1.getY2();
+		y3 = externalPoint.getY();
+		
+		
+		double dotAB = (x3 - x1) * (x2 - x1) + (y3 - y1) * (y2 - y1);
+		double dotBC = (x3 - x2) * (x1-x2) + (y3-y2) * (y1-y2); 
+
+		if(dotAB * dotBC < 0) {
+			return  false;
+		} 
+		
+		return true;
+	}
+	public static  Point2D calculateClosestPoint(Line2D segmentLine, double distance, Point2D from) {
+		
+        double normal = getNormal(segmentLine);
+        double cos = 1 /(Math.sqrt(1 + Math.pow(normal,2)));
+        double sin = normal / (Math.sqrt(1 + Math.pow(normal,2)));
+        
+		double x1, x2,x3,  y1, y2, y3;
+		x1 = segmentLine.getX1();
+		x2 = segmentLine.getX2();
+		x3 = from.getX();
+		y1 = segmentLine.getY1();
+		y2 = segmentLine.getY2();
+		y3 = from.getY();
+		double sgn = Math.signum(((x2-x1) * (y3-x1)) - ((y2-y1) * (x3-x1)));
+		
+		//System.out.println("DOT " + sgn);
+        
+        Point2D closestPoint = new Point2D.Double(from.getX() - sgn *(distance * cos), from.getY() -  sgn * (distance * sin));
+     
+        return closestPoint;
+	}
+	
+    private static double getNormal(Line2D line)
+    {
+        return -1 / getSlope(line);
+    }
+   
+    
+    private static double getSlope(Line2D line)
+    {
+        double deltaY = line.getY2()- line.getY1();
+        double deltaX = line.getX2() - line.getX1();
+  
+        return deltaY/ deltaX;
+    }	
     private double distance(Point2D pt, Segment a) {
         double px = pt.getX() - a.getX(0);
         double py = pt.getY() - a.getY(0);
@@ -813,4 +861,5 @@ public class MeasuredShape implements Serializable {
 		System.err.println("p = "+p);
 		throw new RuntimeException("the position "+original+" could not be found.");
 	}
+		
 }
