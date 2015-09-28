@@ -1,5 +1,6 @@
 package com.ordint.tcpears.service.impl;
 
+import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
@@ -109,7 +110,7 @@ public class DefaultRaceServiceTest {
 	}
 
 	@Test
-	public void testReplayRace() throws Exception {
+	public void shouldReplayRace() throws Exception {
 		given(jdbcTemplate.queryForObject("select status from races where race_id=100", String.class)).willReturn("FINISHED");
 		ClientDetails cd1 = new ClientDetails();
 		ClientDetails cd2 = new ClientDetails();
@@ -120,12 +121,41 @@ public class DefaultRaceServiceTest {
 		row.put("group_id", 1l);
 		row.put("actualStartTime", "2015-09-16 22:32:38");
 		row.put("finishTime", "2015-09-16 22:33:38");
+		row.put("name", "Some race");
+		row.put("venue_id", 1l);
 		
 		given(jdbcTemplate.queryForMap(anyString(), anyLong())).willReturn(row); 
-		defaultRaceService.replayRace(100);
+		String raceName = defaultRaceService.replayRace(100);
 		then(clientManager).should().clearTrack("1");
-		then(replayService).should().replayFrom(any(LocalDateTime.class), Mockito.eq(60), Mockito.eq(true));
+		then(replayService).should().replayFrom(any(LocalDateTime.class), eq(60), eq(true),eq("1"));
+		then(jdbcTemplate).should().update(eq("update races set status ='REPLAYING' where race_id=?"), eq(100l));
 		
+		assertThat(raceName, equalTo("Some race"));
+		assertThat(defaultRaceService.getCurrentReplayRaceId(1), equalTo(100l));		
+	}
+	
+	@Test(expected = RaceServiceException.class)
+	public void shouldThrowRaceExceptionIfAReplayIsAlreadyRunningForThatVenue() throws Exception {
+		given(jdbcTemplate.queryForObject(anyString(), eq(String.class))).willReturn("FINISHED");	
+		ClientDetails cd1 = new ClientDetails();
+		given(jdbcTemplate.query(eq(DefaultRaceService.CLIENT_DETAILS_FOR_RACE_SQL), (RowMapper<ClientDetails>)anyObject(), anyLong()))
+			.willReturn(Arrays.asList(cd1));
+		Map<String,Object> row = new HashMap<>();
+		row.put("group_id", 2l);
+		row.put("actualStartTime", "2015-09-16 22:32:38");
+		row.put("finishTime", "2015-09-16 22:33:38");
+		row.put("name", "Some Other race");
+		row.put("venue_id", 1l);
+		
+		given(jdbcTemplate.queryForMap(anyString(), anyLong())).willReturn(row);
+		defaultRaceService.replayRace(100);
+		
+		defaultRaceService.replayRace(200);
+		
+		
+		
+		
+	
 	}
 
 }

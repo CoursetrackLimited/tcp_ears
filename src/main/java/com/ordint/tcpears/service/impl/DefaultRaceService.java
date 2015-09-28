@@ -70,6 +70,11 @@ public class DefaultRaceService implements RaceService {
 	@Autowired
 	private PositionDecorators positionDecorators;
 	
+	
+	private Map<Long, Long> currentReplayRaces = new HashMap<Long, Long>();
+	
+	
+	
 	private static final DateTimeFormatter MYSQL_DATETIME_FORMATTER =  DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 	@Override
 	public void startRace(long raceId) throws RaceServiceException {
@@ -154,23 +159,44 @@ public class DefaultRaceService implements RaceService {
 		checkRaceStatus(raceId, RaceStatus.FINISHED);
 		//get start and end of race
 		
-		Map<String, Object> row = jdbcTemplate.queryForMap("select group_id, actualStartTime, finishTime from races where race_id =?", raceId);
+		Map<String, Object> row = jdbcTemplate.queryForMap("select group_id,name, venue_id, actualStartTime, finishTime from races where race_id =?", raceId);
 		
 		LocalDateTime start = LocalDateTime.parse(row.get("actualStartTime").toString(), MYSQL_DATETIME_FORMATTER);
 		LocalDateTime finish = LocalDateTime.parse(row.get("finishTime").toString(), MYSQL_DATETIME_FORMATTER);
-		
+		String raceName = row.get("name").toString();
+		Long venueId = Long.parseLong(row.get("venue_id").toString());
+		Long currentRaceReplay = currentReplayRaces.get(venueId);
+		if (currentRaceReplay != null) {
+			throw new RaceServiceException(String.format("Race with id %s is already being replayed at venue with id %s", currentRaceReplay, venueId));
+		}
 		int timeInSecs = (int) start.until(finish, ChronoUnit.SECONDS);
 		String groupId = row.get("group_id").toString();
+		
+		jdbcTemplate.update("update races set status ='REPLAYING' where race_id=?", raceId);
 		List<ClientDetails> clientDetails = updateClientDetails(CLIENT_DETAILS_FOR_RACE_SQL, raceId);
 		positionPublisher.clearTrack(groupId);
 		clientManager.clearTrack(groupId);
 		positionDecorators.addReplayDecorators(groupId, "trackConfigId");
 		clientManager.trackGroup(groupId);
 		
+		
 		publishRaceDetails(raceId, groupId, clientDetails);
 		
-		return replayService.replayFrom(start, timeInSecs, true);
-		
+		replayService.replayFrom(start, timeInSecs, true, venueId.toString());
+		currentReplayRaces.put(venueId, raceId);
+		return raceName;
 	}
+	
+	public void replayEnded(String venueId) {
+		positionDecorators.clearDecorator("");
+		Long raceId = currentReplayRaces.remove(Long.parseLong(venueId));	
+		jdbcTemplate.update("update races set status ='FINISHED' where race_id=?", raceId);		
+	}
+	
+	
+	public Long getCurrentReplayRaceId(long venueId) {
+		return currentReplayRaces.get(venueId);
+	}
+
 
 }

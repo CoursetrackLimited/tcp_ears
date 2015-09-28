@@ -40,7 +40,7 @@ public class MySqlReplayService implements ReplayService {
 	@Autowired
 	private PositionServiceImpl positionService;
 	@Autowired
-	private PositionDecorators positionDecorators;
+	private DefaultRaceService raceService;
 
 	
 	private ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -59,8 +59,8 @@ public class MySqlReplayService implements ReplayService {
 
 
 	@Override
-	public String replayFrom(LocalDateTime startDateTime, int numberOfSeconds, boolean useOriginalTimestamp) {
-		
+	public String replayFrom(LocalDateTime startDateTime, int numberOfSeconds, boolean useOriginalTimestamp,
+			String replayId) {
 		
 		String start = startDateTime.toString();
 		String end = startDateTime.plusSeconds(numberOfSeconds).toString();
@@ -147,17 +147,15 @@ public class MySqlReplayService implements ReplayService {
 					//System.out.println("P= " + p.getTimeCreated() + " " + interval);
 					lastTime = p.getTimeCreated();
 				}
-				positionDecorators.clearDecorator("");
-				log.info("Finished replay!");
-				
+				raceService.replayEnded(replayId);
 			}
 			
 			
 		});
-		String id = String.valueOf(replayFuture.hashCode());
-		runningReplays.put(id, new ReplayDetails(startDateTime.toString(), replayFuture));
-		log.info("Replay id: {}", id);
-		return id;
+		
+		runningReplays.put(replayId, new ReplayDetails(startDateTime.toString(), replayFuture));
+		log.info("Replay id: {}", replayId);
+		return replayId;
 	}
 
 	@Override
@@ -183,6 +181,14 @@ public class MySqlReplayService implements ReplayService {
 			this.replayFuture = replayFuture;
 		
 		}
+	}
+
+
+
+	@Override
+	public String replayFrom(LocalDateTime parse, int parseInt, boolean userOriginalTimeStamp) {
+		
+		return replayFrom(parse, parseInt, userOriginalTimeStamp, "" + System.currentTimeMillis());
 	}
 
 }

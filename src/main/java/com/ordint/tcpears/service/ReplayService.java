@@ -8,7 +8,9 @@ public interface ReplayService {
 	
 	boolean endReplay(String replayId);
 
-	String replayFrom(LocalDateTime startDateTime, int numberOfSeconds, boolean useOriginalTimestamp);
+	String replayFrom(LocalDateTime startDateTime, int numberOfSeconds, boolean useOriginalTimestamp, String replayId);
+
+	String replayFrom(LocalDateTime parse, int parseInt, boolean userOriginalTimeStamp);
 	
 	
 }
