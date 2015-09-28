@@ -1,19 +1,17 @@
 package com.ordint.tcpears.util.prediction;
 
+import com.ordint.tcpears.domain.PositionDistanceInfo;
 import com.ordint.tcpears.util.PredictionUtil;
 
+import lombok.Getter;
 import lombok.Value;
 
 
-@Value
-public class RacePosition {
-
+@Getter
+public class RacePosition extends PositionDistanceInfo{
 	private int standing;
-	private double metersToFinish;
-	private double distanceFromStart;
-	private String runnerId;
-
-	public double getMetersFromStart() {
-		return distanceFromStart / PredictionUtil.ONE_METER_FACTOR;
+	public RacePosition(int standing, PositionDistanceInfo pdi) {
+		super(pdi.getClientId(), pdi.getDistanceFromStart(), pdi.getDistanceFromFinish(), pdi.getPercentage());
+		this.standing = standing;
 	}
 }

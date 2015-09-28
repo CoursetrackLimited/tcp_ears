@@ -1,0 +1,899 @@
+21:18:56.854 [main] INFO  com.ordint.tcpears.server.TCPServer - Starting server....
+21:18:56.895 [main] INFO  com.ordint.tcpears.server.TCPServer - Binding tcp ports
+21:18:56.895 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5011
+21:18:57.020 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5012
+21:18:57.020 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5013
+21:18:57.020 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5014
+21:18:57.020 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5015
+21:18:57.020 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5016
+21:18:57.020 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5017
+21:18:57.020 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5018
+21:18:57.020 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5019
+21:18:57.020 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5020
+21:18:57.020 [main] INFO  com.ordint.tcpears.server.TCPServer - Binding udp ports
+21:18:57.020 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5011
+21:18:57.067 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5012
+21:18:57.067 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5013
+21:18:57.067 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5014
+21:18:57.067 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5015
+21:18:57.067 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5016
+21:18:57.067 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5017
+21:18:57.067 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5018
+21:18:57.067 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5019
+21:18:57.067 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5020
+21:18:57.067 [main] INFO  com.ordint.tcpears.server.TCPServer - Admin rest server listening on 6013
+21:19:16.486 [nioEventLoopGroup-4-1] WARN  c.o.tcpears.server.StringHandler - Error handling input
+java.lang.NumberFormatException: For input string: "0.08700;"
+	at sun.misc.FloatingDecimal.readJavaFormatString(Unknown Source) ~[na:1.8.0_25]
+	at sun.misc.FloatingDecimal.parseDouble(Unknown Source) ~[na:1.8.0_25]
+	at java.lang.Double.parseDouble(Unknown Source) ~[na:1.8.0_25]
+	at com.ordint.tcpears.domain.DefaultInputParser.parse(DefaultInputParser.java:41) ~[classes/:na]
+	at com.ordint.tcpears.service.impl.PositionServiceImpl.update(PositionServiceImpl.java:35) ~[classes/:na]
+	at com.ordint.tcpears.server.StringHandler.channelRead0(StringHandler.java:23) ~[classes/:na]
+	at com.ordint.tcpears.server.StringHandler.channelRead0(StringHandler.java:11) ~[classes/:na]
+	at io.netty.channel.SimpleChannelInboundHandler.channelRead(SimpleChannelInboundHandler.java:105) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:339) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:324) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:247) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:339) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:324) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.handler.codec.MessageToMessageDecoder.channelRead(MessageToMessageDecoder.java:103) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:339) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:324) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:847) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.AbstractNioMessageChannel$NioMessageUnsafe.read(AbstractNioMessageChannel.java:93) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:511) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:468) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:382) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:354) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$2.run(SingleThreadEventExecutor.java:111) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:137) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at java.lang.Thread.run(Unknown Source) [na:1.8.0_25]
+21:21:03.608 [main] INFO  com.ordint.tcpears.server.TCPServer - Starting server....
+21:21:03.621 [main] INFO  com.ordint.tcpears.server.TCPServer - Binding tcp ports
+21:21:03.621 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5011
+21:21:03.716 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5012
+21:21:03.716 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5013
+21:21:03.716 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5014
+21:21:03.716 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5015
+21:21:03.716 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5016
+21:21:03.716 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5017
+21:21:03.716 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5018
+21:21:03.716 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5019
+21:21:03.716 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5020
+21:21:03.716 [main] INFO  com.ordint.tcpears.server.TCPServer - Binding udp ports
+21:21:03.716 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5011
+21:21:03.732 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5012
+21:21:03.732 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5013
+21:21:03.732 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5014
+21:21:03.732 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5015
+21:21:03.732 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5016
+21:21:03.732 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5017
+21:21:03.732 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5018
+21:21:03.732 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5019
+21:21:03.732 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5020
+21:21:03.732 [main] INFO  com.ordint.tcpears.server.TCPServer - Admin rest server listening on 6013
+21:21:12.023 [nioEventLoopGroup-4-1] WARN  c.o.tcpears.server.StringHandler - Error handling input
+java.lang.NumberFormatException: For input string: "0.08700;"
+	at sun.misc.FloatingDecimal.readJavaFormatString(Unknown Source) ~[na:1.8.0_25]
+	at sun.misc.FloatingDecimal.parseDouble(Unknown Source) ~[na:1.8.0_25]
+	at java.lang.Double.parseDouble(Unknown Source) ~[na:1.8.0_25]
+	at com.ordint.tcpears.domain.DefaultInputParser.parse(DefaultInputParser.java:41) ~[classes/:na]
+	at com.ordint.tcpears.service.impl.PositionServiceImpl.update(PositionServiceImpl.java:35) ~[classes/:na]
+	at com.ordint.tcpears.server.StringHandler.channelRead0(StringHandler.java:23) ~[classes/:na]
+	at com.ordint.tcpears.server.StringHandler.channelRead0(StringHandler.java:11) ~[classes/:na]
+	at io.netty.channel.SimpleChannelInboundHandler.channelRead(SimpleChannelInboundHandler.java:105) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:339) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:324) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:247) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:339) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:324) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.handler.codec.MessageToMessageDecoder.channelRead(MessageToMessageDecoder.java:103) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:339) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:324) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:847) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.AbstractNioMessageChannel$NioMessageUnsafe.read(AbstractNioMessageChannel.java:93) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:511) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:468) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:382) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:354) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$2.run(SingleThreadEventExecutor.java:111) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:137) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at java.lang.Thread.run(Unknown Source) [na:1.8.0_25]
+21:23:23.761 [main] INFO  com.ordint.tcpears.server.TCPServer - Starting server....
+21:23:23.774 [main] INFO  com.ordint.tcpears.server.TCPServer - Binding tcp ports
+21:23:23.774 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5011
+21:23:23.868 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5012
+21:23:23.884 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5013
+21:23:23.884 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5014
+21:23:23.884 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5015
+21:23:23.884 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5016
+21:23:23.884 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5017
+21:23:23.884 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5018
+21:23:23.884 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5019
+21:23:23.884 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5020
+21:23:23.884 [main] INFO  com.ordint.tcpears.server.TCPServer - Binding udp ports
+21:23:23.884 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5011
+21:23:23.884 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5012
+21:23:23.884 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5013
+21:23:23.884 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5014
+21:23:23.884 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5015
+21:23:23.884 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5016
+21:23:23.884 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5017
+21:23:23.884 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5018
+21:23:23.884 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5019
+21:23:23.884 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5020
+21:23:23.884 [main] INFO  com.ordint.tcpears.server.TCPServer - Admin rest server listening on 6013
+21:23:30.887 [nioEventLoopGroup-4-1] WARN  c.o.tcpears.server.StringHandler - Error handling input
+io.netty.handler.codec.DecoderException: io.netty.util.IllegalReferenceCountException: refCnt: 0
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:346) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:229) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:339) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:324) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.handler.codec.MessageToMessageDecoder.channelRead(MessageToMessageDecoder.java:103) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:339) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:324) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:847) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.AbstractNioMessageChannel$NioMessageUnsafe.read(AbstractNioMessageChannel.java:93) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:511) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:468) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:382) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:354) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$2.run(SingleThreadEventExecutor.java:111) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:137) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at java.lang.Thread.run(Unknown Source) [na:1.8.0_25]
+Caused by: io.netty.util.IllegalReferenceCountException: refCnt: 0
+	at io.netty.buffer.AbstractByteBuf.ensureAccessible(AbstractByteBuf.java:1178) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.buffer.AbstractByteBuf.checkIndex(AbstractByteBuf.java:1121) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.buffer.AbstractByteBuf.getByte(AbstractByteBuf.java:338) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.buffer.WrappedByteBuf.getByte(WrappedByteBuf.java:205) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.handler.codec.DelimiterBasedFrameDecoder.indexOf(DelimiterBasedFrameDecoder.java:320) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.handler.codec.DelimiterBasedFrameDecoder.decode(DelimiterBasedFrameDecoder.java:238) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.handler.codec.DelimiterBasedFrameDecoder.decode(DelimiterBasedFrameDecoder.java:216) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:315) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	... 15 common frames omitted
+21:23:30.887 [nioEventLoopGroup-4-1] WARN  c.o.tcpears.server.StringHandler - Error handling input
+io.netty.util.IllegalReferenceCountException: refCnt: 0, decrement: 1
+	at io.netty.buffer.AbstractReferenceCountedByteBuf.release(AbstractReferenceCountedByteBuf.java:101) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.buffer.WrappedByteBuf.release(WrappedByteBuf.java:820) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.buffer.SimpleLeakAwareByteBuf.release(SimpleLeakAwareByteBuf.java:34) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.channelInactive(ByteToMessageDecoder.java:283) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelInactive(AbstractChannelHandlerContext.java:237) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelInactive(AbstractChannelHandlerContext.java:223) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.ChannelInboundHandlerAdapter.channelInactive(ChannelInboundHandlerAdapter.java:75) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelInactive(AbstractChannelHandlerContext.java:237) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelInactive(AbstractChannelHandlerContext.java:223) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.DefaultChannelPipeline.fireChannelInactive(DefaultChannelPipeline.java:829) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannel$AbstractUnsafe$7.run(AbstractChannel.java:610) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor.runAllTasks(SingleThreadEventExecutor.java:357) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:357) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$2.run(SingleThreadEventExecutor.java:111) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:137) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at java.lang.Thread.run(Unknown Source) [na:1.8.0_25]
+21:24:01.978 [main] INFO  com.ordint.tcpears.server.TCPServer - Starting server....
+21:24:01.986 [main] INFO  com.ordint.tcpears.server.TCPServer - Binding tcp ports
+21:24:01.986 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5011
+21:24:02.080 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5012
+21:24:02.080 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5013
+21:24:02.080 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5014
+21:24:02.080 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5015
+21:24:02.080 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5016
+21:24:02.080 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5017
+21:24:02.080 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5018
+21:24:02.080 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5019
+21:24:02.080 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5020
+21:24:02.080 [main] INFO  com.ordint.tcpears.server.TCPServer - Binding udp ports
+21:24:02.080 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5011
+21:24:02.096 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5012
+21:24:02.096 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5013
+21:24:02.096 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5014
+21:24:02.096 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5015
+21:24:02.096 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5016
+21:24:02.096 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5017
+21:24:02.096 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5018
+21:24:02.096 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5019
+21:24:02.096 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5020
+21:24:02.096 [main] INFO  com.ordint.tcpears.server.TCPServer - Admin rest server listening on 6013
+21:26:43.404 [main] INFO  com.ordint.tcpears.server.TCPServer - Starting server....
+21:26:43.404 [main] INFO  com.ordint.tcpears.server.TCPServer - Binding tcp ports
+21:26:43.404 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5011
+21:26:43.513 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5012
+21:26:43.513 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5013
+21:26:43.513 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5014
+21:26:43.513 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5015
+21:26:43.513 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5016
+21:26:43.513 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5017
+21:26:43.513 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5018
+21:26:43.529 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5019
+21:26:43.529 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5020
+21:26:43.529 [main] INFO  com.ordint.tcpears.server.TCPServer - Binding udp ports
+21:26:43.529 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5011
+21:26:43.529 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5012
+21:26:43.529 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5013
+21:26:43.529 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5014
+21:26:43.529 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5015
+21:26:43.529 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5016
+21:26:43.529 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5017
+21:26:43.529 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5018
+21:26:43.529 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5019
+21:26:43.529 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5020
+21:26:43.529 [main] INFO  com.ordint.tcpears.server.TCPServer - Admin rest server listening on 6013
+21:27:26.603 [main] INFO  com.ordint.tcpears.server.TCPServer - Starting server....
+21:27:26.614 [main] INFO  com.ordint.tcpears.server.TCPServer - Binding tcp ports
+21:27:26.614 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5011
+21:27:26.730 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5012
+21:27:26.730 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5013
+21:27:26.730 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5014
+21:27:26.730 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5015
+21:27:26.730 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5016
+21:27:26.730 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5017
+21:27:26.730 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5018
+21:27:26.730 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5019
+21:27:26.730 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5020
+21:27:26.730 [main] INFO  com.ordint.tcpears.server.TCPServer - Binding udp ports
+21:27:26.730 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5011
+21:27:26.746 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5012
+21:27:26.746 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5013
+21:27:26.746 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5014
+21:27:26.746 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5015
+21:27:26.746 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5016
+21:27:26.746 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5017
+21:27:26.746 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5018
+21:27:26.746 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5019
+21:27:26.746 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5020
+21:27:26.746 [main] INFO  com.ordint.tcpears.server.TCPServer - Admin rest server listening on 6013
+21:28:50.215 [nioEventLoopGroup-4-1] WARN  c.o.tcpears.server.StringHandler - Error handling input
+java.lang.NumberFormatException: For input string: "0.08700;"
+	at sun.misc.FloatingDecimal.readJavaFormatString(Unknown Source) ~[na:1.8.0_25]
+	at sun.misc.FloatingDecimal.parseDouble(Unknown Source) ~[na:1.8.0_25]
+	at java.lang.Double.parseDouble(Unknown Source) ~[na:1.8.0_25]
+	at com.ordint.tcpears.domain.DefaultInputParser.parse(DefaultInputParser.java:41) ~[classes/:na]
+	at com.ordint.tcpears.service.impl.PositionServiceImpl.update(PositionServiceImpl.java:35) ~[classes/:na]
+	at com.ordint.tcpears.server.StringHandler.channelRead0(StringHandler.java:23) ~[classes/:na]
+	at com.ordint.tcpears.server.StringHandler.channelRead0(StringHandler.java:11) ~[classes/:na]
+	at io.netty.channel.SimpleChannelInboundHandler.channelRead(SimpleChannelInboundHandler.java:105) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:339) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:324) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:247) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:339) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:324) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.handler.codec.MessageToMessageDecoder.channelRead(MessageToMessageDecoder.java:103) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:339) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:324) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:847) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.AbstractNioMessageChannel$NioMessageUnsafe.read(AbstractNioMessageChannel.java:93) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:511) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:468) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:382) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:354) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$2.run(SingleThreadEventExecutor.java:111) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:137) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at java.lang.Thread.run(Unknown Source) [na:1.8.0_25]
+21:32:10.410 [main] INFO  com.ordint.tcpears.server.TCPServer - Starting server....
+21:32:10.416 [main] INFO  com.ordint.tcpears.server.TCPServer - Binding tcp ports
+21:32:10.416 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5011
+21:32:10.508 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5012
+21:32:10.508 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5013
+21:32:10.508 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5014
+21:32:10.508 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5015
+21:32:10.524 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5016
+21:32:10.524 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5017
+21:32:10.524 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5018
+21:32:10.524 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5019
+21:32:10.524 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5020
+21:32:10.524 [main] INFO  com.ordint.tcpears.server.TCPServer - Binding udp ports
+21:32:10.524 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5011
+21:32:10.524 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5012
+21:32:10.524 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5013
+21:32:10.524 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5014
+21:32:10.524 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5015
+21:32:10.524 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5016
+21:32:10.524 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5017
+21:32:10.524 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5018
+21:32:10.524 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5019
+21:32:10.524 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5020
+21:32:10.524 [main] INFO  com.ordint.tcpears.server.TCPServer - Admin rest server listening on 6013
+21:33:16.821 [main] INFO  com.ordint.tcpears.server.TCPServer - Starting server....
+21:33:16.839 [main] INFO  com.ordint.tcpears.server.TCPServer - Binding tcp ports
+21:33:16.839 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5011
+21:33:16.933 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5012
+21:33:16.933 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5013
+21:33:16.933 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5014
+21:33:16.933 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5015
+21:33:16.933 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5016
+21:33:16.933 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5017
+21:33:16.933 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5018
+21:33:16.933 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5019
+21:33:16.933 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5020
+21:33:16.933 [main] INFO  com.ordint.tcpears.server.TCPServer - Binding udp ports
+21:33:16.933 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5011
+21:33:16.949 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5012
+21:33:16.949 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5013
+21:33:16.949 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5014
+21:33:16.949 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5015
+21:33:16.949 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5016
+21:33:16.949 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5017
+21:33:16.949 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5018
+21:33:16.949 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5019
+21:33:16.949 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5020
+21:33:16.949 [main] INFO  com.ordint.tcpears.server.TCPServer - Admin rest server listening on 6013
+21:33:19.888 [nioEventLoopGroup-4-1] WARN  c.o.tcpears.server.StringHandler - Error handling input
+io.netty.handler.codec.DecoderException: io.netty.util.IllegalReferenceCountException: refCnt: 0
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:346) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:229) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:339) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:324) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.handler.codec.MessageToMessageDecoder.channelRead(MessageToMessageDecoder.java:103) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:339) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:324) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:847) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.AbstractNioMessageChannel$NioMessageUnsafe.read(AbstractNioMessageChannel.java:93) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:511) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:468) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:382) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:354) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$2.run(SingleThreadEventExecutor.java:111) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:137) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at java.lang.Thread.run(Unknown Source) [na:1.8.0_25]
+Caused by: io.netty.util.IllegalReferenceCountException: refCnt: 0
+	at io.netty.buffer.AbstractByteBuf.ensureAccessible(AbstractByteBuf.java:1178) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.buffer.AbstractByteBuf.checkIndex(AbstractByteBuf.java:1121) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.buffer.AbstractByteBuf.getByte(AbstractByteBuf.java:338) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.buffer.WrappedByteBuf.getByte(WrappedByteBuf.java:205) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.handler.codec.DelimiterBasedFrameDecoder.indexOf(DelimiterBasedFrameDecoder.java:320) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.handler.codec.DelimiterBasedFrameDecoder.decode(DelimiterBasedFrameDecoder.java:238) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.handler.codec.DelimiterBasedFrameDecoder.decode(DelimiterBasedFrameDecoder.java:216) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:315) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	... 15 common frames omitted
+21:33:19.888 [nioEventLoopGroup-4-1] WARN  c.o.tcpears.server.StringHandler - Error handling input
+io.netty.util.IllegalReferenceCountException: refCnt: 0, decrement: 1
+	at io.netty.buffer.AbstractReferenceCountedByteBuf.release(AbstractReferenceCountedByteBuf.java:101) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.buffer.AbstractDerivedByteBuf.release(AbstractDerivedByteBuf.java:50) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.buffer.WrappedByteBuf.release(WrappedByteBuf.java:820) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.buffer.SimpleLeakAwareByteBuf.release(SimpleLeakAwareByteBuf.java:34) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.channelInactive(ByteToMessageDecoder.java:283) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelInactive(AbstractChannelHandlerContext.java:237) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelInactive(AbstractChannelHandlerContext.java:223) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.ChannelInboundHandlerAdapter.channelInactive(ChannelInboundHandlerAdapter.java:75) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelInactive(AbstractChannelHandlerContext.java:237) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelInactive(AbstractChannelHandlerContext.java:223) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.DefaultChannelPipeline.fireChannelInactive(DefaultChannelPipeline.java:829) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannel$AbstractUnsafe$7.run(AbstractChannel.java:610) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor.runAllTasks(SingleThreadEventExecutor.java:357) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:357) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$2.run(SingleThreadEventExecutor.java:111) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:137) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at java.lang.Thread.run(Unknown Source) [na:1.8.0_25]
+21:36:12.511 [main] INFO  com.ordint.tcpears.server.TCPServer - Starting server....
+21:36:12.529 [main] INFO  com.ordint.tcpears.server.TCPServer - Binding tcp ports
+21:36:12.529 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5011
+21:36:12.624 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5012
+21:36:12.639 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5013
+21:36:12.639 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5014
+21:36:12.639 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5015
+21:36:12.639 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5016
+21:36:12.639 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5017
+21:36:12.639 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5018
+21:36:12.639 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5019
+21:36:12.639 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5020
+21:36:12.639 [main] INFO  com.ordint.tcpears.server.TCPServer - Binding udp ports
+21:36:12.639 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5011
+21:36:12.639 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5012
+21:36:12.639 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5013
+21:36:12.639 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5014
+21:36:12.639 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5015
+21:36:12.639 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5016
+21:36:12.639 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5017
+21:36:12.639 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5018
+21:36:12.639 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5019
+21:36:12.639 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5020
+21:36:12.639 [main] INFO  com.ordint.tcpears.server.TCPServer - Admin rest server listening on 6013
+21:38:03.855 [main] INFO  com.ordint.tcpears.server.TCPServer - Starting server....
+21:38:03.864 [main] INFO  com.ordint.tcpears.server.TCPServer - Binding tcp ports
+21:38:03.864 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5011
+21:38:03.959 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5012
+21:38:03.959 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5013
+21:38:03.959 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5014
+21:38:03.959 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5015
+21:38:03.959 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5016
+21:38:03.959 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5017
+21:38:03.959 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5018
+21:38:03.959 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5019
+21:38:03.959 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5020
+21:38:03.959 [main] INFO  com.ordint.tcpears.server.TCPServer - Binding udp ports
+21:38:03.959 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5011
+21:38:03.975 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5012
+21:38:03.975 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5013
+21:38:03.975 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5014
+21:38:03.975 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5015
+21:38:03.975 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5016
+21:38:03.975 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5017
+21:38:03.975 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5018
+21:38:03.975 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5019
+21:38:03.975 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5020
+21:38:03.975 [main] INFO  com.ordint.tcpears.server.TCPServer - Admin rest server listening on 6013
+21:38:09.713 [main] INFO  com.ordint.tcpears.server.TCPServer - Starting server....
+21:38:09.723 [main] INFO  com.ordint.tcpears.server.TCPServer - Binding tcp ports
+21:38:09.723 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5011
+21:38:09.833 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5012
+21:38:09.833 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5013
+21:38:09.833 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5014
+21:38:09.833 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5015
+21:38:09.833 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5016
+21:38:09.833 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5017
+21:38:09.833 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5018
+21:38:09.833 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5019
+21:38:09.833 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5020
+21:38:09.849 [main] INFO  com.ordint.tcpears.server.TCPServer - Binding udp ports
+21:38:09.849 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5011
+21:38:09.849 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5012
+21:38:09.849 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5013
+21:38:09.849 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5014
+21:38:09.849 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5015
+21:38:09.849 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5016
+21:38:09.849 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5017
+21:38:09.865 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5018
+21:38:09.865 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5019
+21:38:09.865 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5020
+21:38:09.865 [main] INFO  com.ordint.tcpears.server.TCPServer - Admin rest server listening on 6013
+21:50:47.710 [main] INFO  com.ordint.tcpears.server.TCPServer - Starting server....
+21:50:47.724 [main] INFO  com.ordint.tcpears.server.TCPServer - Binding tcp ports
+21:50:47.724 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5011
+21:50:47.819 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5012
+21:50:47.819 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5013
+21:50:47.819 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5014
+21:50:47.819 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5015
+21:50:47.819 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5016
+21:50:47.819 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5017
+21:50:47.819 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5018
+21:50:47.819 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5019
+21:50:47.819 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5020
+21:50:47.819 [main] INFO  com.ordint.tcpears.server.TCPServer - Binding udp ports
+21:50:47.819 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5011
+21:50:47.834 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5012
+21:50:47.834 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5013
+21:50:47.834 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5014
+21:50:47.834 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5015
+21:50:47.834 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5016
+21:50:47.834 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5017
+21:50:47.834 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5018
+21:50:47.834 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5019
+21:50:47.834 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5020
+21:50:47.834 [main] INFO  com.ordint.tcpears.server.TCPServer - Admin rest server listening on 6013
+21:51:10.724 [main] INFO  com.ordint.tcpears.server.TCPServer - Starting server....
+21:51:10.741 [main] INFO  com.ordint.tcpears.server.TCPServer - Binding tcp ports
+21:51:10.741 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5011
+21:51:10.836 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5012
+21:51:10.836 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5013
+21:51:10.836 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5014
+21:51:10.836 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5015
+21:51:10.836 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5016
+21:51:10.836 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5017
+21:51:10.836 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5018
+21:51:10.836 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5019
+21:51:10.836 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5020
+21:51:10.836 [main] INFO  com.ordint.tcpears.server.TCPServer - Binding udp ports
+21:51:10.836 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5011
+21:51:10.867 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5012
+21:51:10.867 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5013
+21:51:10.867 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5014
+21:51:10.867 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5015
+21:51:10.867 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5016
+21:51:10.867 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5017
+21:51:10.867 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5018
+21:51:10.867 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5019
+21:51:10.883 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5020
+21:51:10.883 [main] INFO  com.ordint.tcpears.server.TCPServer - Admin rest server listening on 6013
+21:51:20.341 [nioEventLoopGroup-4-1] WARN  c.o.tcpears.server.StringHandler - Error handling input
+java.lang.NumberFormatException: For input string: "0.08700;"
+	at sun.misc.FloatingDecimal.readJavaFormatString(Unknown Source) ~[na:1.8.0_25]
+	at sun.misc.FloatingDecimal.parseDouble(Unknown Source) ~[na:1.8.0_25]
+	at java.lang.Double.parseDouble(Unknown Source) ~[na:1.8.0_25]
+	at com.ordint.tcpears.domain.DefaultInputParser.parse(DefaultInputParser.java:41) ~[classes/:na]
+	at com.ordint.tcpears.service.impl.PositionServiceImpl.update(PositionServiceImpl.java:35) ~[classes/:na]
+	at com.ordint.tcpears.server.StringHandler.channelRead0(StringHandler.java:23) ~[classes/:na]
+	at com.ordint.tcpears.server.StringHandler.channelRead0(StringHandler.java:11) ~[classes/:na]
+	at io.netty.channel.SimpleChannelInboundHandler.channelRead(SimpleChannelInboundHandler.java:105) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:339) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:324) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.handler.codec.MessageToMessageDecoder.channelRead(MessageToMessageDecoder.java:103) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:339) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:324) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.handler.codec.MessageToMessageDecoder.channelRead(MessageToMessageDecoder.java:103) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:339) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:324) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:847) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.AbstractNioMessageChannel$NioMessageUnsafe.read(AbstractNioMessageChannel.java:93) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:511) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:468) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:382) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:354) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$2.run(SingleThreadEventExecutor.java:111) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:137) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at java.lang.Thread.run(Unknown Source) [na:1.8.0_25]
+21:51:43.289 [main] INFO  com.ordint.tcpears.server.TCPServer - Starting server....
+21:51:43.297 [main] INFO  com.ordint.tcpears.server.TCPServer - Binding tcp ports
+21:51:43.297 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5011
+21:51:43.399 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5012
+21:51:43.399 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5013
+21:51:43.399 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5014
+21:51:43.399 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5015
+21:51:43.399 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5016
+21:51:43.399 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5017
+21:51:43.399 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5018
+21:51:43.399 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5019
+21:51:43.399 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5020
+21:51:43.399 [main] INFO  com.ordint.tcpears.server.TCPServer - Binding udp ports
+21:51:43.399 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5011
+21:51:43.414 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5012
+21:51:43.414 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5013
+21:51:43.414 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5014
+21:51:43.414 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5015
+21:51:43.414 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5016
+21:51:43.414 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5017
+21:51:43.414 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5018
+21:51:43.414 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5019
+21:51:43.414 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5020
+21:51:43.414 [main] INFO  com.ordint.tcpears.server.TCPServer - Admin rest server listening on 6013
+21:52:40.656 [main] INFO  com.ordint.tcpears.server.TCPServer - Starting server....
+21:52:40.671 [main] INFO  com.ordint.tcpears.server.TCPServer - Binding tcp ports
+21:52:40.671 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5011
+21:52:40.766 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5012
+21:52:40.766 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5013
+21:52:40.766 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5014
+21:52:40.766 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5015
+21:52:40.766 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5016
+21:52:40.766 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5017
+21:52:40.766 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5018
+21:52:40.766 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5019
+21:52:40.766 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5020
+21:52:40.766 [main] INFO  com.ordint.tcpears.server.TCPServer - Binding udp ports
+21:52:40.766 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5011
+21:52:40.782 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5012
+21:52:40.782 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5013
+21:52:40.782 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5014
+21:52:40.782 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5015
+21:52:40.782 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5016
+21:52:40.782 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5017
+21:52:40.782 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5018
+21:52:40.782 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5019
+21:52:40.782 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5020
+21:52:40.782 [main] INFO  com.ordint.tcpears.server.TCPServer - Admin rest server listening on 6013
+21:54:05.603 [main] INFO  com.ordint.tcpears.server.TCPServer - Starting server....
+21:54:05.617 [main] INFO  com.ordint.tcpears.server.TCPServer - Binding tcp ports
+21:54:05.617 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5011
+21:54:05.711 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5012
+21:54:05.711 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5013
+21:54:05.711 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5014
+21:54:05.711 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5015
+21:54:05.711 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5016
+21:54:05.711 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5017
+21:54:05.711 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5018
+21:54:05.711 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5019
+21:54:05.711 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5020
+21:54:05.711 [main] INFO  com.ordint.tcpears.server.TCPServer - Binding udp ports
+21:54:05.711 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5011
+21:54:05.727 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5012
+21:54:05.727 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5013
+21:54:05.727 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5014
+21:54:05.727 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5015
+21:54:05.727 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5016
+21:54:05.727 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5017
+21:54:05.727 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5018
+21:54:05.727 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5019
+21:54:05.727 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5020
+21:54:05.727 [main] INFO  com.ordint.tcpears.server.TCPServer - Admin rest server listening on 6013
+21:54:16.901 [nioEventLoopGroup-4-1] WARN  c.o.tcpears.server.StringHandler - Error handling input
+java.lang.NumberFormatException: For input string: "0.08700UDP9999"
+	at sun.misc.FloatingDecimal.readJavaFormatString(Unknown Source) ~[na:1.8.0_25]
+	at sun.misc.FloatingDecimal.parseDouble(Unknown Source) ~[na:1.8.0_25]
+	at java.lang.Double.parseDouble(Unknown Source) ~[na:1.8.0_25]
+	at com.ordint.tcpears.domain.DefaultInputParser.parse(DefaultInputParser.java:41) ~[classes/:na]
+	at com.ordint.tcpears.service.impl.PositionServiceImpl.update(PositionServiceImpl.java:35) ~[classes/:na]
+	at com.ordint.tcpears.server.StringHandler.channelRead0(StringHandler.java:23) ~[classes/:na]
+	at com.ordint.tcpears.server.StringHandler.channelRead0(StringHandler.java:11) ~[classes/:na]
+	at io.netty.channel.SimpleChannelInboundHandler.channelRead(SimpleChannelInboundHandler.java:105) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:339) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:324) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.handler.codec.MessageToMessageDecoder.channelRead(MessageToMessageDecoder.java:103) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:339) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:324) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:242) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:339) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:324) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.handler.codec.MessageToMessageDecoder.channelRead(MessageToMessageDecoder.java:103) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:339) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:324) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:847) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.AbstractNioMessageChannel$NioMessageUnsafe.read(AbstractNioMessageChannel.java:93) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:511) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:468) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:382) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:354) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$2.run(SingleThreadEventExecutor.java:111) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:137) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at java.lang.Thread.run(Unknown Source) [na:1.8.0_25]
+22:03:51.049 [main] INFO  com.ordint.tcpears.server.TCPServer - Starting server....
+22:03:51.067 [main] INFO  com.ordint.tcpears.server.TCPServer - Binding tcp ports
+22:03:51.067 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5011
+22:03:51.178 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5012
+22:03:51.178 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5013
+22:03:51.178 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5014
+22:03:51.178 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5015
+22:03:51.178 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5016
+22:03:51.178 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5017
+22:03:51.178 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5018
+22:03:51.178 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5019
+22:03:51.178 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5020
+22:03:51.178 [main] INFO  com.ordint.tcpears.server.TCPServer - Binding udp ports
+22:03:51.178 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5011
+22:03:51.193 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5012
+22:03:51.193 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5013
+22:03:51.193 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5014
+22:03:51.193 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5015
+22:03:51.193 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5016
+22:03:51.193 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5017
+22:03:51.193 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5018
+22:03:51.193 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5019
+22:03:51.193 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5020
+22:03:51.193 [main] INFO  com.ordint.tcpears.server.TCPServer - Admin rest server listening on 6013
+22:06:44.658 [main] INFO  com.ordint.tcpears.server.TCPServer - Starting server....
+22:06:44.671 [main] INFO  com.ordint.tcpears.server.TCPServer - Binding tcp ports
+22:06:44.671 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5011
+22:06:44.781 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5012
+22:06:44.781 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5013
+22:06:44.781 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5014
+22:06:44.781 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5015
+22:06:44.781 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5016
+22:06:44.781 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5017
+22:06:44.781 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5018
+22:06:44.781 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5019
+22:06:44.781 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5020
+22:06:44.781 [main] INFO  com.ordint.tcpears.server.TCPServer - Binding udp ports
+22:06:44.781 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5011
+22:06:44.781 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5012
+22:06:44.781 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5013
+22:06:44.781 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5014
+22:06:44.781 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5015
+22:06:44.781 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5016
+22:06:44.781 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5017
+22:06:44.781 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5018
+22:06:44.781 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5019
+22:06:44.781 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5020
+22:06:44.781 [main] INFO  com.ordint.tcpears.server.TCPServer - Admin rest server listening on 6013
+22:07:52.457 [main] INFO  com.ordint.tcpears.server.TCPServer - Starting server....
+22:07:52.461 [main] INFO  com.ordint.tcpears.server.TCPServer - Binding tcp ports
+22:07:52.461 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5011
+22:07:52.572 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5012
+22:07:52.572 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5013
+22:07:52.572 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5014
+22:07:52.572 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5015
+22:07:52.572 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5016
+22:07:52.572 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5017
+22:07:52.572 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5018
+22:07:52.572 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5019
+22:07:52.572 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5020
+22:07:52.572 [main] INFO  com.ordint.tcpears.server.TCPServer - Binding udp ports
+22:07:52.572 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5011
+22:07:52.587 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5012
+22:07:52.587 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5013
+22:07:52.587 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5014
+22:07:52.587 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5015
+22:07:52.587 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5016
+22:07:52.603 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5017
+22:07:52.603 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5018
+22:07:52.603 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5019
+22:07:52.603 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5020
+22:07:52.603 [main] INFO  com.ordint.tcpears.server.TCPServer - Admin rest server listening on 6013
+22:09:23.685 [main] INFO  com.ordint.tcpears.server.TCPServer - Starting server....
+22:09:23.703 [main] INFO  com.ordint.tcpears.server.TCPServer - Binding tcp ports
+22:09:23.703 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5011
+22:09:23.814 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5012
+22:09:23.814 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5013
+22:09:23.814 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5014
+22:09:23.814 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5015
+22:09:23.814 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5016
+22:09:23.814 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5017
+22:09:23.814 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5018
+22:09:23.814 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5019
+22:09:23.814 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5020
+22:09:23.814 [main] INFO  com.ordint.tcpears.server.TCPServer - Binding udp ports
+22:09:23.814 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5011
+22:09:23.829 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5012
+22:09:23.829 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5013
+22:09:23.829 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5014
+22:09:23.829 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5015
+22:09:23.829 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5016
+22:09:23.829 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5017
+22:09:23.829 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5018
+22:09:23.829 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5019
+22:09:23.829 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5020
+22:09:23.829 [main] INFO  com.ordint.tcpears.server.TCPServer - Admin rest server listening on 6013
+22:10:00.590 [main] INFO  com.ordint.tcpears.server.TCPServer - Starting server....
+22:10:00.609 [main] INFO  com.ordint.tcpears.server.TCPServer - Binding tcp ports
+22:10:00.609 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5011
+22:10:00.703 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5012
+22:10:00.703 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5013
+22:10:00.703 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5014
+22:10:00.703 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5015
+22:10:00.703 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5016
+22:10:00.703 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5017
+22:10:00.703 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5018
+22:10:00.703 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5019
+22:10:00.703 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5020
+22:10:00.703 [main] INFO  com.ordint.tcpears.server.TCPServer - Binding udp ports
+22:10:00.703 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5011
+22:10:00.719 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5012
+22:10:00.719 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5013
+22:10:00.719 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5014
+22:10:00.719 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5015
+22:10:00.719 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5016
+22:10:00.719 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5017
+22:10:00.719 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5018
+22:10:00.719 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5019
+22:10:00.719 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5020
+22:10:00.719 [main] INFO  com.ordint.tcpears.server.TCPServer - Admin rest server listening on 6013
+22:10:04.380 [main] INFO  com.ordint.tcpears.server.TCPServer - Starting server....
+22:10:04.380 [main] INFO  com.ordint.tcpears.server.TCPServer - Binding tcp ports
+22:10:04.389 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5011
+22:10:04.484 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5012
+22:10:04.484 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5013
+22:10:04.484 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5014
+22:10:04.484 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5015
+22:10:04.484 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5016
+22:10:04.484 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5017
+22:10:04.484 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5018
+22:10:04.484 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5019
+22:10:04.484 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5020
+22:10:04.499 [main] INFO  com.ordint.tcpears.server.TCPServer - Binding udp ports
+22:10:04.499 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5011
+22:10:04.499 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5012
+22:10:04.499 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5013
+22:10:04.499 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5014
+22:10:04.499 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5015
+22:10:04.499 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5016
+22:10:04.499 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5017
+22:10:04.499 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5018
+22:10:04.499 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5019
+22:10:04.499 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5020
+22:10:04.499 [main] INFO  com.ordint.tcpears.server.TCPServer - Admin rest server listening on 6013
+22:10:42.246 [nioEventLoopGroup-4-1] WARN  c.o.tcpears.server.StringHandler - Error handling input
+java.lang.NumberFormatException: For input string: "0.08700UDP9999"
+	at sun.misc.FloatingDecimal.readJavaFormatString(Unknown Source) ~[na:1.8.0_25]
+	at sun.misc.FloatingDecimal.parseDouble(Unknown Source) ~[na:1.8.0_25]
+	at java.lang.Double.parseDouble(Unknown Source) ~[na:1.8.0_25]
+	at com.ordint.tcpears.domain.DefaultInputParser.parse(DefaultInputParser.java:41) ~[classes/:na]
+	at com.ordint.tcpears.service.impl.PositionServiceImpl.update(PositionServiceImpl.java:35) ~[classes/:na]
+	at com.ordint.tcpears.server.StringHandler.channelRead0(StringHandler.java:23) ~[classes/:na]
+	at com.ordint.tcpears.server.StringHandler.channelRead0(StringHandler.java:11) ~[classes/:na]
+	at io.netty.channel.SimpleChannelInboundHandler.channelRead(SimpleChannelInboundHandler.java:105) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:339) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:324) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.handler.codec.MessageToMessageDecoder.channelRead(MessageToMessageDecoder.java:103) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:339) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:324) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:242) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:339) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:324) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.handler.codec.MessageToMessageDecoder.channelRead(MessageToMessageDecoder.java:103) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:339) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:324) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:847) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.AbstractNioMessageChannel$NioMessageUnsafe.read(AbstractNioMessageChannel.java:93) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:511) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:468) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:382) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:354) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$2.run(SingleThreadEventExecutor.java:111) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:137) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at java.lang.Thread.run(Unknown Source) [na:1.8.0_25]
+22:11:29.858 [main] INFO  com.ordint.tcpears.server.TCPServer - Starting server....
+22:11:29.871 [main] INFO  com.ordint.tcpears.server.TCPServer - Binding tcp ports
+22:11:29.871 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5011
+22:11:29.981 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5012
+22:11:29.981 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5013
+22:11:29.981 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5014
+22:11:29.981 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5015
+22:11:29.981 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5016
+22:11:29.981 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5017
+22:11:29.981 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5018
+22:11:29.981 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5019
+22:11:29.981 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5020
+22:11:29.981 [main] INFO  com.ordint.tcpears.server.TCPServer - Binding udp ports
+22:11:29.981 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5011
+22:11:29.997 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5012
+22:11:29.997 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5013
+22:11:29.997 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5014
+22:11:29.997 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5015
+22:11:29.997 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5016
+22:11:29.997 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5017
+22:11:29.997 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5018
+22:11:29.997 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5019
+22:11:29.997 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5020
+22:11:29.997 [main] INFO  com.ordint.tcpears.server.TCPServer - Admin rest server listening on 6013
+22:13:06.033 [nioEventLoopGroup-4-1] WARN  c.o.tcpears.server.StringHandler - Error handling input
+java.lang.NumberFormatException: For input string: "0.08700UDP9999"
+	at sun.misc.FloatingDecimal.readJavaFormatString(Unknown Source) ~[na:1.8.0_25]
+	at sun.misc.FloatingDecimal.parseDouble(Unknown Source) ~[na:1.8.0_25]
+	at java.lang.Double.parseDouble(Unknown Source) ~[na:1.8.0_25]
+	at com.ordint.tcpears.domain.DefaultInputParser.parse(DefaultInputParser.java:41) ~[classes/:na]
+	at com.ordint.tcpears.service.impl.PositionServiceImpl.update(PositionServiceImpl.java:35) ~[classes/:na]
+	at com.ordint.tcpears.server.StringHandler.channelRead0(StringHandler.java:23) ~[classes/:na]
+	at com.ordint.tcpears.server.StringHandler.channelRead0(StringHandler.java:11) ~[classes/:na]
+	at io.netty.channel.SimpleChannelInboundHandler.channelRead(SimpleChannelInboundHandler.java:105) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:339) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:324) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.handler.codec.MessageToMessageDecoder.channelRead(MessageToMessageDecoder.java:103) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:339) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:324) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:242) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:339) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:324) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.handler.codec.MessageToMessageDecoder.channelRead(MessageToMessageDecoder.java:103) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:339) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:324) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:847) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.AbstractNioMessageChannel$NioMessageUnsafe.read(AbstractNioMessageChannel.java:93) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:511) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:468) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:382) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:354) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$2.run(SingleThreadEventExecutor.java:111) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:137) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at java.lang.Thread.run(Unknown Source) [na:1.8.0_25]
+22:13:58.596 [main] INFO  com.ordint.tcpears.server.TCPServer - Starting server....
+22:13:58.614 [main] INFO  com.ordint.tcpears.server.TCPServer - Binding tcp ports
+22:13:58.614 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5011
+22:13:58.708 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5012
+22:13:58.708 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5013
+22:13:58.708 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5014
+22:13:58.708 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5015
+22:13:58.708 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5016
+22:13:58.708 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5017
+22:13:58.708 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5018
+22:13:58.708 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5019
+22:13:58.708 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5020
+22:13:58.708 [main] INFO  com.ordint.tcpears.server.TCPServer - Binding udp ports
+22:13:58.708 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5011
+22:13:58.724 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5012
+22:13:58.724 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5013
+22:13:58.724 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5014
+22:13:58.724 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5015
+22:13:58.724 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5016
+22:13:58.724 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5017
+22:13:58.724 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5018
+22:13:58.724 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5019
+22:13:58.724 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5020
+22:13:58.724 [main] INFO  com.ordint.tcpears.server.TCPServer - Admin rest server listening on 6013
+22:26:15.021 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+22:26:15.068 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+22:26:15.083 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+22:26:15.083 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Stop Tracking group groupId
+22:26:58.074 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+22:26:58.090 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+22:26:58.105 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+22:26:58.105 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Stop Tracking group groupId
+22:35:28.092 [main] INFO  com.ordint.tcpears.server.TCPServer - Starting server....
+22:35:28.096 [main] INFO  com.ordint.tcpears.server.TCPServer - Binding tcp ports
+22:35:28.096 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5011
+22:35:28.191 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5012
+22:35:28.191 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5013
+22:35:28.191 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5014
+22:35:28.191 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5015
+22:35:28.191 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5016
+22:35:28.191 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5017
+22:35:28.191 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5018
+22:35:28.191 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5019
+22:35:28.191 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5020
+22:35:28.191 [main] INFO  com.ordint.tcpears.server.TCPServer - Binding udp ports
+22:35:28.191 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5011
+22:35:28.207 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5012
+22:35:28.207 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5013
+22:35:28.207 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5014
+22:35:28.207 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5015
+22:35:28.207 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5016
+22:35:28.207 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5017
+22:35:28.207 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5018
+22:35:28.207 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5019
+22:35:28.207 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5020
+22:35:28.207 [main] INFO  com.ordint.tcpears.server.TCPServer - Admin rest server listening on 6013

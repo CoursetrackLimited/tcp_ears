@@ -152,9 +152,26 @@ public class ClientManagerImplTest {
 				hasEntry("newClient", "323.2,122.2,32 ")));
 		
 		assertThat(actual.get("groupId").size(), equalTo(1));
-
+		
+	}
+	@Test
+	public void previousLatLongShouldBeAdded() throws Exception {
+		Position p1 = createPosition("11","22", "-1", "groupId", "clientId1");
+		Position p2 = createPosition("33","44", "-1", "groupId", "clientId1");
+		
+		clientManager.updatePostion(p1);
+		ConcurrentMap<String, List<Position>> actual = clientManager.groupClientsByGroup();
+		
+		assertThat(actual.get("groupId").get(0).getLastLat(), Matchers.isEmptyOrNullString());
+		assertThat(actual.get("groupId").get(0).getLastLon(), Matchers.isEmptyOrNullString());
+		
+		clientManager.updatePostion(p2);
+		actual = clientManager.groupClientsByGroup();
+		assertThat(actual.get("groupId").get(0).getLastLat(), Matchers.equalTo("11"));
+		assertThat(actual.get("groupId").get(0).getLastLon(), Matchers.equalTo("22"));	
 		
 		
 	}
+	
 	
 }

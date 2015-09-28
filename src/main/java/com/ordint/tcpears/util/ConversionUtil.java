@@ -1,10 +1,15 @@
 package com.ordint.tcpears.util;
 
+import static java.lang.Double.parseDouble;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+
+
+import com.javadocmd.simplelatlng.LatLng;
 
 public final class ConversionUtil {
 
@@ -48,5 +53,11 @@ public final class ConversionUtil {
     }
     public static String formatDouble(String d) {
     	return StringUtils.stripEnd(d, "0");
+    }
+    
+    public static LatLng toLatLng(String lat, String lng){
+    	
+    	return new LatLng(parseDouble(lat), parseDouble(lng));
+    	
     }
 }

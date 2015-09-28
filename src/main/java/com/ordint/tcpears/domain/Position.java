@@ -27,7 +27,7 @@ import com.ordint.tcpears.domain.json.JsonLocalDateTimeSerialiser;
 @Getter
 @AllArgsConstructor
 @ToString
-@EqualsAndHashCode
+@EqualsAndHashCode(exclude={"standing"})
 @JsonIgnoreProperties({"groupId","clientId","currentLag", "gpstimestamp","speedValue"})
 public class Position {
 	private static final DateTimeFormatter GPS_TIMESTAMP_FORMAT = DateTimeFormatter.ofPattern("Hmmss.SS");
@@ -50,6 +50,11 @@ public class Position {
 	private LocalDateTime timeCreated;
 	@NonFinal
 	private Long lag;
+	
+	private int standing;
+	private String lastLat;
+	private String lastLon;
+	
 	@JsonCreator
 	public Position() {}
 
@@ -81,7 +86,16 @@ public class Position {
 			altitude = previous.getAltitude();
 		}
 		return this;
-
+	}
+	public Position setPreviousLatLon(Position previous) {
+		if (!previous.getLat().equals(lat) && !previous.getLon().equals(lon)) {
+			lastLat = previous.getLat();
+			lastLon = previous.getLon();			
+		} else {
+			lastLat = previous.getLastLat();
+			lastLon = previous.getLastLon();
+		}
+		return this;
 	}
 
 	public double getSpeedValue() {
@@ -103,11 +117,32 @@ public class Position {
 		private LocalDateTime timeCreated;
 		private Long lag;
 		private Clock clock;
+		private int standing;
+		private String lastLat;
+		private String lastLon;
 
 		PositionBuilder(Clock clock) {
 			this.clock = clock;
 		}
-
+		public PositionBuilder position(Position toCopy) {
+			this.altitude = toCopy.altitude;
+			this.clientDetails = toCopy.clientDetails;
+			this.heading = toCopy.heading;
+			this.horizontalAccuracy = toCopy.horizontalAccuracy;
+			this.lag = toCopy.lag;
+			this.lat = toCopy.lat;
+			this.lon = toCopy.lon;
+			this.speed = toCopy.speed;
+			this.status = toCopy.status;
+			this.timeCreated = toCopy.timeCreated;
+			this.timestamp = toCopy.timestamp;
+			this.verticalAccuracy = toCopy.verticalAccuracy;
+			this.standing = toCopy.standing;
+			this.lastLat = toCopy.lastLat;
+			this.lastLon = toCopy.lastLon;
+			return this;
+			
+		}
 		public PositionBuilder timestampFromTime(final String time) {
 			
 			this.timestamp = LocalDateTime.of(LocalDate.now(clock), LocalTime.parse(time, GPS_TIMESTAMP_FORMAT));
@@ -170,9 +205,21 @@ public class Position {
 			this.lag = lag;
 			return this;
 		}
+		public PositionBuilder standing(final int standing) {
+			this.standing = standing;
+			return this;
+		}
+		public PositionBuilder lastLat(final String lastLat) {
+			this.lastLat = lastLat;
+			return this;
+		}
+		public PositionBuilder lastLon(final String lastLon) {
+			this.lastLon = lastLon;
+			return this;
+		}
 		public Position build() {
 			return new Position(timestamp, lat, lon, speed, altitude, heading, horizontalAccuracy, verticalAccuracy,
-					status, clientDetails, timeCreated, lag);
+					status, clientDetails, timeCreated, lag, standing, lastLat, lastLon);
 		}
 
 		@Override
@@ -181,14 +228,14 @@ public class Position {
 					+ ", speed=" + this.speed + ", altitude=" + this.altitude + ", heading=" + this.heading
 					+ ", horizontalAccuracy=" + this.horizontalAccuracy + ", verticalAccuracy=" + this.verticalAccuracy
 					+ ", status=" + this.status + ", clientDetails=" + this.clientDetails + ", timeCreated="
-					+ this.timeCreated + ", lag="+ lag + ")";
+					+ this.timeCreated + ", lag="+ lag + ", standing =" + standing + ",lastLat=" + lastLat + ", lastLon=" + lastLon +")";
 		}
 	}
 
 	public static PositionBuilder builder() {
 		return new PositionBuilder(Clock.systemUTC());
 	}
-	protected static PositionBuilder builder(Clock clock) {
+	public static PositionBuilder builder(Clock clock) {
 		return new PositionBuilder(clock);
 	}
 }

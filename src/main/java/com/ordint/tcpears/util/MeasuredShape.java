@@ -21,6 +21,7 @@ package com.ordint.tcpears.util;
  */
 
 
+import static java.awt.geom.Line2D.ptSegDist;
 import static java.lang.Math.abs;
 import static java.lang.Math.pow;
 
@@ -36,12 +37,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.ordint.tcpears.domain.PositionDistanceInfo;
+
 /** This represents a single closed path.
  * <P>This object can trace arbitrary amounts of itself using the
  * <code>writeShape()</code> methods.
  * 
  */
 public class MeasuredShape implements Serializable {
+	
+	private static final Logger log = LoggerFactory.getLogger(MeasuredShape.class);
+	
 	private static final long serialVersionUID = 1L;
 	
 	/** Because a MeasuredShape must be exactly 1 subpath, this method
@@ -622,8 +631,8 @@ public class MeasuredShape implements Serializable {
 
 	public double getPointDistance(Point2D point) {
 		double distance = 0;
-		double x = (double) point.getX();
-		double y = (double) point.getY();
+		double x = point.getX();
+		double y = point.getY();
 		for(int a = 0; a<segments.length; a++) {
 			double t1 = (segments[a].getX(1) - segments[a].getX(0)) / (segments[a].getY(1) - segments[a].getY(0)) ;
 			double t2 = (x - segments[a].getX(0) ) / (y-segments[a].getY(0)) ;
@@ -671,11 +680,12 @@ public class MeasuredShape implements Serializable {
 	 */
 	public Point2D getClosestPoint(Point2D externalPoint) {
 
-		double shortestDistance = 1;
-		double currentDistance = 1; 
+		double shortestDistance = java.lang.Double.MAX_VALUE;
+		double currentDistance = shortestDistance; 
 		Line2D lineToUse = null;
+		Segment segmentToUse = null;
 		
-		for (int i = 0 ; i< segments.length; i++) {
+		for (int i = 0 ; i< segments.length-1; i++) {
 			if(segments[i].type != PathIterator.SEG_LINETO) {
 				throw new IllegalArgumentException("Cant run getCLosestPoint on track not made of line segments");
 			}
@@ -688,14 +698,91 @@ public class MeasuredShape implements Serializable {
 					//System.out.println(shortestDistance);
 					//System.out.println("--- " + externalPoint.distance(line.getP1()) + " -- " + externalPoint.distance(line.getP2()));
 					lineToUse = line;
+					segmentToUse = segments[i];
 				}
 			//}
 		}
-		return calculateClosestPoint(lineToUse, shortestDistance, externalPoint);
+		if (lineToUse == null) {
+			return null;
+		}
+		return calculateClosestPoint(lineToUse, segmentToUse, shortestDistance, externalPoint);
 		
 		
 		
 	}
+	
+	public PositionDistanceInfo calculateDistanceInfo(com.ordint.tcpears.domain.Position position) {
+		Point2D currentPoint = PredictionUtil.toPoint(position);
+		double[] info = getDistanceAlongTrack(currentPoint);
+		if (info != null) {
+			return new PositionDistanceInfo(position.getClientId(), info[2], -1, 0);
+		} else {
+			log.warn("Could not cacluclate distance info for {}", position);
+			return  new PositionDistanceInfo(position.getClientId(), -1, -1, 0);
+		}
+		
+	}
+	/**
+	 * Returns a Point2D whose position is calculated by moving to the nearest
+	 * point on the track, travelling along the track for a distance determined
+	 * by the timeInMilis and speed parameters and then offsetting the point by
+	 * the amount required to place the original point on the track
+	 * 
+	 * @param offTrackpoint
+	 * @param speed in meters per second
+	 * @param timeInMilis 
+	 * @return
+	 */
+	public Point2D predict(Point2D offTrackpoint, double speed, double timeInMilis) {
+		
+		Point2D startGuidePoint = getClosestPoint(offTrackpoint);
+		double offset = offTrackpoint.distance(startGuidePoint);
+		double cos = (offTrackpoint.getX() - startGuidePoint.getX()) / offset;
+		double sin = (offTrackpoint.getY() - startGuidePoint.getY()) / offset;
+		
+		// get final prediction points based on distance
+		double distance = speed * (timeInMilis / 1000);
+		Point2D retval = getPoint(distance, startGuidePoint);
+		retval.setLocation(retval.getX() + (offset * cos), retval.getY() + (offset * sin));
+		return retval;
+		
+	}
+	/**
+	 * Finds the nearset point on this track to the offTrackpoint value and
+	 * calculates how far from the start of the track the point is
+	 * 
+	 * @param offTrackpoint
+	 * @return a double array containint the x,y coordinates of the nearest point and its distance form the start
+	 */
+	public double[] getDistanceAlongTrack(Point2D offTrackpoint) {
+
+		double shortestDistance = java.lang.Double.MAX_VALUE;
+		double currentDistance = java.lang.Double.MAX_VALUE; 
+		int segmentIndex =  -1;
+		
+		for (int i = 0 ; i< segments.length-1; i++) {
+			if(segments[i].type != PathIterator.SEG_LINETO) {
+				throw new IllegalArgumentException("Cant run getCLosestPoint on track not made of line segments");
+			}
+			currentDistance = ptSegDist(segments[i].data[0], segments[i].data[1], segments[i].data[2], segments[i].data[3],
+						offTrackpoint.getX(),offTrackpoint.getY());
+			if (currentDistance < shortestDistance) {
+				shortestDistance =  currentDistance;
+				//System.out.println(shortestDistance);
+				//System.out.println("--- " + externalPoint.distance(line.getP1()) + " -- " + externalPoint.distance(line.getP2()));
+				segmentIndex = i;
+			}
+			//}
+		}
+		if (segmentIndex == -1) {
+			return null;
+		}
+		return calculateDistance(segmentIndex, shortestDistance, offTrackpoint);
+		
+		
+		
+	}	
+	
 	public static boolean validSegment(Line2D line1, Point2D externalPoint) {
 		double x1,x2,x3,y1,y2,y3;
 		if(true)return true;
@@ -716,7 +803,7 @@ public class MeasuredShape implements Serializable {
 		
 		return true;
 	}
-	public static  Point2D calculateClosestPoint(Line2D segmentLine, double distance, Point2D from) {
+	public  Point2D calculateClosestPoint(Line2D segmentLine, Segment segment, double distance, Point2D from) {
 		
         double normal = getNormal(segmentLine);
         double cos = 1 /(Math.sqrt(1 + Math.pow(normal,2)));
@@ -729,15 +816,77 @@ public class MeasuredShape implements Serializable {
 		y1 = segmentLine.getY1();
 		y2 = segmentLine.getY2();
 		y3 = from.getY();
-		double sgn = Math.signum(((x2-x1) * (y3-x1)) - ((y2-y1) * (x3-x1)));
 		
-		//System.out.println("DOT " + sgn);
+		
+		double sgn = Math.signum(((x3-x1) * (y2-y1)) - ((y3-y1) * (x2-x1))); 
+		if(y2 < y1) {
+			sgn  = sgn * -1;
+		}
         
-        Point2D closestPoint = new Point2D.Double(from.getX() - sgn *(distance * cos), from.getY() -  sgn * (distance * sin));
-     
+        Point2D closestPoint = new Point2D.Double(from.getX() - sgn * (distance * cos), from.getY() -  sgn * (distance * sin));
+
         return closestPoint;
 	}
 	
+	public double[] calculateDistance(int segmentIndex, double distance, Point2D from) {
+		double x1, x2,x3,  y1, y2, y3;
+		x1 = segments[segmentIndex].data[0];
+		x2 = segments[segmentIndex].data[2];
+		x3 = from.getX();
+		y1 = segments[segmentIndex].data[1];
+		y2 = segments[segmentIndex].data[3];
+		y3 = from.getY();		
+
+        double normal = -1 / ((y2-y1)/(x2-x1));
+        double cos = 1 /(Math.sqrt(1 + Math.pow(normal,2)));
+        double sin = normal / (Math.sqrt(1 + Math.pow(normal,2)));
+        
+
+		double sgn = Math.signum(((x3-x1) * (y2-y1)) - ((y3-y1) * (x2-x1))); 
+		if(y2 < y1) {
+			sgn  = sgn * -1;
+		}
+		
+        double cpx = from.getX() - sgn *(distance * cos);
+        double cpy = from.getY() -  sgn * (distance * sin);
+        double dist = 0;     
+        int range = inRange(x1, y1, x2, y2, cpx,cpy);
+        if(range ==-1) {
+        	dist = 0;
+        } else if (range ==1) {
+        	dist = segments[segmentIndex].realDistance;
+		} else {
+			 double a2 = from.distanceSq(x1,y1);
+			 double b2 = from.distanceSq(cpx, cpy);
+			 dist =  Math.sqrt(Math.abs(a2-b2)) ;
+		}
+    	
+    	//add all the previous segment distances;
+    	for(int i = 0 ; i < segmentIndex; i++) {
+    		dist = dist + segments[i].realDistance;
+    	}
+        return new double[] {cpx, cpy, dist};
+	}
+	
+
+
+	public static int inRange(double x1, double y1, double x2, double y2,
+            double px, double py) {
+		//double sgn = Math.signum(((x3-x1) * (dy) - ((y3-y1) * (dx)));
+		double dx = x2 - x1;
+		double dy = y2 - y1;
+		double innerProduct = (px - x1)*dx + (py - y1)*dy;
+		if (innerProduct < 0) {
+			return -1;
+		} else if (innerProduct > dx*dx + dy*dy) {
+			return 1;
+		} else {
+			return 0;
+		}
+			
+		//return 0 <= innerProduct && innerProduct <= dx*dx + dy*dy;
+	}	
+
     private static double getNormal(Line2D line)
     {
         return -1 / getSlope(line);

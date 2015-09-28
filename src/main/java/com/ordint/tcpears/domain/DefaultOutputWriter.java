@@ -17,12 +17,14 @@ public class DefaultOutputWriter implements OutputWriter {
 		cells[1] = p.getClientId();
 		cells[i - 19] = p.getGPSTimestamp();
 		cells[i - 13] = p.getStatus();
+		cells[i - 11] = String.valueOf(p.getStanding());
 		cells[i - 12] = p.getHorizontalAccuracy();
 		cells[i - 6] = p.getSpeed();
 		cells[8] = p.getAltitude();
 		cells[i - 1] = p.getLon();
 		cells[i - 2] = p.getLat();
 		cells[i - 3] = String.valueOf(p.getLag());
+		cells[4] = p.getHeading();
 		return StringUtils.join(cells, ",");
 
 	}

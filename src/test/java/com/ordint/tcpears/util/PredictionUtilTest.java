@@ -14,14 +14,18 @@ import com.ordint.tcpears.domain.PositionUtil;
 
 public class PredictionUtilTest {
 
+	private final static double LAT = 51.419744;
+	private final static double LON = -0.401670;
+	private final static double X = -27853.825420170127;
+	private final static double Y = 5717614.66216199;
 	@Before
 	public void setUp() throws Exception {
 	}
 
 	@Test
 	public void shouldConvertTrackPositionToPoint() throws Exception {
-		Point2D actual = PredictionUtil.toPoint("12.33,04.00004,10.90 ");
-		Point2D expected = new Point2D.Double(12.33, 04.00004);
+		Point2D actual = PredictionUtil.toPoint(String.format("%s,%s,10.2 ", LON, LAT));
+		Point2D expected = new Point2D.Double(X, Y);
 		
 		assertThat(actual, equalTo(expected));
 		
@@ -29,25 +33,25 @@ public class PredictionUtilTest {
 
 	@Test
 	public void shouldConvertLatLongToPoint() throws Exception {
-		Point2D actual = PredictionUtil.toPoint(04.00004, 12.33);
-		Point2D expected = new Point2D.Double(12.33, 04.00004);
+		Point2D actual = PredictionUtil.toPoint(LAT, LON);
+		Point2D expected = new Point2D.Double(X, Y);
 		
 		assertThat(actual, equalTo(expected));
 	}
 
 	@Test
 	public void shouldConvertPositionToPoint() throws Exception {
-		Position p = PositionUtil.createPosition("04.00004", "12.33", "-1");
+		Position p = PositionUtil.createPosition(Double.toString(LAT), Double.toString(LON), "-1");
 		Point2D actual = PredictionUtil.toPoint(p);
-		Point2D expected = new Point2D.Double(12.33, 04.00004);
+		Point2D expected = new Point2D.Double(X, Y);
 		
 		assertThat(actual, equalTo(expected));
 	}
 
 	@Test
 	public void shouldConvertToTrackPosition() throws Exception {
-		String trackPosition = PredictionUtil.toTrackPosition(new Point2D.Double(12.33, 04.00004), "-1");
-		assertThat(trackPosition, equalTo("12.33,4.00004,-1 "));
+		String trackPosition = PredictionUtil.toTrackPosition(new Point2D.Double(X, Y), "-1");
+		assertThat(trackPosition, equalTo(String.format("%s,%s,-1 ", LON, LAT)));
 	}
 
 	@Test
@@ -67,4 +71,24 @@ public class PredictionUtilTest {
 		
 		assertThat(actual, equalTo("12.33,04.00004,10.90 "));
 	}
+	
+	@Test
+	public void latLongToMeters() throws Exception {
+		
+		double lat, lon, x, y;
+		lat = 51.419844;
+		lon =  -0.401731;
+		System.out.println("TO meters " + PredictionUtil.lat2y(51.419844));
+		System.out.println("TO meters " + PredictionUtil.lat2y(51.419847));
+		y =  PredictionUtil.latToMeters(lat);
+		x =  PredictionUtil.lonToMeters(lon);
+		System.out.println("Lat TO meters " + y);
+		System.out.println("Lon TO meters " + x);
+		System.out.println("y TO lat " + PredictionUtil.metersToLat(y));
+		System.out.println("x TO lon " + PredictionUtil.metersToLon(x));
+		
+	}
+		
+	
+	
 }

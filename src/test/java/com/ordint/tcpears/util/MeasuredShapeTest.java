@@ -13,6 +13,8 @@ import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.ordint.tcpears.domain.Position;
+import com.ordint.tcpears.domain.PositionUtil;
 import com.ordint.tcpears.util.prediction.StaticTrackPathBuilder;
 import com.ordint.tcpears.util.prediction.TrackBasedPredictor;
 
@@ -110,9 +112,8 @@ public class MeasuredShapeTest {
 		
 		// this point is on the track -0.3982040560018652,51.41628861332551,0
 		
-		Point2D.Double p = new Point2D.Double(  -0.398032,  51.415837);
+		Point2D p = PredictionUtil.toPoint(51.415837, -0.398032);
 		
-		System.out.println("CLosest Point 1 " + t.getClosestPoint(p));
 		
 		System.out.println("CLosest Point 2 " + shape.getClosestPoint(p));
 		
@@ -165,6 +166,29 @@ public class MeasuredShapeTest {
 		
 		assertTrue(shape.validSegment(new Line2D.Double(-10, -10, -20, -5), new Point2D.Double(-11, -9)));
 	}
+	
+	@Test
+	public void calculateDistanceTest() {
+		StaticTrackPathBuilder builder = new  StaticTrackPathBuilder();
+		Path2D track = builder.build("KEMPTON");	
+		MeasuredShape shape = new  MeasuredShape(track);
+		//-0.398705,51.416924
+		//-0.398677,51.416965
+		//-0.98769,51.416964		
+		Position p1=PositionUtil.createPosition("51.416924", "-0.398705", "-1");
+		Position p2=PositionUtil.createPosition("51.416965", "-0.398677","-1");
+		Position p3=PositionUtil.createPosition("51.416964","-0.398769", "-1");
+		
+		
+		System.out.println(shape.calculateDistanceInfo(p1));
+		System.out.println(shape.calculateDistanceInfo(p2));
+		System.out.println(shape.calculateDistanceInfo(p3));
+		
+		
+		
+		
+	}
+	
 	
 	
 }

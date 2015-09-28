@@ -1,0 +1,23 @@
+12:21:51.186 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+12:21:51.258 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+12:21:51.270 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+12:21:51.271 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Stop Tracking group groupId
+13:24:02.430 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+13:24:02.452 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+13:24:02.470 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+13:24:02.471 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Stop Tracking group groupId
+14:07:28.922 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+14:07:28.953 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+14:07:28.967 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+14:07:28.969 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Stop Tracking group groupId
+21:10:44.266 [main] WARN  c.ordint.tcpears.util.MeasuredShape - Could not cacluclate distance info for Position(timestamp=2015-09-24T10:54:13.150, lat=51.416964, lon=-0.98769, speed=10.4, altitude=-1, heading=119.43, horizontalAccuracy=0.7, verticalAccuracy=0.6, status=D, clientDetails=ClientDetails(groupId=groupId, clientId=clientId, fixedName=null, tempName=null, groupName=null, runnerIdent=null), timeCreated=2015-09-24T21:10:44.263, lag=36991113, standing=0)
+21:11:35.068 [main] WARN  c.ordint.tcpears.util.MeasuredShape - Could not cacluclate distance info for Position(timestamp=2015-09-24T10:54:13.150, lat=51.416964, lon=-0.98769, speed=10.4, altitude=-1, heading=119.43, horizontalAccuracy=0.7, verticalAccuracy=0.6, status=D, clientDetails=ClientDetails(groupId=groupId, clientId=clientId, fixedName=null, tempName=null, groupName=null, runnerIdent=null), timeCreated=2015-09-24T21:11:35.062, lag=37041912, standing=0)
+21:12:23.320 [main] WARN  c.ordint.tcpears.util.MeasuredShape - Could not cacluclate distance info for Position(timestamp=2015-09-24T10:54:13.150, lat=51.416964, lon=-0.98769, speed=10.4, altitude=-1, heading=119.43, horizontalAccuracy=0.7, verticalAccuracy=0.6, status=D, clientDetails=ClientDetails(groupId=groupId, clientId=clientId, fixedName=null, tempName=null, groupName=null, runnerIdent=null), timeCreated=2015-09-24T21:12:11.840, lag=37078690, standing=0)
+21:21:31.273 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+21:21:31.315 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+21:21:31.332 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+21:21:31.334 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Stop Tracking group groupId
+21:23:37.089 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+21:23:37.123 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+21:23:37.140 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+21:23:37.142 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Stop Tracking group groupId

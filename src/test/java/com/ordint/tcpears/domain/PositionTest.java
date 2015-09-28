@@ -1,5 +1,6 @@
 package com.ordint.tcpears.domain;
 
+import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
 
 import java.time.Clock;
@@ -26,6 +27,33 @@ public class PositionTest {
 			.build();
 		
 		assertThat(p.getLag(), Matchers.equalTo(48L));
+		
+	}
+	@Test
+	public void setPreviousLatLon() {
+		
+		Position previous = PositionUtil.createPosition("51.1", "-0.4", "-1");
+		Position current = PositionUtil.createPosition("51.11", "-0.41", "-1");
+		
+		current = current.setPreviousLatLon(previous);
+		
+		assertThat(current.getLastLat(), equalTo("51.1"));
+		assertThat(current.getLastLon(), equalTo("-0.4"));
+		
+	}
+	@Test
+	public void setPreviousLatLonShouldNotChangeIfSame() {
+		
+		Position previous = PositionUtil.createPosition("51.1", "-0.4", "-1");
+		Position current = PositionUtil.createPosition("51.11", "-0.41", "-1");
+		
+		current = current.setPreviousLatLon(previous);
+		
+		Position newP = PositionUtil.createPosition("51.11", "-0.41", "-1").setPreviousLatLon(current);
+		
+		
+		assertThat(newP.getLastLat(), equalTo("51.1"));
+		assertThat(newP.getLastLon(), equalTo("-0.4"));
 		
 	}
 

@@ -51,15 +51,17 @@ public class MemcachePositionPublisher implements PositionPublisher {
 			List<Position> positions = positionGroups.get(groupId);
 			//predictions.putAll(predictionService.predictPositions(groupId, positions));
 			//transform the postions here??
-			
-			ConcurrentMap<String, String> postionMap = positions
-					.stream()
-					.collect(Collectors.toConcurrentMap(Position::getClientId, p -> outputBuilder.write(p)));
+			if (positions != null) {
+				ConcurrentMap<String, String> postionMap = positions
+						.stream()
+						.collect(Collectors.toConcurrentMap(Position::getClientId, p -> outputBuilder.write(p)));
+	
+				//save to memcache
+				String groupKeyName = String.format(LOCATION_PREFIX, groupId);
+				
+				memcacheHelper.set(groupKeyName, groupKeyName, postionMap, 5);
 
-			//save to memcache
-			String groupKeyName = String.format(LOCATION_PREFIX, groupId);
-			
-			memcacheHelper.set(groupKeyName, groupKeyName, postionMap, 5);
+			}
 		}	
 		
 	}

@@ -61,6 +61,9 @@ public class DefaultRaceServiceTest {
 	@Mock
 	private PositionPublisher positionPublisher;
 	
+	@Mock
+	private PositionDecorators positionDecorators;
+	
 	@Before
 	public void setUp() throws Exception {
 	}

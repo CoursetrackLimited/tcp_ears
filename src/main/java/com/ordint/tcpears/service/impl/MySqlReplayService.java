@@ -2,6 +2,7 @@ package com.ordint.tcpears.service.impl;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -38,6 +39,8 @@ public class MySqlReplayService implements ReplayService {
 	private ClientManager clientManager;
 	@Autowired
 	private PositionServiceImpl positionService;
+	@Autowired
+	private PositionDecorators positionDecorators;
 
 	
 	private ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -62,36 +65,40 @@ public class MySqlReplayService implements ReplayService {
 		String start = startDateTime.toString();
 		String end = startDateTime.plusSeconds(numberOfSeconds).toString();
 		log.debug("REplaying from {} to {}", start, end);
-		List<Position> replay = jdbcTemplate.query("select * from positionHistory where timeReceived > ? and timeReceived < ? order by timeReceived asc",
-				new Object[] {start,end},
-				new RowMapper<Position>() {
-					@Override
-					public Position mapRow(ResultSet rs, int rowNum) throws SQLException {
-						LocalDateTime timeCreated = LocalDateTime.parse(rs.getString("timeReceived"));
-						long lag = rs.getLong("lag");
-						return Position.builder()
-							.clientDetails(clientDetailsResolver.resolveClientDetails(rs.getString("clientId")))
-							.heading(rs.getString("heading"))
-							.horizontalAccuracy(rs.getString("horizontalAccuracy"))
-							.lat(rs.getString("lat"))
-							.lon(rs.getString("lon"))
-							.speed(rs.getString("speed"))
-							.status(rs.getString("status"))
-							.lag(lag)
-							.timestampFromDateTime(timeCreated.minus(lag, ChronoUnit.MILLIS))
-							.timeCreated(timeCreated)
-							.verticalAccuracy(rs.getString("verticalAccuracy"))
-							.altitude(rs.getString("altitude"))
-							.build();
-						
-					}
-				});
-		
 		
 		Future<?> replayFuture = executor.submit(new Runnable() {
-		
+			
 			@Override
 			public void run() {
+				
+				List<Position> replay = jdbcTemplate.query("select * from positionHistory where timeReceived > ? and timeReceived < ? order by gpsTimestamp asc",
+						new Object[] {start,end},
+						new RowMapper<Position>() {
+							@Override
+							public Position mapRow(ResultSet rs, int rowNum) throws SQLException {
+								LocalDateTime timeCreated = LocalDateTime.parse(rs.getString("timeReceived"));
+								LocalDateTime gpsTime = LocalDateTime.parse(rs.getString("gpsTimestamp"));
+								long lag = rs.getLong("lag");
+								return Position.builder()
+									.clientDetails(clientDetailsResolver.resolveClientDetails(rs.getString("clientId")))
+									.heading(rs.getString("heading"))
+									.horizontalAccuracy(rs.getString("horizontalAccuracy"))
+									.lat(rs.getString("lat"))
+									.lon(rs.getString("lon"))
+									.speed(rs.getString("speed"))
+									.status(rs.getString("status"))
+									.lag(0)
+									.timestampFromDateTime(gpsTime)
+									.timeCreated(gpsTime)
+									.verticalAccuracy(rs.getString("verticalAccuracy"))
+									.altitude(rs.getString("altitude"))
+									.build();
+								
+							}
+						});
+				
+		
+
 				LocalDateTime lastTime = replay.get(0).getTimeCreated();
 				for(Position p : replay) {
 					//wait for the clock to tick over
@@ -115,31 +122,32 @@ public class MySqlReplayService implements ReplayService {
 					if (Thread.currentThread().isInterrupted()) {
 						break;
 					}
-					//build new postiton with updated timestamps
-					LocalDateTime timestamp = LocalDateTime.now();
-					Position position =Position.builder()
-						.clientDetails(p.getClientDetails())
-						.heading(p.getHeading())
-						.horizontalAccuracy(p.getHorizontalAccuracy())
-						.lat(p.getLat())
-						.lon(p.getLon())
-						.speed(p.getSpeed())
-						.status(p.getStatus())
-						.timestampFromDateTime(timestamp.minus(p.getLag(), ChronoUnit.MILLIS))
-						.timeCreated(timestamp)
-						.verticalAccuracy(p.getVerticalAccuracy())
-						.altitude(p.getAltitude())
-						.build();
+
 					
 					if(useOriginalTimestamp) {
 						clientManager.updatePostion(p);
 					} else {
+						//build new postiton with updated timestamps
+						LocalDateTime timestamp = LocalDateTime.now(Clock.systemUTC());
+						Position position =Position.builder()
+							.clientDetails(p.getClientDetails())
+							.heading(p.getHeading())
+							.horizontalAccuracy(p.getHorizontalAccuracy())
+							.lat(p.getLat())
+							.lon(p.getLon())
+							.speed(p.getSpeed())
+							.status(p.getStatus())
+							.timestampFromDateTime(timestamp.minus(p.getLag(), ChronoUnit.MILLIS))
+							.timeCreated(timestamp)
+							.verticalAccuracy(p.getVerticalAccuracy())
+							.altitude(p.getAltitude())
+							.build();
 						positionService.update(position);
 					}
 					//System.out.println("P= " + p.getTimeCreated() + " " + interval);
 					lastTime = p.getTimeCreated();
 				}
-				
+				positionDecorators.clearDecorator("");
 				log.info("Finished replay!");
 				
 			}
@@ -147,7 +155,7 @@ public class MySqlReplayService implements ReplayService {
 			
 		});
 		String id = String.valueOf(replayFuture.hashCode());
-		runningReplays.put(id, new ReplayDetails(replay.get(0).getGroupId(), replayFuture));
+		runningReplays.put(id, new ReplayDetails(startDateTime.toString(), replayFuture));
 		log.info("Replay id: {}", id);
 		return id;
 	}
@@ -168,10 +176,10 @@ public class MySqlReplayService implements ReplayService {
 
 	
 	static class ReplayDetails {
-		final String groupId;
+		final String startTime;
 		final Future<?> replayFuture;
-		ReplayDetails(String groupId, Future<?> replayFuture) { 
-			this.groupId = groupId;
+		ReplayDetails(String startTime, Future<?> replayFuture) { 
+			this.startTime = startTime;
 			this.replayFuture = replayFuture;
 		
 		}

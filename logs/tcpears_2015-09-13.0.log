@@ -1,0 +1,408 @@
+02:35:28.190 [main] INFO  com.ordint.tcpears.server.TCPServer - Starting server....
+02:35:28.255 [main] INFO  com.ordint.tcpears.server.TCPServer - Binding tcp ports
+02:35:28.256 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5011
+02:35:28.461 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5012
+02:35:28.462 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5013
+02:35:28.463 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5014
+02:35:28.463 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5015
+02:35:28.463 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5016
+02:35:28.464 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5017
+02:35:28.465 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5018
+02:35:28.465 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5019
+02:35:28.465 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5020
+02:35:28.465 [main] INFO  com.ordint.tcpears.server.TCPServer - Binding udp ports
+02:35:28.465 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5011
+02:35:28.499 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5012
+02:35:28.500 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5013
+02:35:28.502 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5014
+02:35:28.502 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5015
+02:35:28.503 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5016
+02:35:28.505 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5017
+02:35:28.506 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5018
+02:35:28.510 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5019
+02:35:28.510 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5020
+02:35:28.511 [main] INFO  com.ordint.tcpears.server.TCPServer - Admin rest server listening on 6013
+02:35:43.373 [nioEventLoopGroup-3-3] WARN  c.o.tcpears.server.StringHandler - Error handling input
+java.io.IOException: An existing connection was forcibly closed by the remote host
+	at sun.nio.ch.SocketDispatcher.read0(Native Method) ~[na:1.8.0_25]
+	at sun.nio.ch.SocketDispatcher.read(Unknown Source) ~[na:1.8.0_25]
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(Unknown Source) ~[na:1.8.0_25]
+	at sun.nio.ch.IOUtil.read(Unknown Source) ~[na:1.8.0_25]
+	at sun.nio.ch.SocketChannelImpl.read(Unknown Source) ~[na:1.8.0_25]
+	at io.netty.buffer.UnpooledUnsafeDirectByteBuf.setBytes(UnpooledUnsafeDirectByteBuf.java:447) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.buffer.AbstractByteBuf.writeBytes(AbstractByteBuf.java:881) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.socket.nio.NioSocketChannel.doReadBytes(NioSocketChannel.java:241) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:119) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:511) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:468) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:382) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:354) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$2.run(SingleThreadEventExecutor.java:111) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:137) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at java.lang.Thread.run(Unknown Source) [na:1.8.0_25]
+02:35:43.374 [nioEventLoopGroup-3-5] WARN  c.o.tcpears.server.StringHandler - Error handling input
+java.io.IOException: An existing connection was forcibly closed by the remote host
+	at sun.nio.ch.SocketDispatcher.read0(Native Method) ~[na:1.8.0_25]
+	at sun.nio.ch.SocketDispatcher.read(Unknown Source) ~[na:1.8.0_25]
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(Unknown Source) ~[na:1.8.0_25]
+	at sun.nio.ch.IOUtil.read(Unknown Source) ~[na:1.8.0_25]
+	at sun.nio.ch.SocketChannelImpl.read(Unknown Source) ~[na:1.8.0_25]
+	at io.netty.buffer.UnpooledUnsafeDirectByteBuf.setBytes(UnpooledUnsafeDirectByteBuf.java:447) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.buffer.AbstractByteBuf.writeBytes(AbstractByteBuf.java:881) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.socket.nio.NioSocketChannel.doReadBytes(NioSocketChannel.java:241) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:119) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:511) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:468) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:382) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:354) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$2.run(SingleThreadEventExecutor.java:111) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:137) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at java.lang.Thread.run(Unknown Source) [na:1.8.0_25]
+02:35:43.374 [nioEventLoopGroup-3-8] WARN  c.o.tcpears.server.StringHandler - Error handling input
+java.io.IOException: An existing connection was forcibly closed by the remote host
+	at sun.nio.ch.SocketDispatcher.read0(Native Method) ~[na:1.8.0_25]
+	at sun.nio.ch.SocketDispatcher.read(Unknown Source) ~[na:1.8.0_25]
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(Unknown Source) ~[na:1.8.0_25]
+	at sun.nio.ch.IOUtil.read(Unknown Source) ~[na:1.8.0_25]
+	at sun.nio.ch.SocketChannelImpl.read(Unknown Source) ~[na:1.8.0_25]
+	at io.netty.buffer.UnpooledUnsafeDirectByteBuf.setBytes(UnpooledUnsafeDirectByteBuf.java:447) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.buffer.AbstractByteBuf.writeBytes(AbstractByteBuf.java:881) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.socket.nio.NioSocketChannel.doReadBytes(NioSocketChannel.java:241) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:119) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:511) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:468) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:382) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:354) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$2.run(SingleThreadEventExecutor.java:111) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:137) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at java.lang.Thread.run(Unknown Source) [na:1.8.0_25]
+02:35:43.373 [nioEventLoopGroup-3-4] WARN  c.o.tcpears.server.StringHandler - Error handling input
+java.io.IOException: An existing connection was forcibly closed by the remote host
+	at sun.nio.ch.SocketDispatcher.read0(Native Method) ~[na:1.8.0_25]
+	at sun.nio.ch.SocketDispatcher.read(Unknown Source) ~[na:1.8.0_25]
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(Unknown Source) ~[na:1.8.0_25]
+	at sun.nio.ch.IOUtil.read(Unknown Source) ~[na:1.8.0_25]
+	at sun.nio.ch.SocketChannelImpl.read(Unknown Source) ~[na:1.8.0_25]
+	at io.netty.buffer.UnpooledUnsafeDirectByteBuf.setBytes(UnpooledUnsafeDirectByteBuf.java:447) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.buffer.AbstractByteBuf.writeBytes(AbstractByteBuf.java:881) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.socket.nio.NioSocketChannel.doReadBytes(NioSocketChannel.java:241) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:119) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:511) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:468) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:382) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:354) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$2.run(SingleThreadEventExecutor.java:111) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:137) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at java.lang.Thread.run(Unknown Source) [na:1.8.0_25]
+02:35:43.373 [nioEventLoopGroup-3-7] WARN  c.o.tcpears.server.StringHandler - Error handling input
+java.io.IOException: An existing connection was forcibly closed by the remote host
+	at sun.nio.ch.SocketDispatcher.read0(Native Method) ~[na:1.8.0_25]
+	at sun.nio.ch.SocketDispatcher.read(Unknown Source) ~[na:1.8.0_25]
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(Unknown Source) ~[na:1.8.0_25]
+	at sun.nio.ch.IOUtil.read(Unknown Source) ~[na:1.8.0_25]
+	at sun.nio.ch.SocketChannelImpl.read(Unknown Source) ~[na:1.8.0_25]
+	at io.netty.buffer.UnpooledUnsafeDirectByteBuf.setBytes(UnpooledUnsafeDirectByteBuf.java:447) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.buffer.AbstractByteBuf.writeBytes(AbstractByteBuf.java:881) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.socket.nio.NioSocketChannel.doReadBytes(NioSocketChannel.java:241) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:119) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:511) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:468) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:382) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:354) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$2.run(SingleThreadEventExecutor.java:111) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:137) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at java.lang.Thread.run(Unknown Source) [na:1.8.0_25]
+02:35:43.373 [nioEventLoopGroup-3-6] WARN  c.o.tcpears.server.StringHandler - Error handling input
+java.io.IOException: An existing connection was forcibly closed by the remote host
+	at sun.nio.ch.SocketDispatcher.read0(Native Method) ~[na:1.8.0_25]
+	at sun.nio.ch.SocketDispatcher.read(Unknown Source) ~[na:1.8.0_25]
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(Unknown Source) ~[na:1.8.0_25]
+	at sun.nio.ch.IOUtil.read(Unknown Source) ~[na:1.8.0_25]
+	at sun.nio.ch.SocketChannelImpl.read(Unknown Source) ~[na:1.8.0_25]
+	at io.netty.buffer.UnpooledUnsafeDirectByteBuf.setBytes(UnpooledUnsafeDirectByteBuf.java:447) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.buffer.AbstractByteBuf.writeBytes(AbstractByteBuf.java:881) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.socket.nio.NioSocketChannel.doReadBytes(NioSocketChannel.java:241) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:119) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:511) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:468) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:382) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:354) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$2.run(SingleThreadEventExecutor.java:111) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:137) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at java.lang.Thread.run(Unknown Source) [na:1.8.0_25]
+02:35:43.373 [nioEventLoopGroup-3-2] WARN  c.o.tcpears.server.StringHandler - Error handling input
+java.io.IOException: An existing connection was forcibly closed by the remote host
+	at sun.nio.ch.SocketDispatcher.read0(Native Method) ~[na:1.8.0_25]
+	at sun.nio.ch.SocketDispatcher.read(Unknown Source) ~[na:1.8.0_25]
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(Unknown Source) ~[na:1.8.0_25]
+	at sun.nio.ch.IOUtil.read(Unknown Source) ~[na:1.8.0_25]
+	at sun.nio.ch.SocketChannelImpl.read(Unknown Source) ~[na:1.8.0_25]
+	at io.netty.buffer.UnpooledUnsafeDirectByteBuf.setBytes(UnpooledUnsafeDirectByteBuf.java:447) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.buffer.AbstractByteBuf.writeBytes(AbstractByteBuf.java:881) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.socket.nio.NioSocketChannel.doReadBytes(NioSocketChannel.java:241) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:119) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:511) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:468) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:382) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:354) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$2.run(SingleThreadEventExecutor.java:111) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:137) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at java.lang.Thread.run(Unknown Source) [na:1.8.0_25]
+02:35:43.373 [nioEventLoopGroup-3-1] WARN  c.o.tcpears.server.StringHandler - Error handling input
+java.io.IOException: An existing connection was forcibly closed by the remote host
+	at sun.nio.ch.SocketDispatcher.read0(Native Method) ~[na:1.8.0_25]
+	at sun.nio.ch.SocketDispatcher.read(Unknown Source) ~[na:1.8.0_25]
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(Unknown Source) ~[na:1.8.0_25]
+	at sun.nio.ch.IOUtil.read(Unknown Source) ~[na:1.8.0_25]
+	at sun.nio.ch.SocketChannelImpl.read(Unknown Source) ~[na:1.8.0_25]
+	at io.netty.buffer.UnpooledUnsafeDirectByteBuf.setBytes(UnpooledUnsafeDirectByteBuf.java:447) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.buffer.AbstractByteBuf.writeBytes(AbstractByteBuf.java:881) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.socket.nio.NioSocketChannel.doReadBytes(NioSocketChannel.java:241) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:119) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:511) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:468) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:382) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:354) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$2.run(SingleThreadEventExecutor.java:111) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:137) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at java.lang.Thread.run(Unknown Source) [na:1.8.0_25]
+02:35:43.376 [nioEventLoopGroup-3-1] WARN  c.o.tcpears.server.StringHandler - Error handling input
+java.io.IOException: An existing connection was forcibly closed by the remote host
+	at sun.nio.ch.SocketDispatcher.read0(Native Method) ~[na:1.8.0_25]
+	at sun.nio.ch.SocketDispatcher.read(Unknown Source) ~[na:1.8.0_25]
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(Unknown Source) ~[na:1.8.0_25]
+	at sun.nio.ch.IOUtil.read(Unknown Source) ~[na:1.8.0_25]
+	at sun.nio.ch.SocketChannelImpl.read(Unknown Source) ~[na:1.8.0_25]
+	at io.netty.buffer.UnpooledUnsafeDirectByteBuf.setBytes(UnpooledUnsafeDirectByteBuf.java:447) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.buffer.AbstractByteBuf.writeBytes(AbstractByteBuf.java:881) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.socket.nio.NioSocketChannel.doReadBytes(NioSocketChannel.java:241) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:119) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:511) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:468) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:382) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:354) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$2.run(SingleThreadEventExecutor.java:111) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:137) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at java.lang.Thread.run(Unknown Source) [na:1.8.0_25]
+02:35:43.376 [nioEventLoopGroup-3-2] WARN  c.o.tcpears.server.StringHandler - Error handling input
+java.io.IOException: An existing connection was forcibly closed by the remote host
+	at sun.nio.ch.SocketDispatcher.read0(Native Method) ~[na:1.8.0_25]
+	at sun.nio.ch.SocketDispatcher.read(Unknown Source) ~[na:1.8.0_25]
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(Unknown Source) ~[na:1.8.0_25]
+	at sun.nio.ch.IOUtil.read(Unknown Source) ~[na:1.8.0_25]
+	at sun.nio.ch.SocketChannelImpl.read(Unknown Source) ~[na:1.8.0_25]
+	at io.netty.buffer.UnpooledUnsafeDirectByteBuf.setBytes(UnpooledUnsafeDirectByteBuf.java:447) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.buffer.AbstractByteBuf.writeBytes(AbstractByteBuf.java:881) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.socket.nio.NioSocketChannel.doReadBytes(NioSocketChannel.java:241) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:119) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:511) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:468) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:382) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:354) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$2.run(SingleThreadEventExecutor.java:111) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:137) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at java.lang.Thread.run(Unknown Source) [na:1.8.0_25]
+12:08:24.613 [main] INFO  com.ordint.tcpears.server.TCPServer - Starting server....
+12:08:24.633 [main] INFO  com.ordint.tcpears.server.TCPServer - Binding tcp ports
+12:08:24.634 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5011
+12:08:24.796 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5012
+12:08:24.797 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5013
+12:08:24.798 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5014
+12:08:24.799 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5015
+12:08:24.800 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5016
+12:08:24.800 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5017
+12:08:24.800 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5018
+12:08:24.800 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5019
+12:08:24.801 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5020
+12:08:24.801 [main] INFO  com.ordint.tcpears.server.TCPServer - Binding udp ports
+12:08:24.801 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5011
+12:08:24.840 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5012
+12:08:24.870 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5013
+12:08:24.872 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5014
+12:08:24.875 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5015
+12:08:24.876 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5016
+12:08:24.880 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5017
+12:08:24.882 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5018
+12:08:24.883 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5019
+12:08:24.885 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5020
+12:08:24.886 [main] INFO  com.ordint.tcpears.server.TCPServer - Admin rest server listening on 6013
+12:08:34.851 [nioEventLoopGroup-3-1] WARN  c.o.tcpears.server.StringHandler - Error handling input
+java.io.IOException: An existing connection was forcibly closed by the remote host
+	at sun.nio.ch.SocketDispatcher.read0(Native Method) ~[na:1.8.0_25]
+	at sun.nio.ch.SocketDispatcher.read(Unknown Source) ~[na:1.8.0_25]
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(Unknown Source) ~[na:1.8.0_25]
+	at sun.nio.ch.IOUtil.read(Unknown Source) ~[na:1.8.0_25]
+	at sun.nio.ch.SocketChannelImpl.read(Unknown Source) ~[na:1.8.0_25]
+	at io.netty.buffer.UnpooledUnsafeDirectByteBuf.setBytes(UnpooledUnsafeDirectByteBuf.java:447) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.buffer.AbstractByteBuf.writeBytes(AbstractByteBuf.java:881) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.socket.nio.NioSocketChannel.doReadBytes(NioSocketChannel.java:241) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:119) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:511) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:468) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:382) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:354) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$2.run(SingleThreadEventExecutor.java:111) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:137) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at java.lang.Thread.run(Unknown Source) [na:1.8.0_25]
+12:08:34.851 [nioEventLoopGroup-3-5] WARN  c.o.tcpears.server.StringHandler - Error handling input
+java.io.IOException: An existing connection was forcibly closed by the remote host
+	at sun.nio.ch.SocketDispatcher.read0(Native Method) ~[na:1.8.0_25]
+	at sun.nio.ch.SocketDispatcher.read(Unknown Source) ~[na:1.8.0_25]
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(Unknown Source) ~[na:1.8.0_25]
+	at sun.nio.ch.IOUtil.read(Unknown Source) ~[na:1.8.0_25]
+	at sun.nio.ch.SocketChannelImpl.read(Unknown Source) ~[na:1.8.0_25]
+	at io.netty.buffer.UnpooledUnsafeDirectByteBuf.setBytes(UnpooledUnsafeDirectByteBuf.java:447) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.buffer.AbstractByteBuf.writeBytes(AbstractByteBuf.java:881) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.socket.nio.NioSocketChannel.doReadBytes(NioSocketChannel.java:241) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:119) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:511) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:468) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:382) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:354) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$2.run(SingleThreadEventExecutor.java:111) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:137) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at java.lang.Thread.run(Unknown Source) [na:1.8.0_25]
+12:08:34.851 [nioEventLoopGroup-3-6] WARN  c.o.tcpears.server.StringHandler - Error handling input
+java.io.IOException: An existing connection was forcibly closed by the remote host
+	at sun.nio.ch.SocketDispatcher.read0(Native Method) ~[na:1.8.0_25]
+	at sun.nio.ch.SocketDispatcher.read(Unknown Source) ~[na:1.8.0_25]
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(Unknown Source) ~[na:1.8.0_25]
+	at sun.nio.ch.IOUtil.read(Unknown Source) ~[na:1.8.0_25]
+	at sun.nio.ch.SocketChannelImpl.read(Unknown Source) ~[na:1.8.0_25]
+	at io.netty.buffer.UnpooledUnsafeDirectByteBuf.setBytes(UnpooledUnsafeDirectByteBuf.java:447) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.buffer.AbstractByteBuf.writeBytes(AbstractByteBuf.java:881) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.socket.nio.NioSocketChannel.doReadBytes(NioSocketChannel.java:241) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:119) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:511) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:468) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:382) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:354) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$2.run(SingleThreadEventExecutor.java:111) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:137) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at java.lang.Thread.run(Unknown Source) [na:1.8.0_25]
+12:08:34.851 [nioEventLoopGroup-3-4] WARN  c.o.tcpears.server.StringHandler - Error handling input
+java.io.IOException: An existing connection was forcibly closed by the remote host
+	at sun.nio.ch.SocketDispatcher.read0(Native Method) ~[na:1.8.0_25]
+	at sun.nio.ch.SocketDispatcher.read(Unknown Source) ~[na:1.8.0_25]
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(Unknown Source) ~[na:1.8.0_25]
+	at sun.nio.ch.IOUtil.read(Unknown Source) ~[na:1.8.0_25]
+	at sun.nio.ch.SocketChannelImpl.read(Unknown Source) ~[na:1.8.0_25]
+	at io.netty.buffer.UnpooledUnsafeDirectByteBuf.setBytes(UnpooledUnsafeDirectByteBuf.java:447) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.buffer.AbstractByteBuf.writeBytes(AbstractByteBuf.java:881) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.socket.nio.NioSocketChannel.doReadBytes(NioSocketChannel.java:241) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:119) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:511) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:468) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:382) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:354) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$2.run(SingleThreadEventExecutor.java:111) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:137) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at java.lang.Thread.run(Unknown Source) [na:1.8.0_25]
+12:08:34.851 [nioEventLoopGroup-3-2] WARN  c.o.tcpears.server.StringHandler - Error handling input
+java.io.IOException: An existing connection was forcibly closed by the remote host
+	at sun.nio.ch.SocketDispatcher.read0(Native Method) ~[na:1.8.0_25]
+	at sun.nio.ch.SocketDispatcher.read(Unknown Source) ~[na:1.8.0_25]
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(Unknown Source) ~[na:1.8.0_25]
+	at sun.nio.ch.IOUtil.read(Unknown Source) ~[na:1.8.0_25]
+	at sun.nio.ch.SocketChannelImpl.read(Unknown Source) ~[na:1.8.0_25]
+	at io.netty.buffer.UnpooledUnsafeDirectByteBuf.setBytes(UnpooledUnsafeDirectByteBuf.java:447) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.buffer.AbstractByteBuf.writeBytes(AbstractByteBuf.java:881) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.socket.nio.NioSocketChannel.doReadBytes(NioSocketChannel.java:241) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:119) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:511) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:468) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:382) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:354) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$2.run(SingleThreadEventExecutor.java:111) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:137) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at java.lang.Thread.run(Unknown Source) [na:1.8.0_25]
+12:08:34.851 [nioEventLoopGroup-3-3] WARN  c.o.tcpears.server.StringHandler - Error handling input
+java.io.IOException: An existing connection was forcibly closed by the remote host
+	at sun.nio.ch.SocketDispatcher.read0(Native Method) ~[na:1.8.0_25]
+	at sun.nio.ch.SocketDispatcher.read(Unknown Source) ~[na:1.8.0_25]
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(Unknown Source) ~[na:1.8.0_25]
+	at sun.nio.ch.IOUtil.read(Unknown Source) ~[na:1.8.0_25]
+	at sun.nio.ch.SocketChannelImpl.read(Unknown Source) ~[na:1.8.0_25]
+	at io.netty.buffer.UnpooledUnsafeDirectByteBuf.setBytes(UnpooledUnsafeDirectByteBuf.java:447) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.buffer.AbstractByteBuf.writeBytes(AbstractByteBuf.java:881) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.socket.nio.NioSocketChannel.doReadBytes(NioSocketChannel.java:241) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:119) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:511) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:468) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:382) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:354) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$2.run(SingleThreadEventExecutor.java:111) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:137) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at java.lang.Thread.run(Unknown Source) [na:1.8.0_25]
+12:08:34.851 [nioEventLoopGroup-3-8] WARN  c.o.tcpears.server.StringHandler - Error handling input
+java.io.IOException: An existing connection was forcibly closed by the remote host
+	at sun.nio.ch.SocketDispatcher.read0(Native Method) ~[na:1.8.0_25]
+	at sun.nio.ch.SocketDispatcher.read(Unknown Source) ~[na:1.8.0_25]
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(Unknown Source) ~[na:1.8.0_25]
+	at sun.nio.ch.IOUtil.read(Unknown Source) ~[na:1.8.0_25]
+	at sun.nio.ch.SocketChannelImpl.read(Unknown Source) ~[na:1.8.0_25]
+	at io.netty.buffer.UnpooledUnsafeDirectByteBuf.setBytes(UnpooledUnsafeDirectByteBuf.java:447) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.buffer.AbstractByteBuf.writeBytes(AbstractByteBuf.java:881) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.socket.nio.NioSocketChannel.doReadBytes(NioSocketChannel.java:241) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:119) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:511) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:468) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:382) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:354) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$2.run(SingleThreadEventExecutor.java:111) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:137) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at java.lang.Thread.run(Unknown Source) [na:1.8.0_25]
+12:08:34.854 [nioEventLoopGroup-3-1] WARN  c.o.tcpears.server.StringHandler - Error handling input
+java.io.IOException: An existing connection was forcibly closed by the remote host
+	at sun.nio.ch.SocketDispatcher.read0(Native Method) ~[na:1.8.0_25]
+	at sun.nio.ch.SocketDispatcher.read(Unknown Source) ~[na:1.8.0_25]
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(Unknown Source) ~[na:1.8.0_25]
+	at sun.nio.ch.IOUtil.read(Unknown Source) ~[na:1.8.0_25]
+	at sun.nio.ch.SocketChannelImpl.read(Unknown Source) ~[na:1.8.0_25]
+	at io.netty.buffer.UnpooledUnsafeDirectByteBuf.setBytes(UnpooledUnsafeDirectByteBuf.java:447) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.buffer.AbstractByteBuf.writeBytes(AbstractByteBuf.java:881) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.socket.nio.NioSocketChannel.doReadBytes(NioSocketChannel.java:241) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:119) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:511) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:468) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:382) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:354) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$2.run(SingleThreadEventExecutor.java:111) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:137) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at java.lang.Thread.run(Unknown Source) [na:1.8.0_25]
+12:08:34.855 [nioEventLoopGroup-3-2] WARN  c.o.tcpears.server.StringHandler - Error handling input
+java.io.IOException: An existing connection was forcibly closed by the remote host
+	at sun.nio.ch.SocketDispatcher.read0(Native Method) ~[na:1.8.0_25]
+	at sun.nio.ch.SocketDispatcher.read(Unknown Source) ~[na:1.8.0_25]
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(Unknown Source) ~[na:1.8.0_25]
+	at sun.nio.ch.IOUtil.read(Unknown Source) ~[na:1.8.0_25]
+	at sun.nio.ch.SocketChannelImpl.read(Unknown Source) ~[na:1.8.0_25]
+	at io.netty.buffer.UnpooledUnsafeDirectByteBuf.setBytes(UnpooledUnsafeDirectByteBuf.java:447) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.buffer.AbstractByteBuf.writeBytes(AbstractByteBuf.java:881) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.socket.nio.NioSocketChannel.doReadBytes(NioSocketChannel.java:241) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:119) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:511) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:468) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:382) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:354) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$2.run(SingleThreadEventExecutor.java:111) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:137) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at java.lang.Thread.run(Unknown Source) [na:1.8.0_25]
+12:08:34.852 [nioEventLoopGroup-3-7] WARN  c.o.tcpears.server.StringHandler - Error handling input
+java.io.IOException: An existing connection was forcibly closed by the remote host
+	at sun.nio.ch.SocketDispatcher.read0(Native Method) ~[na:1.8.0_25]
+	at sun.nio.ch.SocketDispatcher.read(Unknown Source) ~[na:1.8.0_25]
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(Unknown Source) ~[na:1.8.0_25]
+	at sun.nio.ch.IOUtil.read(Unknown Source) ~[na:1.8.0_25]
+	at sun.nio.ch.SocketChannelImpl.read(Unknown Source) ~[na:1.8.0_25]
+	at io.netty.buffer.UnpooledUnsafeDirectByteBuf.setBytes(UnpooledUnsafeDirectByteBuf.java:447) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.buffer.AbstractByteBuf.writeBytes(AbstractByteBuf.java:881) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.socket.nio.NioSocketChannel.doReadBytes(NioSocketChannel.java:241) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:119) ~[netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:511) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:468) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:382) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:354) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$2.run(SingleThreadEventExecutor.java:111) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:137) [netty-all-4.0.27.Final.jar:4.0.27.Final]
+	at java.lang.Thread.run(Unknown Source) [na:1.8.0_25]

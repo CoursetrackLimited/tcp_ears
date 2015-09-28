@@ -33,7 +33,7 @@ public class PublishingScheduler {
 				}
 			}
 		},
-		1000, 100, TimeUnit.MILLISECONDS);
+		1000, 45, TimeUnit.MILLISECONDS);
 
 		executor.scheduleAtFixedRate(new Runnable() {
 			@Override

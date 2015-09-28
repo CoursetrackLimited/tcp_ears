@@ -1,0 +1,3 @@
+socat -b 50 -lu -lf test.csv TCP-LISTEN:5014,fork - | xargs -IQ date "+%T.%N Q"  > sno4.txt
+
+q

@@ -36,7 +36,7 @@ public class DefaultRaceService implements RaceService {
 	private static final Logger log = LoggerFactory.getLogger(DefaultRaceService.class);
 
 
-	public enum RaceStatus {NOT_STARTED, STARTED, FINISHED}
+	public enum RaceStatus {NOT_STARTED, STARTED, FINISHED, REPLAYING}
 	
 	static final String CLIENT_DETAILS_FOR_RACE_SQL = 
 			"SELECT clients.client_ident as clientId, friendly_name as fixedName, "
@@ -67,6 +67,8 @@ public class DefaultRaceService implements RaceService {
 	private MemcacheHelper memcacheHelper;
 	@Autowired
 	private PositionPublisher positionPublisher;
+	@Autowired
+	private PositionDecorators positionDecorators;
 	
 	private static final DateTimeFormatter MYSQL_DATETIME_FORMATTER =  DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 	@Override
@@ -79,7 +81,7 @@ public class DefaultRaceService implements RaceService {
 		//update the clientDetailsResolver with runner details
 		List<ClientDetails> clientDetails = updateClientDetails(CLIENT_DETAILS_FOR_RACE_SQL, raceId);
 		String groupId = clientDetails.get(0).getGroupId();
-		
+		positionDecorators.addRaceDecorators(groupId, "trackConfigId");
 		clientManager.trackGroup(groupId);
 		
 		
@@ -142,7 +144,7 @@ public class DefaultRaceService implements RaceService {
 		jdbcTemplate.update("update races set status ='FINISHED', finishTime = NOW() where race_id=?", raceId);
 		//update the clientDetailsResolver with default details
 		updateClientDetails(RESET_CLIENT_DETAILS_SQL, raceId);
-
+		positionDecorators.clearDecorator("");
 	}
 	
 	
@@ -162,7 +164,9 @@ public class DefaultRaceService implements RaceService {
 		List<ClientDetails> clientDetails = updateClientDetails(CLIENT_DETAILS_FOR_RACE_SQL, raceId);
 		positionPublisher.clearTrack(groupId);
 		clientManager.clearTrack(groupId);
+		positionDecorators.addReplayDecorators(groupId, "trackConfigId");
 		clientManager.trackGroup(groupId);
+		
 		publishRaceDetails(raceId, groupId, clientDetails);
 		
 		return replayService.replayFrom(start, timeInSecs, true);

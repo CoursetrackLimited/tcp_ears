@@ -1,7 +1,9 @@
 package com.ordint.tcpears.service.impl;
 
 import java.time.Clock;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -9,12 +11,18 @@ import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.ordint.tcpears.domain.DefaultTrackWriter;
 import com.ordint.tcpears.domain.Position;
 import com.ordint.tcpears.domain.TrackWriter;
 import com.ordint.tcpears.service.ClientManager;
 import com.ordint.tcpears.service.PositionDataProvider;
+import com.ordint.tcpears.service.PositionDecorator;
+import com.ordint.tcpears.util.prediction.RacePosition;
+import com.ordint.tcpears.util.prediction.RacePositionCalculator;
+import com.ordint.tcpears.util.prediction.StaticTrackPathBuilder;
 
 
 /**
@@ -22,6 +30,7 @@ import com.ordint.tcpears.service.PositionDataProvider;
  * @author Tom
  *
  */
+
 public class ClientManagerImpl implements ClientManager, PositionDataProvider {
 
 
@@ -35,6 +44,9 @@ public class ClientManagerImpl implements ClientManager, PositionDataProvider {
 	private ConcurrentMap<String, ConcurrentMap<String, String>> groupTracks = new ConcurrentHashMap<>();
 	private ConcurrentMap<String, TrackWriter> groupsToTrack = new ConcurrentHashMap<>();	
 	private Clock clock = Clock.systemUTC();
+	
+	@Autowired
+	private PositionDecorators positionDecorators = new PositionDecorators();
 	
 
 	public ClientManagerImpl(){
@@ -62,7 +74,11 @@ public class ClientManagerImpl implements ClientManager, PositionDataProvider {
 	
 	@Override
 	public void updatePostion(Position position) {
-		clients.compute(position.getClientId(), (k, v) -> (v==null) ? position : position.smoothAltitude(v));
+		clients.compute(position.getClientId(), (k, v) -> { if(v==null) {
+			return position;
+		} else {
+			return position.smoothAltitude(v).setPreviousLatLon(v);	
+		}});
 		
 		updateTracks(position);
 	}
@@ -132,17 +148,16 @@ public class ClientManagerImpl implements ClientManager, PositionDataProvider {
 	@Override
 	public ConcurrentMap<String, List<Position>> groupClientsByGroup() {
 		
-		/*
-		 * WE SHOULD DO THE PREDICITONS AND POSITIONING HERE
-		 */
-		return clients.values()
+		ConcurrentMap<String, List<Position>> groups = clients.values()
 				.stream()
-				.filter(p -> !isOld(p))
-				
 				.collect(Collectors.groupingByConcurrent(Position::getGroupId));
+		
+		for(String groupId: groups.keySet()) {
+			groups.replace(groupId, positionDecorators.applyDecorators(groupId,groups.get(groupId)));
+		}
+		return groups;
 	}
-	
-	
+		
 	private ConcurrentMap<String, List<Position>> groupClientsByTrackedGroup() {
 		return clients.values()
 				.stream()

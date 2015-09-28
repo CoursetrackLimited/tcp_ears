@@ -1,0 +1,106 @@
+00:29:36.485 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+00:29:38.041 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+00:29:38.065 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+00:29:38.067 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Stop Tracking group groupId
+00:30:37.589 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+00:30:37.621 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+00:30:37.635 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+00:30:37.637 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Stop Tracking group groupId
+00:45:05.156 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+00:45:05.212 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+00:45:05.223 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+00:45:05.225 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Stop Tracking group groupId
+01:42:07.444 [main] INFO  com.ordint.tcpears.server.TCPServer - Starting server....
+01:42:07.455 [main] INFO  com.ordint.tcpears.server.TCPServer - Binding tcp ports
+01:42:07.455 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5011
+01:42:07.572 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5012
+01:42:07.573 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5013
+01:42:07.573 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5014
+01:42:07.574 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5015
+01:42:07.574 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5016
+01:42:07.575 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5017
+01:42:07.575 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5018
+01:42:07.575 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5019
+01:42:07.579 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5020
+01:42:07.579 [main] INFO  com.ordint.tcpears.server.TCPServer - Binding udp ports
+01:42:07.579 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5011
+01:42:07.608 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5012
+01:42:07.609 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5013
+01:42:07.609 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5014
+01:42:07.609 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5015
+01:42:07.609 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5016
+01:42:07.609 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5017
+01:42:07.610 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5018
+01:42:07.610 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5019
+01:42:07.610 [main] INFO  com.ordint.tcpears.server.TCPServer - Listening on port 5020
+01:42:07.610 [main] INFO  com.ordint.tcpears.server.TCPServer - Admin rest server listening on 6013
+02:19:55.997 [nioEventLoopGroup-3-6] INFO  c.o.t.s.impl.MySqlReplayService - Replay id: 706445969
+02:19:56.108 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+02:19:56.387 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+02:19:56.407 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+02:19:56.408 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Stop Tracking group groupId
+02:22:46.787 [pool-3-thread-1] INFO  c.o.t.s.impl.MySqlReplayService - Finished replay!
+10:49:49.490 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+10:49:49.563 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+10:49:49.570 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+10:49:49.571 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Stop Tracking group groupId
+10:55:15.821 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+10:55:15.874 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+10:55:15.882 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+10:55:15.885 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Stop Tracking group groupId
+10:58:30.072 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+10:58:30.128 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+10:58:30.137 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+10:58:30.139 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Stop Tracking group groupId
+10:59:03.158 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+10:59:03.187 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+10:59:03.195 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+10:59:03.199 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Stop Tracking group groupId
+11:01:17.202 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+11:01:17.227 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+11:01:17.236 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+11:01:17.238 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Stop Tracking group groupId
+11:38:02.050 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+11:38:02.075 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+11:38:02.089 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+11:38:02.090 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Stop Tracking group groupId
+11:39:47.888 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+11:39:47.974 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+11:39:47.985 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+11:39:47.986 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Stop Tracking group groupId
+11:44:32.326 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+11:44:32.406 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+11:44:32.423 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+11:44:32.423 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Stop Tracking group groupId
+11:44:54.399 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+11:44:54.428 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+11:44:54.460 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+11:44:54.465 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Stop Tracking group groupId
+11:45:08.861 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+11:45:08.943 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+11:45:08.961 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+11:45:08.962 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Stop Tracking group groupId
+11:48:15.728 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+11:48:15.813 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+11:48:15.831 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+11:48:15.831 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Stop Tracking group groupId
+11:48:44.364 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+11:48:44.444 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+11:48:44.464 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+11:48:44.465 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Stop Tracking group groupId
+11:49:04.902 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+11:49:04.976 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+11:49:04.992 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+11:49:04.993 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Stop Tracking group groupId
+11:49:18.852 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+11:49:18.931 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+11:49:18.950 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+11:49:18.951 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Stop Tracking group groupId
+11:53:49.527 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+11:53:49.604 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+11:53:49.616 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+11:53:49.617 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Stop Tracking group groupId
+11:54:19.571 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+11:54:19.596 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+11:54:19.610 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Tracking group groupId
+11:54:19.612 [main] DEBUG c.o.t.service.impl.ClientManagerImpl - Stop Tracking group groupId

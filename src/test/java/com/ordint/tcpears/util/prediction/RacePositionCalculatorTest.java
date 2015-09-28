@@ -35,11 +35,12 @@ public class RacePositionCalculatorTest {
 		//
 		
 		raceGroup.add(PositionUtil.createPosition("51.419884", " -0.401674", "1", "group", "C"));
+		raceGroup.add(PositionUtil.createPosition("51.4213615", "-0.404043", "1", "group", "D"));
 		
 		Map<String, RacePosition> standings = rpCalculator.calculate(raceGroup);
 		
-		standings.values().forEach(x -> System.out.println(x + " " + x.getMetersFromStart()));
 		
+		System.out.println(standings.get("D"));
 		assertThat(standings.get("A").getStanding(), equalTo(1));
 		assertThat(standings.get("B").getStanding(), equalTo(2));
 		assertThat(standings.get("C").getStanding(), equalTo(3));

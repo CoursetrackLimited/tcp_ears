@@ -48,6 +48,7 @@ public class DefaultOutputWriterTest {
 				.timestampFromTime("10330.30")
 				.timeCreated(timestamper.now())
 				.status("A")
+				.standing(4)
 				.build();
 		DefaultOutputWriter out = new DefaultOutputWriter();
 		String actual = out.write(p);
@@ -56,6 +57,7 @@ public class DefaultOutputWriterTest {
 		LocalDate t = LocalDate.now(Clock.systemUTC());
 		assertThat(cells[cells.length-1], equalTo("34.32"));
 		assertThat(cells[cells.length-2], equalTo("50.1"));
+		assertThat(cells[cells.length-11], equalTo("4"));
 		assertThat(cells[cells.length-12], equalTo("11"));
 		assertThat(cells[cells.length-6], equalTo("99"));
 		assertThat(cells[cells.length-13], equalTo("A"));
@@ -78,6 +80,7 @@ public class DefaultOutputWriterTest {
 				.timestampFromTime("110330.30")
 				.timeCreated(timestamper.now())
 				.status("A")
+				.standing(4)
 				.build();
 		DefaultOutputWriter out = new DefaultOutputWriter();
 		String actual = out.write(p);
@@ -86,7 +89,7 @@ public class DefaultOutputWriterTest {
 		LocalDate t = LocalDate.now(Clock.systemUTC());
 		assertThat(cells[cells.length-1], equalTo("34.32"));
 		assertThat(cells[cells.length-2], equalTo("50.1"));
-		//assertThat(cells[cells.length-11], equalTo("4"));
+		assertThat(cells[cells.length-11], equalTo("4"));
 		assertThat(cells[cells.length-12], equalTo("11"));
 		assertThat(cells[cells.length-6], equalTo("99"));
 		assertThat(cells[cells.length-13], equalTo("A"));
