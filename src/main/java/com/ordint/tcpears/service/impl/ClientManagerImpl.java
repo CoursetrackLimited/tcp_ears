@@ -1,9 +1,7 @@
 package com.ordint.tcpears.service.impl;
 
 import java.time.Clock;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -12,17 +10,12 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import com.ordint.tcpears.domain.DefaultTrackWriter;
 import com.ordint.tcpears.domain.Position;
 import com.ordint.tcpears.domain.TrackWriter;
 import com.ordint.tcpears.service.ClientManager;
 import com.ordint.tcpears.service.PositionDataProvider;
-import com.ordint.tcpears.service.PositionDecorator;
-import com.ordint.tcpears.util.prediction.RacePosition;
-import com.ordint.tcpears.util.prediction.RacePositionCalculator;
-import com.ordint.tcpears.util.prediction.StaticTrackPathBuilder;
 
 
 /**
