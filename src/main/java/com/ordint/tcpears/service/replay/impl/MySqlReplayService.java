@@ -68,14 +68,14 @@ public class MySqlReplayService implements ReplayService {
 		Object start = startDateTime.toString();
 		Object end = startDateTime.plusSeconds(numberOfSeconds).toString();
 		log.debug("REplaying from {} to {}", start, end);
-		String fullReplayId = replayId + "-" + start + "-" + numberOfSeconds;
-		SqlRowSet rs = jdbcTemplate.queryForRowSet("select * from replays where replay_id=?", fullReplayId);
+		
+		SqlRowSet rs = jdbcTemplate.queryForRowSet("select * from replays where replay_id=?", replayId);
 		if (rs.next()) {
 			start = rs.getLong(2);
 			end = rs.getLong(3);
 		}
 		
-		Future<?> replayFuture = executor.submit(new GpsTimeReplayer(fullReplayId, start, end));
+		Future<?> replayFuture = executor.submit(new GpsTimeReplayer(replayId, start, end));
 
 		runningReplays.put(replayId, new ReplayDetails(startDateTime.toString(), replayFuture));
 		log.info("Replay id: {}", replayId);
