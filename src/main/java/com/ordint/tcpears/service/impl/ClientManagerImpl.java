@@ -79,7 +79,7 @@ public class ClientManagerImpl implements ClientManager, PositionDataProvider {
 		} else {
 			return position.smoothAltitude(v).setPreviousLatLon(v);	
 		}});
-		
+		log.info(position.getClientId());
 		updateTracks(position);
 	}
 	

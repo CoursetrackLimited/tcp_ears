@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -172,7 +173,7 @@ public class DefaultRaceService implements RaceService {
 		int timeInSecs = (int) start.until(finish, ChronoUnit.SECONDS);
 		String groupId = row.get("group_id").toString();
 		
-		jdbcTemplate.update("update races set status ='REPLAYING' where race_id=?", raceId);
+		//jdbcTemplate.update("update races set status ='REPLAYING' where race_id=?", raceId);
 		List<ClientDetails> clientDetails = updateClientDetails(CLIENT_DETAILS_FOR_RACE_SQL, raceId);
 		positionPublisher.clearTrack(groupId);
 		clientManager.clearTrack(groupId);
@@ -187,9 +188,9 @@ public class DefaultRaceService implements RaceService {
 		return raceName;
 	}
 	
-	public void replayEnded(String venueId) {
+	public void replayEnded(String replayId) {
 		positionDecorators.clearDecorator("");
-		Long raceId = currentReplayRaces.remove(Long.parseLong(venueId));	
+		Long raceId = currentReplayRaces.remove(Long.parseLong(StringUtils.substringBefore(replayId, "-")));	
 		jdbcTemplate.update("update races set status ='FINISHED' where race_id=?", raceId);		
 	}
 	

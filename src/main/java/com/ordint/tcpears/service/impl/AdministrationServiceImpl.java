@@ -120,7 +120,7 @@ public class AdministrationServiceImpl implements AdministrationService {
 		
 		try {
 			return raceService.replayRace(raceId);
-		} catch (RaceServiceException e) {
+		} catch (Exception e) {
 			log.error("Error replaying race with id {}", raceId, e);
 			throw e;
 		}

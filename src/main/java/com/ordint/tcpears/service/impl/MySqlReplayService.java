@@ -66,13 +66,13 @@ public class MySqlReplayService implements ReplayService {
 		String end = startDateTime.plusSeconds(numberOfSeconds).toString();
 		log.debug("REplaying from {} to {}", start, end);
 		
-		Future<?> replayFuture = executor.submit(new Runnable() {
+		Future<?> replayFuture = executor.submit(new Runnable() { 
 			
 			@Override
 			public void run() {
-				
-				List<Position> replay = jdbcTemplate.query("select * from positionHistory where timeReceived > ? and timeReceived < ? order by gpsTimestamp asc",
-						new Object[] {start,end},
+				List<Position> replay = jdbcTemplate.query("SELECT * FROM positionHistory WHERE positionHistoryId > 46895176 AND positionHistoryId <  46924580 ORDER BY positionHistoryId ASC",
+				//List<Position> replay = jdbcTemplate.query("select * from positionHistory where timeReceived > ? and timeReceived < ? order by gpsTimestamp asc",
+						//new Object[] {start,end},
 						new RowMapper<Position>() {
 							@Override
 							public Position mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -188,7 +188,7 @@ public class MySqlReplayService implements ReplayService {
 	@Override
 	public String replayFrom(LocalDateTime parse, int parseInt, boolean userOriginalTimeStamp) {
 		
-		return replayFrom(parse, parseInt, userOriginalTimeStamp, "" + System.currentTimeMillis());
+		return replayFrom(parse, parseInt, userOriginalTimeStamp, "default");
 	}
 
 }
