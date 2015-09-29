@@ -70,8 +70,9 @@ public class MySqlReplayService implements ReplayService {
 			
 			@Override
 			public void run() {
-				
-				List<Position> replay = jdbcTemplate.query("select * from positionHistory where timeReceived > ? and timeReceived < ? order by gpsTimestamp asc",
+				List<Position> replay = null;
+				try {
+					replay = jdbcTemplate.query("select * from positionHistory where timeReceived > ? and timeReceived < ? order by gpsTimestamp asc",
 						new Object[] {start,end},
 						new RowMapper<Position>() {
 							@Override
@@ -96,8 +97,11 @@ public class MySqlReplayService implements ReplayService {
 								
 							}
 						});
-				
-		
+				} catch (Exception e) {
+					log.error("Error getting data from db", e);
+					throw e;
+				}
+				log.info("Got data from db, now replaying....");
 
 				LocalDateTime lastTime = replay.get(0).getTimeCreated();
 				for(Position p : replay) {

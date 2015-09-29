@@ -715,10 +715,10 @@ public class MeasuredShape implements Serializable {
 		Point2D currentPoint = PredictionUtil.toPoint(position);
 		double[] info = getDistanceAlongTrack(currentPoint);
 		if (info != null) {
-			return new PositionDistanceInfo(position.getClientId(), info[2], -1, 0);
+			return new PositionDistanceInfo(position, info[2], -1, 0);
 		} else {
 			log.warn("Could not cacluclate distance info for {}", position);
-			return  new PositionDistanceInfo(position.getClientId(), -1, -1, 0);
+			return  new PositionDistanceInfo(position, -1, -1, 0);
 		}
 		
 	}

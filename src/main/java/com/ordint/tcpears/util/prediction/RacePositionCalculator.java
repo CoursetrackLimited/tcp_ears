@@ -25,10 +25,9 @@ public class RacePositionCalculator {
 		track = new MeasuredShape(trackPath);		
 	}
 	
-	public Map<String, RacePosition> calculate(Collection<Position> currentPositions) {
-		
-	
-		Map<String, RacePosition> results = new HashMap<>();
+	public List<Position> calculate(Collection<Position> currentPositions) {
+		 
+		List<Position> updatedPositions = new ArrayList<>();
 		List<PositionDistanceInfo> distances = new ArrayList<>();
 		for(Position p : currentPositions) {
 			PositionDistanceInfo pdi = track.calculateDistanceInfo(p);
@@ -38,13 +37,17 @@ public class RacePositionCalculator {
 		distances.sort((PositionDistanceInfo p1, PositionDistanceInfo p2) -> Double.compare(p2.getDistanceFromStart(), p1.getDistanceFromStart()));
 		int i = 1;
 		for(PositionDistanceInfo pdi : distances) {
+			int standing = 0;
 			if (pdi.getDistanceFromStart() > 0) {
-				RacePosition rp = new RacePosition(i++, pdi);
-				results.put(rp.getClientId(), rp);
+				standing = i++;
 			}
+			updatedPositions.add(Position.builder()
+					.position(pdi.getPosition())
+					.standing(standing)
+					.build());
 		}
 		
-		return results;
+		return updatedPositions;
 	}
 	
 
