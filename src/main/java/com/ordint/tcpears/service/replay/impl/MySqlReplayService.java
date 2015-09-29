@@ -30,7 +30,7 @@ import com.ordint.tcpears.service.impl.DefaultRaceService;
 import com.ordint.tcpears.service.impl.PositionServiceImpl;
 
 
-
+@Component
 public class MySqlReplayService implements ReplayService {
 	private final static Logger log = LoggerFactory.getLogger(MySqlReplayService.class);
 	
@@ -75,14 +75,9 @@ public class MySqlReplayService implements ReplayService {
 			end = rs.getLong(3);
 		}
 		
-		//Future<?> replayFuture = executor.submit(new GpsTimeReplayer(fullReplayId, start, end));
-		try {
-			new GpsTimeReplayer(fullReplayId, start, end).call();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		//runningReplays.put(replayId, new ReplayDetails(startDateTime.toString(), replayFuture));
+		Future<?> replayFuture = executor.submit(new GpsTimeReplayer(fullReplayId, start, end));
+
+		runningReplays.put(replayId, new ReplayDetails(startDateTime.toString(), replayFuture));
 		log.info("Replay id: {}", replayId);
 		return replayId;
 	}
@@ -137,7 +132,7 @@ public class MySqlReplayService implements ReplayService {
 			
 		@Override
 		public String call() throws Exception {
-			String sql = "SELECT * FROM positionHistory WHERE positionHistoryId > ? AND positionHistoryId <  ? ORDER BY positionHistoryId ASC";
+			String sql = "SELECT * FROM positionHistory WHERE positionHistoryId > ? AND positionHistoryId <  ? ORDER BY gpsTimestamp ASC";
 			
 			if (params[0] instanceof String) {
 				log.debug("Getting replay positionids..");
@@ -165,7 +160,7 @@ public class MySqlReplayService implements ReplayService {
 				clientManager.updatePostion(p);
 				lastTime = p.getTimeCreated();
 			}
-			
+			log.info("replay {} finished", replayId);
 			raceService.replayEnded(replayId);
 			return "";
 		}

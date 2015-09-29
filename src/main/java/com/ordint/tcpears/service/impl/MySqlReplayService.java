@@ -27,7 +27,7 @@ import com.ordint.tcpears.service.PositionService;
 import com.ordint.tcpears.service.ReplayService;
 
 
-@Component
+
 public class MySqlReplayService implements ReplayService {
 	private final static Logger log = LoggerFactory.getLogger(MySqlReplayService.class);
 	
@@ -70,9 +70,9 @@ public class MySqlReplayService implements ReplayService {
 			
 			@Override
 			public void run() {
-				List<Position> replay = jdbcTemplate.query("SELECT * FROM positionHistory WHERE positionHistoryId > 46895176 AND positionHistoryId <  46924580 ORDER BY positionHistoryId ASC",
-				//List<Position> replay = jdbcTemplate.query("select * from positionHistory where timeReceived > ? and timeReceived < ? order by gpsTimestamp asc",
-						//new Object[] {start,end},
+				
+				List<Position> replay = jdbcTemplate.query("select * from positionHistory where timeReceived > ? and timeReceived < ? order by gpsTimestamp asc",
+						new Object[] {start,end},
 						new RowMapper<Position>() {
 							@Override
 							public Position mapRow(ResultSet rs, int rowNum) throws SQLException {
