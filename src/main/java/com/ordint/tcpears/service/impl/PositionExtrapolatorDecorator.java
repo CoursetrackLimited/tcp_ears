@@ -110,12 +110,6 @@ public class PositionExtrapolatorDecorator implements PositionDecorator {
 		double x =current.getX() + (extra * cos);
 		double newLat = PredictionUtil.metersToLat(y);
 		double newLon = PredictionUtil.metersToLon(x);
-		if (newLon < -0.41) {
-			log.info(p.toString());
-			log.info("timeInMilis= {}", timeInMilis);
-			log.info("y {} to lat {}", y, newLat);
-			log.info("x {} to lon {}", x, newLon);
-		}
 		LocalDateTime now = currrentInstant();
 		return Position.builder().position(p)
 				.timeCreated(now)
@@ -147,6 +141,10 @@ public class PositionExtrapolatorDecorator implements PositionDecorator {
 		return Position.builder().position(p)
 				.lat(Double.toString(extra.getLatitude()))
 				.lon(Double.toString(extra.getLongitude())).build();
+	}
+	@Override
+	public Position decorate(Position position) {
+		return extrapolate(position);
 	}
 
 }

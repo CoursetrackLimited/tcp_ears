@@ -1,8 +1,10 @@
 package com.ordint.tcpears.service.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +15,6 @@ import com.ordint.tcpears.domain.Position;
 import com.ordint.tcpears.domain.PositionDistanceInfo;
 import com.ordint.tcpears.service.PositionDecorator;
 import com.ordint.tcpears.util.MeasuredShape;
-import com.ordint.tcpears.util.prediction.RacePositionCalculator;
 import com.ordint.tcpears.util.prediction.StaticTrackPathBuilder;
 
 
@@ -31,12 +32,13 @@ public class RacePositionDecorator implements PositionDecorator {
 
 	@Override
 	public List<Position> decorate(List<Position> positions) {
-		
+		Map<PositionDistanceInfo, Position> ps = new HashMap<>();
 		List<Position> updatedPositions = new ArrayList<>();
 		List<PositionDistanceInfo> distances = new ArrayList<>();
 		for(Position p : positions) {
 			PositionDistanceInfo pdi = track.calculateDistanceInfo(p);
 			distances.add(pdi);
+			ps.put(pdi, p);
 			
 		}
 		distances.sort((PositionDistanceInfo p1, PositionDistanceInfo p2) -> Double.compare(p2.getDistanceFromStart(), p1.getDistanceFromStart()));
@@ -46,24 +48,24 @@ public class RacePositionDecorator implements PositionDecorator {
 			int standing = 0;
 			if (pdi.getDistanceFromStart() > 0) {
 				standing = i++;
-			} else {
-				logOut = true;
-			}
+			} 
 			updatedPositions.add(Position.builder()
-					.position(pdi.getPosition())
+					.position(ps.get(pdi))
 					.standing(standing)
 					.build());
 		}
-/*		if (logOut) {
-			for(Position p : updatedPositions) {
-				if(p.getStanding() == 0) {
-					log.info("No Position : {}, {}, {}, {}", p.getLat(), p.getLon(), p.getTimestamp(), p.getClientDetails().getFixedName());;
-				}
-				
-			}
-		}*/
+
 		return updatedPositions;
+	}
+	/**
+	 * This method just returns the given position unmodifed, as to calculate the race standings we
+	 * need all the other positions in the group
+	 */
+	@Override
+	public Position decorate(Position position) {
+		return position;
 	}	
 	
 
 }
+

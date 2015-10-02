@@ -11,7 +11,18 @@ import com.ordint.tcpears.domain.Position;
  *
  */
 public interface PositionDecorator {
-
+	/**
+	 * Modifies a list of Positions in some way
+	 * @param positions
+	 * @return a List of the modified positions
+	 */
 	List<Position> decorate(List<Position> positions);
+	
+	/**
+	 * Modifies a single Position
+	 * @param position
+	 * @return
+	 */
+	Position decorate(Position position);
 	
 }

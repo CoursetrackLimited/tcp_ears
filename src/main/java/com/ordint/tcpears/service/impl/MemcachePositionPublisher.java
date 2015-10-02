@@ -6,6 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +61,7 @@ public class MemcachePositionPublisher implements PositionPublisher {
 				String groupKeyName = String.format(LOCATION_PREFIX, groupId);
 				
 				memcacheHelper.set(groupKeyName, groupKeyName, postionMap, 5);
-
+				
 			}
 		}	
 		

@@ -66,7 +66,8 @@ public class ClientManagerImpl implements ClientManager, PositionDataProvider {
 	}
 	
 	@Override
-	public void updatePostion(Position position) {
+	public void updatePostion(Position position1) {
+		Position position = positionDecorators.applyPositionDecorators(position1);
 		clients.compute(position.getClientId(), (k, v) -> { if(v==null) {
 			return position;
 		} else {
@@ -146,7 +147,7 @@ public class ClientManagerImpl implements ClientManager, PositionDataProvider {
 				.collect(Collectors.groupingByConcurrent(Position::getGroupId));
 		
 		for(String groupId: groups.keySet()) {
-			groups.replace(groupId, positionDecorators.applyDecorators(groupId,groups.get(groupId)));
+			groups.replace(groupId, positionDecorators.applyGroupDecorators(groupId,groups.get(groupId)));
 		}
 		return groups;
 	}

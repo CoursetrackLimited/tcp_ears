@@ -29,25 +29,36 @@ public class PositionDecorators {
 	}
 	
 	
-	public List<Position> applyDecorators(String groupId, List<Position> positions) {
+	public List<Position> applyGroupDecorators(String groupId, List<Position> positions) {
 		List<PositionDecorator> decorators = positionDecorators.get(groupId);
 		if (decorators == null) {
 			return positions;
 		} else {
 			return applyDecorators(positions, 0, decorators);
-		}
-		
+		}		
 	}
 	
-	public void addReplayDecorators(String groupId, String trackConfigId) {
+	public Position applyPositionDecorators(Position position) {
+		List<PositionDecorator> decorators = positionDecorators.get(position.getGroupId());
+		if (decorators == null) {
+			return position;
+		} else {
+			return applyPositionDecorators(position, 0, decorators);
+		}		
+	}
+
+	
+	public void addReplayDecorators(String groupId, String trackConfigId, int runnerCount) {
 		log.info("Adding replay decorators for groupId {}", groupId);
-		List<PositionDecorator> pd = Arrays.asList(new RacePositionDecorator());
+		List<PositionDecorator> pd = Arrays.asList(new RaceObserver(runnerCount));
+		//List<PositionDecorator> pd = Arrays.asList(new RacePositionDecorator());
 		positionDecorators.put(groupId, pd);
 	} 
 	
-	public void addRaceDecorators(String groupId, String trackConfigId) {
+	public void addRaceDecorators(String groupId, String trackConfigId, int runnerCount) {
 		log.info("Adding race decorators for groupId {}", groupId);
-		List<PositionDecorator> pd = Arrays.asList(new RacePositionDecorator());
+		List<PositionDecorator> pd = Arrays.asList(new RaceObserver(runnerCount));
+		//List<PositionDecorator> pd = Arrays.asList(new RacePositionDecorator());
 		positionDecorators.put(groupId, pd);		
 	}
 	
@@ -61,6 +72,13 @@ public class PositionDecorators {
 			return positions;
 		else
 			return decorators.get(index).decorate(applyDecorators(positions, index +1, decorators));
+	}
+	
+	private Position applyPositionDecorators(Position position, int index, List<PositionDecorator> decorators) {
+		if (index == decorators.size())
+			return position;
+		else
+			return decorators.get(index).decorate(applyPositionDecorators(position, index +1, decorators));
 	}
 
 }

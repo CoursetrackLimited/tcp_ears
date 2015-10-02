@@ -46,7 +46,7 @@ public class DefaultRaceService implements RaceService {
 			+ "INNER JOIN runners ON clients.client_id = runners.client_id "
 			+ "INNER JOIN races ON races.race_id = runners.race_id "
 			+ "INNER JOIN groups ON races.group_id = groups.group_id "
-			+ "WHERE races.race_id = ?";
+			+ "WHERE races.race_id = ? and runners.non_runner=0";
 	
 	static final String RESET_CLIENT_DETAILS_SQL =
 			"SELECT clients.client_ident AS clientId, clients.friendly_name AS fixedName, "
@@ -54,7 +54,7 @@ public class DefaultRaceService implements RaceService {
 			+ "FROM clients "
 			+ "INNER JOIN groups ON groups.group_id = clients.group_id "
 			+ "INNER JOIN runners ON clients.client_id = runners.client_id "
-			+ "WHERE runners.race_id =?";
+			+ "WHERE runners.race_id =? and runners.non_runner=0";
 	
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
@@ -87,7 +87,7 @@ public class DefaultRaceService implements RaceService {
 		//update the clientDetailsResolver with runner details
 		List<ClientDetails> clientDetails = updateClientDetails(CLIENT_DETAILS_FOR_RACE_SQL, raceId);
 		String groupId = clientDetails.get(0).getGroupId();
-		positionDecorators.addRaceDecorators(groupId, "trackConfigId");
+		positionDecorators.addRaceDecorators(groupId, "trackConfigId", clientDetails.size());
 		clientManager.trackGroup(groupId);
 		
 		
@@ -177,7 +177,7 @@ public class DefaultRaceService implements RaceService {
 		List<ClientDetails> clientDetails = updateClientDetails(CLIENT_DETAILS_FOR_RACE_SQL, raceId);
 		positionPublisher.clearTrack(groupId);
 		clientManager.clearTrack(groupId);
-		positionDecorators.addReplayDecorators(groupId, "trackConfigId");
+		positionDecorators.addReplayDecorators(groupId, "trackConfigId", clientDetails.size());
 		clientManager.trackGroup(groupId);
 		
 		

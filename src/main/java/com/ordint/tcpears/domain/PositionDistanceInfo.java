@@ -12,9 +12,11 @@ import lombok.ToString;
 @EqualsAndHashCode
 public class PositionDistanceInfo {
 
-		private Position position;
+		private String clientId;
 		private double distanceFromStart;
 		private double distanceFromFinish;
 		private double percentage;
+		
+		
 
 }

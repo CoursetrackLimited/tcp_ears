@@ -133,7 +133,7 @@ public class MySqlReplayService implements ReplayService {
 		@Override
 		public String call() throws Exception {
 			String sql = "SELECT * FROM positionHistory WHERE positionHistoryId > ? AND positionHistoryId <  ? ORDER BY gpsTimestamp ASC";
-			
+			int duplicateCount = 0;
 			if (params[0] instanceof String) {
 				log.debug("Getting replay positionids..");
 				SqlRowSet rs =jdbcTemplate.queryForRowSet("SELECT MIN(positionHistoryId),MAX(positionHistoryId) FROM positionHistory where timeReceived > ? and timeReceived < ?", params);
@@ -151,8 +151,14 @@ public class MySqlReplayService implements ReplayService {
 			}
 			List<Position> replay = jdbcTemplate.query(sql, params, rowMapper);
 			LocalDateTime lastTime = replay.get(0).getTimeCreated();
-			for(Position p : replay) {
+			for(int i = 0; i < replay.size()-2; i ++) {
 				//wait for the clock to tick over
+				Position p = replay.get(i);
+				if(isDuplicate(p, replay.get(i + 1))) {
+					i++;
+					duplicateCount++;
+					p = replay.get(i);
+				}
 				tickOver(lastTime, p.getTimeCreated());
 				if (Thread.currentThread().isInterrupted()) {
 					break;
@@ -160,11 +166,14 @@ public class MySqlReplayService implements ReplayService {
 				clientManager.updatePostion(p);
 				lastTime = p.getTimeCreated();
 			}
-			log.info("replay {} finished", replayId);
+			log.info("replay {} finished with {} duplicates", replayId, duplicateCount);
 			raceService.replayEnded(replayId);
 			return "";
 		}
-
+		
+		private boolean isDuplicate(Position p1, Position p2) {
+			return p1.getClientId().equals(p2.getClientId()) && p1.getGPSTimestamp().equals(p2.getGPSTimestamp());
+		}
 
 		protected void tickOver(LocalDateTime lastTime, LocalDateTime currentTime) {
 			long milli = ChronoUnit.MILLIS.between( lastTime, currentTime);

@@ -17,7 +17,8 @@ import com.ordint.tcpears.service.PositionPublisher;
 public class PublishingScheduler {
 	private final static Logger log = LoggerFactory.getLogger(PublishingScheduler.class);
 
-	private ScheduledExecutorService executor = Executors.newScheduledThreadPool(2);
+	private ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
+	private ScheduledExecutorService executor2 = Executors.newScheduledThreadPool(1);
 	@Autowired
 	private PositionPublisher positionPublisher;
 	
@@ -33,9 +34,9 @@ public class PublishingScheduler {
 				}
 			}
 		},
-		1000, 45, TimeUnit.MILLISECONDS);
+		1000, 47, TimeUnit.MILLISECONDS);
 
-		executor.scheduleAtFixedRate(new Runnable() {
+		executor2.scheduleAtFixedRate(new Runnable() {
 			@Override
 			public void run() {
 				try {

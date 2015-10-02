@@ -27,7 +27,7 @@ import com.ordint.tcpears.domain.json.JsonLocalDateTimeSerialiser;
 @Getter
 @AllArgsConstructor
 @ToString
-@EqualsAndHashCode(exclude={"standing"})
+@EqualsAndHashCode()
 @JsonIgnoreProperties({"groupId","clientId","currentLag", "gpstimestamp","speedValue"})
 public class Position {
 	private static final DateTimeFormatter GPS_TIMESTAMP_FORMAT = DateTimeFormatter.ofPattern("Hmmss.SS");
