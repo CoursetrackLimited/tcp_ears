@@ -3,7 +3,7 @@ package com.ordint.tcpears.domain;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ordint.tcpears.service.impl.ClientManagerImpl;
+import com.ordint.tcpears.service.position.ClientManagerImpl;
 
 public class DefaultTrackWriter implements TrackWriter{
 	

@@ -1,6 +1,6 @@
 package com.ordint.tcpears.service;
 
-import com.ordint.tcpears.service.impl.RaceServiceException;
+import com.ordint.tcpears.service.race.RaceServiceException;
 
 public interface RaceService {
 

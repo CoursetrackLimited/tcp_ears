@@ -8,7 +8,6 @@ import java.math.RoundingMode;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
-
 import com.javadocmd.simplelatlng.LatLng;
 
 public final class ConversionUtil {

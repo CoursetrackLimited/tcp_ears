@@ -5,7 +5,7 @@ import java.util.concurrent.ConcurrentMap;
 
 import com.ordint.tcpears.domain.ClientDetails;
 import com.ordint.tcpears.domain.Position;
-import com.ordint.tcpears.service.impl.RaceServiceException;
+import com.ordint.tcpears.service.race.RaceServiceException;
 
 public interface AdministrationService {
 	

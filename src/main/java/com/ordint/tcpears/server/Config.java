@@ -33,15 +33,15 @@ import com.ordint.tcpears.memcache.MemcacheHelper;
 import com.ordint.tcpears.service.AdministrationService;
 import com.ordint.tcpears.service.ClientDetailsResolver;
 import com.ordint.tcpears.service.ClientManager;
-import com.ordint.tcpears.service.PositionLogger;
 import com.ordint.tcpears.service.PositionService;
 import com.ordint.tcpears.service.ReplayService;
-import com.ordint.tcpears.service.impl.AdministrationServiceImpl;
-import com.ordint.tcpears.service.impl.ClientManagerImpl;
-import com.ordint.tcpears.service.impl.HorseDetailsResolver;
-import com.ordint.tcpears.service.impl.MySqlPositionLogger;
-import com.ordint.tcpears.service.replay.impl.MySqlReplayService;
-import com.ordint.tcpears.service.impl.PositionServiceImpl;
+import com.ordint.tcpears.service.admin.AdministrationServiceImpl;
+import com.ordint.tcpears.service.position.ClientManagerImpl;
+import com.ordint.tcpears.service.position.HorseDetailsResolver;
+import com.ordint.tcpears.service.position.MySqlPositionLogger;
+import com.ordint.tcpears.service.position.PositionLogger;
+import com.ordint.tcpears.service.position.PositionServiceImpl;
+import com.ordint.tcpears.service.replay.MySqlReplayService;
 @Configuration
 @ComponentScan("com.ordint.tcpears")
 @PropertySource("classpath:netty.properties")

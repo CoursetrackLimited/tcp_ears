@@ -13,8 +13,8 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.ordint.tcpears.service.ClientDetailsResolver;
-import com.ordint.tcpears.util.TimeProvider;
-import com.ordint.tcpears.util.Timestamper;
+import com.ordint.tcpears.util.time.TimeProvider;
+import com.ordint.tcpears.util.time.Timestamper;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultInputParserTest {
