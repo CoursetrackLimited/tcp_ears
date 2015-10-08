@@ -7,9 +7,9 @@ import java.util.List;
 
 import com.ordint.tcpears.util.PredictionUtil;
 
-public class AbstractTrackBuilder {
+public class AbstractPathBuilder {
 
-	protected Path2D buildTrack(String kmlPoints) {
+	protected Path2D buildPathFromKml(String kmlPoints) {
 		String[] trackPoints = kmlPoints.split(" ");
 		List<Point2D> allpoints = new ArrayList<>();
 		for(String trackPosition : trackPoints) {

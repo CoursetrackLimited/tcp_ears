@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import com.ordint.tcpears.domain.Position;
 import com.ordint.tcpears.domain.PositionDistanceInfo;
 import com.ordint.tcpears.service.position.PositionEnhancer;
-import com.ordint.tcpears.track.StaticTrackPathBuilder;
+import com.ordint.tcpears.track.StaticPathBuilder;
 import com.ordint.tcpears.track.Track;
 import com.ordint.tcpears.track.geom.MeasuredShape;
 
@@ -24,7 +24,7 @@ public class RaceObserver implements PositionEnhancer {
 	
 	private final static Logger log = LoggerFactory.getLogger(RaceObserver.class);
 	
-	private StaticTrackPathBuilder pathBuilder = new StaticTrackPathBuilder();
+	private StaticPathBuilder pathBuilder = new StaticPathBuilder();
 	
 	public enum RaceStatus {PRE_RACE, UNDER_STARTERS_ORDERS, STARTED, FINSIHED};
 	
@@ -39,7 +39,7 @@ public class RaceObserver implements PositionEnhancer {
 	private int runnerCount;
 	
 	public RaceObserver(int runnerCount) {
-		track = new Track(new MeasuredShape(pathBuilder.build(StaticTrackPathBuilder.KEMPTON_740_TRACK)), StaticTrackPathBuilder.KEMPTON_FINISH);
+		track = new Track(new MeasuredShape(pathBuilder.build(StaticPathBuilder.KEMPTON_740_TRACK)), StaticPathBuilder.KEMPTON_FINISH);
 		this.runnerCount = runnerCount;
 	}
 	

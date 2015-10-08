@@ -9,7 +9,11 @@ import org.apache.commons.lang3.StringUtils;
  *
  */
 public class DefaultOutputWriter implements OutputWriter {
-
+	/**
+	 * 		  ,989780014 ,       ,2015-09-22T17:44:26.600,-1       ,       ,       ,       ,13.20000   ,-1      ,-1                  ,0         ,       ,       ,       ,       ,20.682 ,       ,       ,0    ,51.421332,-0.404618166667
+	 * {spare},{clientId},{spare},{gpsTimestamp}         ,{heading},{spare},{spare},{spare},{altitiude},{status},{horizontalAccuracy},{standing},{spare},{spare},{spare},{spare},{speed},{spare},{spare},{lag},{lat}    ,{lon}
+	 * 
+	 */
 	@Override
 	public String write(Position p) {
 		String[] cells = new String[22];

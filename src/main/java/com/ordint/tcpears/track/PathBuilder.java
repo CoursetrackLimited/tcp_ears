@@ -9,7 +9,7 @@ import java.awt.geom.Path2D;
  * @author Tom
  *
  */
-public interface TrackPathBuilder {
+public interface PathBuilder {
 	
 	Path2D build(String name);
 

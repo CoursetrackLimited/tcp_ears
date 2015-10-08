@@ -16,7 +16,7 @@ import java.util.Arrays;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import com.ordint.tcpears.track.AbstractTrackBuilder;
+import com.ordint.tcpears.track.AbstractPathBuilder;
 import com.ordint.tcpears.track.geom.MeasuredShape;
   
 public class TestTest extends JPanel
@@ -203,7 +203,7 @@ public class TestTest extends JPanel
         return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
     }
     
-    class PointPathBuilder extends AbstractTrackBuilder {
+    class PointPathBuilder extends AbstractPathBuilder {
     	
     	public Path2D buildFromLine(Line2D line) {
     		return buildPath(Arrays.asList(line.getP1(), line.getP2()));

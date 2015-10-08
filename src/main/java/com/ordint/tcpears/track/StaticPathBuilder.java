@@ -3,7 +3,7 @@ package com.ordint.tcpears.track;
 import java.awt.geom.Path2D;
 import java.util.HashMap;
 
-public class StaticTrackPathBuilder extends AbstractTrackBuilder implements TrackPathBuilder{
+public class StaticPathBuilder extends AbstractPathBuilder implements PathBuilder{
 	public final static String KEMPTON = 
 			"-0.4050740970236622,51.41834419372505,0 -0.4062719173915252,51.41951321326398,0 "
 			+ "-0.4063464961995345,51.41962644634847,0 -0.4064052482364999,51.41975417526681,0 "
@@ -80,7 +80,7 @@ public class StaticTrackPathBuilder extends AbstractTrackBuilder implements Trac
 	
 	@Override
 	public Path2D build(String name) {	
-		return buildTrack(tracks.get(name));
+		return buildPathFromKml(tracks.get(name));
 	}
 
 	

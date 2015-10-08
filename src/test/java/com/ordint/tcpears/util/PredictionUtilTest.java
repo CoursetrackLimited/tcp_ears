@@ -78,8 +78,6 @@ public class PredictionUtilTest {
 		double lat, lon, x, y;
 		lat = 51.419844;
 		lon =  -0.401731;
-		System.out.println("TO meters " + PredictionUtil.lat2y(51.419844));
-		System.out.println("TO meters " + PredictionUtil.lat2y(51.419847));
 		y =  PredictionUtil.latToMeters(lat);
 		x =  PredictionUtil.lonToMeters(lon);
 		System.out.println("Lat TO meters " + y);

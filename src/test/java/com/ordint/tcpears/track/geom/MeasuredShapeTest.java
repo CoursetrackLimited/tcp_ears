@@ -15,7 +15,7 @@ import org.junit.Test;
 
 import com.ordint.tcpears.domain.Position;
 import com.ordint.tcpears.domain.PositionUtil;
-import com.ordint.tcpears.track.StaticTrackPathBuilder;
+import com.ordint.tcpears.track.StaticPathBuilder;
 
 
 public class MeasuredShapeTest {
@@ -122,7 +122,7 @@ public class MeasuredShapeTest {
 	
 	
 	public void isValidSgement() {
-		StaticTrackPathBuilder builder = new  StaticTrackPathBuilder();
+		StaticPathBuilder builder = new  StaticPathBuilder();
 		Path2D track = builder.build("KEMPTON_740");	
 		MeasuredShape shape = new  MeasuredShape(track);
 		
@@ -142,7 +142,7 @@ public class MeasuredShapeTest {
 	
 	@Test
 	public void calculateDistanceTest() {
-		StaticTrackPathBuilder builder = new  StaticTrackPathBuilder();
+		StaticPathBuilder builder = new  StaticPathBuilder();
 		Path2D track = builder.build("KEMPTON");	
 		MeasuredShape shape = new  MeasuredShape(track);
 		//-0.398705,51.416924

@@ -756,7 +756,7 @@ public class MeasuredShape implements Serializable {
 		
 		for (int i = 0 ; i< segments.length-1; i++) {
 			if(segments[i].type != PathIterator.SEG_LINETO) {
-				throw new IllegalArgumentException("Cant run getCLosestPoint on track not made of line segments");
+				throw new IllegalArgumentException("Cant call getDistanceAlongTrack on track not made of line segments");
 			}
 			currentDistance = ptSegDist(segments[i].data[0], segments[i].data[1], segments[i].data[2], segments[i].data[3],
 						offTrackpoint.getX(),offTrackpoint.getY());

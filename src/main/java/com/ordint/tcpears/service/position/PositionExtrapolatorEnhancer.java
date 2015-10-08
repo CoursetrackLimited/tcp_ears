@@ -15,7 +15,7 @@ import com.javadocmd.simplelatlng.LatLng;
 import com.javadocmd.simplelatlng.LatLngTool;
 import com.javadocmd.simplelatlng.util.LengthUnit;
 import com.ordint.tcpears.domain.Position;
-import com.ordint.tcpears.track.StaticTrackPathBuilder;
+import com.ordint.tcpears.track.StaticPathBuilder;
 import com.ordint.tcpears.track.geom.MeasuredShape;
 import com.ordint.tcpears.util.ConversionUtil;
 import com.ordint.tcpears.util.PredictionUtil;
@@ -25,18 +25,18 @@ public class PositionExtrapolatorEnhancer implements PositionEnhancer {
 	private final static Logger log = LoggerFactory.getLogger(PositionExtrapolatorEnhancer.class);
 	private Clock clock = Clock.systemUTC();
 	private MeasuredShape track;
-	private StaticTrackPathBuilder pathBuilder = new StaticTrackPathBuilder();
+	private StaticPathBuilder pathBuilder = new StaticPathBuilder();
 	private boolean useRelativeTime = false;
 	private long offset = 0;
 	public PositionExtrapolatorEnhancer() {
-		track = new MeasuredShape(pathBuilder.build(StaticTrackPathBuilder.KEMPTON_740_TRACK));
+		track = new MeasuredShape(pathBuilder.build(StaticPathBuilder.KEMPTON_740_TRACK));
 	}
 	public PositionExtrapolatorEnhancer(boolean useRelativeTime) {
-		track = new MeasuredShape(pathBuilder.build(StaticTrackPathBuilder.KEMPTON_740_TRACK));
+		track = new MeasuredShape(pathBuilder.build(StaticPathBuilder.KEMPTON_740_TRACK));
 		this.useRelativeTime =useRelativeTime;
 	}
 	public PositionExtrapolatorEnhancer(Clock clock) {
-		track = new MeasuredShape(pathBuilder.build(StaticTrackPathBuilder.KEMPTON_740_TRACK));
+		track = new MeasuredShape(pathBuilder.build(StaticPathBuilder.KEMPTON_740_TRACK));
 		this.clock = clock;
 	}
 	@Override
