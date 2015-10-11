@@ -28,6 +28,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
 import com.ordint.tcpears.domain.ClientDetails;
+import com.ordint.tcpears.domain.RaceDetail;
 import com.ordint.tcpears.memcache.MemcacheHelper;
 import com.ordint.tcpears.service.ClientDetailsResolver;
 import com.ordint.tcpears.service.ClientManager;
@@ -85,6 +86,8 @@ public class DefaultRaceServiceTest {
 		ClientDetails cd2 = new ClientDetails();
 		given(jdbcTemplate.query(eq(DefaultRaceService.CLIENT_DETAILS_FOR_RACE_SQL), (RowMapper<ClientDetails>)anyObject(), anyLong()))
 			.willReturn(Arrays.asList(cd1,cd2));
+		given(jdbcTemplate.queryForObject(eq(DefaultRaceService.RACE_DETAIL_SQL), any(RaceRowMapper.class), anyLong()))
+			.willReturn(RaceDetail.builder().scheduledStartTime(LocalDateTime.now()).build());
 		defaultRaceService.startRace(100);
 		ArgumentCaptor<List> cap = ArgumentCaptor.forClass(List.class);
 		Mockito.verify(clientDetailsResolver).updateClientDetails(cap.capture());
@@ -112,7 +115,9 @@ public class DefaultRaceServiceTest {
 		ClientDetails cd2 = new ClientDetails();
 		given(jdbcTemplate.query(eq(DefaultRaceService.CLIENT_DETAILS_FOR_RACE_SQL), (RowMapper<ClientDetails>)anyObject(), anyLong()))
 			.willReturn(Arrays.asList(cd1,cd2));
-
+		given(jdbcTemplate.queryForObject(eq(DefaultRaceService.RACE_DETAIL_SQL), any(RaceRowMapper.class), anyLong()))
+			.willReturn(RaceDetail.builder().scheduledStartTime(LocalDateTime.now()).build());
+		
 		Map<String,Object> row = new HashMap<>();
 		row.put("group_id", 1l);
 		row.put("actualStartTime", "2015-09-16 22:32:38");
@@ -137,6 +142,8 @@ public class DefaultRaceServiceTest {
 		ClientDetails cd1 = new ClientDetails();
 		given(jdbcTemplate.query(eq(DefaultRaceService.CLIENT_DETAILS_FOR_RACE_SQL), (RowMapper<ClientDetails>)anyObject(), anyLong()))
 			.willReturn(Arrays.asList(cd1));
+		given(jdbcTemplate.queryForObject(eq(DefaultRaceService.RACE_DETAIL_SQL), any(RaceRowMapper.class), anyLong()))
+			.willReturn(RaceDetail.builder().scheduledStartTime(LocalDateTime.now()).build());
 		Map<String,Object> row = new HashMap<>();
 		row.put("group_id", 2l);
 		row.put("actualStartTime", "2015-09-16 22:32:38");

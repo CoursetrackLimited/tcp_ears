@@ -18,8 +18,12 @@ public class PredictionUtilTest {
 	private final static double LON = -0.401670;
 	private final static double X = -27853.825420170127;
 	private final static double Y = 5717614.66216199;
+	
+	PredictionUtil cc = new PredictionUtil(trackLatLongPoints)
 	@Before
 	public void setUp() throws Exception {
+	
+	
 	}
 
 	@Test

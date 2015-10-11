@@ -378,6 +378,10 @@ public class MeasuredShape implements Serializable {
 	 * @throws IllegalArgumentException if the shape has more than 1 path.
 	 */
 	public MeasuredShape(PathIterator i,double spacing) {
+		init(i, spacing);
+	}
+	
+	private void init(PathIterator i,double spacing) {
 		Vector<Segment> v = new Vector<Segment>();
 		double lastX = 0;
 		double lastY = 0;
@@ -435,8 +439,25 @@ public class MeasuredShape implements Serializable {
 		for(int a = 0; a<segments.length; a++) {
 			segments[a].normalizedDistance = segments[a].realDistance/closedDistance;
 		}
+		
 	}
-	
+	public MeasuredShape(List<Point2D> allpoints) {
+
+		Path2D path = new Path2D.Double();		
+		boolean first = true;
+		for(Point2D pos : allpoints) {
+			if(first) {
+				path.moveTo(pos.getX(), pos.getY());
+				first = false;
+			} else {
+				path.lineTo(pos.getX(), pos.getY());
+			}
+		}
+		path.closePath();		
+		init(path.getPathIterator(null), DEFAULT_SPACING);
+		
+
+	}
 	/** Writes the entire shape
 	 * @param w the destination to write to
 	 */
@@ -705,17 +726,7 @@ public class MeasuredShape implements Serializable {
 		
 	}
 	
-	public PositionDistanceInfo calculateDistanceInfo(com.ordint.tcpears.domain.Position position) {
-		Point2D currentPoint = PredictionUtil.toPoint(position);
-		double[] info = getDistanceAlongTrack(currentPoint);
-		if (info != null) {
-			return new PositionDistanceInfo(position.getClientId(), info[2], -1, 0);
-		} else {
-			log.warn("Could not cacluclate distance info for {}", position);
-			return  new PositionDistanceInfo(position.getClientId(), -1, -1, 0);
-		}
-		
-	}
+
 	/**
 	 * Returns a Point2D whose position is calculated by moving to the nearest
 	 * point on the track, travelling along the track for a distance determined

@@ -20,6 +20,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
 import com.ordint.tcpears.domain.ClientDetails;
+import com.ordint.tcpears.domain.RaceDetail;
 import com.ordint.tcpears.memcache.MemcacheHelper;
 import com.ordint.tcpears.service.ClientDetailsResolver;
 import com.ordint.tcpears.service.ClientManager;
@@ -37,6 +38,9 @@ public class DefaultRaceService implements RaceService {
 
 
 	public enum RaceStatus {NOT_STARTED, STARTED, FINISHED, REPLAYING}
+	static final String RACE_DETAIL_SQL = "SELECT races.race_id, group_id, races.name as race_name, scheduledStartTime, actualStartTime, "
+			+ "finishTime, races.venue_id, venues.name AS venue_name FROM races INNER JOIN venues "
+			+ "ON races.venue_id = venues.venue_id WHERE races.race_id=?";
 	
 	static final String CLIENT_DETAILS_FOR_RACE_SQL = 
 			"SELECT clients.client_ident as clientId, friendly_name as fixedName, "
@@ -97,15 +101,19 @@ public class DefaultRaceService implements RaceService {
 	
 	
 	private void publishRaceDetails(long raceId , String groupId, List<ClientDetails> clientDetails) throws RaceServiceException {
-		//clients.client_ident, runners.name AS friendly_name, groups.group_id , groups.name AS group_name 
-		HashMap<String, Object> raceDetails = new HashMap<>();
-		raceDetails.put("race_group_id", groupId);
-		raceDetails.put("race_name", clientDetails.get(0).getCurrentGroupName());
-		raceDetails.put("client_details", clientDetails);
+		//clients.client_ident, runners.name AS friendly_name, groups.group_id , groups.name AS group_name
+		RaceDetail detail = jdbcTemplate.queryForObject(RACE_DETAIL_SQL,new RaceRowMapper(), raceId);
+		HashMap<String, Object> raceDetailsMap = new HashMap<>();
+		raceDetailsMap.put("race_group_id", groupId);
+		raceDetailsMap.put("race_name", clientDetails.get(0).getCurrentGroupName());
+		raceDetailsMap.put("client_details", clientDetails);
+		raceDetailsMap.put("venueName", detail.getVenueName());
+		raceDetailsMap.put("raceStartTime", detail.getStartTime());
+		
 		String raceMemcaheKey = String.format(RACE_DETAILS_MEMCACHE_KEY, groupId);
 		try {
-			memcacheHelper.set(CURRENT_RACE_DETAILS_MEMCACHE_KEY, CURRENT_RACE_DETAILS_MEMCACHE_KEY, raceDetails);
-			memcacheHelper.set(raceMemcaheKey, raceMemcaheKey, raceDetails);
+			memcacheHelper.set(CURRENT_RACE_DETAILS_MEMCACHE_KEY, CURRENT_RACE_DETAILS_MEMCACHE_KEY, raceDetailsMap);
+			memcacheHelper.set(raceMemcaheKey, raceMemcaheKey, raceDetailsMap);
 		} catch (IOException e) {
 			log.error("Error publishing race details for race with id {}", raceId, e);
 			throw new RaceServiceException(e);

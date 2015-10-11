@@ -40,13 +40,15 @@ public class DefaultOutputWriterTest {
 		
 		Position p = Position.builder()
 				.altitude("10")
-				.clientDetails(new ClientDetails("groupId", "clientId"))
+				.clientDetails(new ClientDetails("groupId", "clientId", "kmpO1", "Onion Terror", "16:40 Redbridge Hndicap","5"))
 				.speed("99")
 				.horizontalAccuracy("11")
+				.heading("300.1")
 				.lat("50.1")
 				.lon("34.32")
 				.timestampFromTime("10330.30")
 				.timeCreated(timestamper.now())
+				.lag(100)
 				.status("A")
 				.standing(4)
 				.build();
@@ -55,13 +57,18 @@ public class DefaultOutputWriterTest {
 		
 		String cells[] =StringUtils.splitByWholeSeparatorPreserveAllTokens(actual, ",");
 		LocalDate t = LocalDate.now(Clock.systemUTC());
-		assertThat(cells[cells.length-1], equalTo("34.32"));
-		assertThat(cells[cells.length-2], equalTo("50.1"));
-		assertThat(cells[cells.length-11], equalTo("4"));
-		assertThat(cells[cells.length-12], equalTo("11"));
-		assertThat(cells[cells.length-6], equalTo("99"));
-		assertThat(cells[cells.length-13], equalTo("A"));
-		assertThat(cells[cells.length-19], equalTo(t + "T01:03:30.300"));
+		assertThat(cells[1], equalTo("clientId")); 
+		assertThat(cells[3], equalTo(t + "T01:03:30.300"));
+		assertThat(cells[4], equalTo("300.1"));
+		assertThat(cells[5], equalTo("5"));
+		assertThat(cells[8], equalTo("10"));
+		assertThat(cells[9], equalTo("A"));
+		assertThat(cells[10], equalTo("11"));
+		assertThat(cells[11], equalTo("4"));
+		assertThat(cells[16], equalTo("99"));
+		assertThat(cells[19], equalTo("100"));
+		assertThat(cells[20], equalTo("50.1"));
+		assertThat(cells[21], equalTo("34.32"));
 		
 		
 	}
@@ -87,14 +94,19 @@ public class DefaultOutputWriterTest {
 		
 		String cells[] =StringUtils.splitByWholeSeparatorPreserveAllTokens(actual, ",");
 		LocalDate t = LocalDate.now(Clock.systemUTC());
-		assertThat(cells[cells.length-1], equalTo("34.32"));
-		assertThat(cells[cells.length-2], equalTo("50.1"));
-		assertThat(cells[cells.length-11], equalTo("4"));
-		assertThat(cells[cells.length-12], equalTo("11"));
-		assertThat(cells[cells.length-6], equalTo("99"));
-		assertThat(cells[cells.length-13], equalTo("A"));
-		assertThat(cells[cells.length-19], equalTo(t + "T11:03:30.300"));
 		
 		
+		
+		
+		
+		assertThat(cells[1], equalTo("clientId")); 
+		assertThat(cells[3], equalTo(t + "T11:03:30.300"));
+		assertThat(cells[4], equalTo(""));
+		assertThat(cells[9], equalTo("A"));
+		assertThat(cells[10], equalTo("11"));
+		assertThat(cells[11], equalTo("4"));
+		assertThat(cells[16], equalTo("99"));
+		assertThat(cells[20], equalTo("50.1"));
+		assertThat(cells[21], equalTo("34.32"));
 	}
 }
