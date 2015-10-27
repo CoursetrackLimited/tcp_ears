@@ -12,11 +12,12 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.util.Arrays;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import com.ordint.tcpears.track.AbstractPathBuilder;
+
 import com.ordint.tcpears.track.geom.MeasuredShape;
   
 public class TestTest extends JPanel
@@ -203,12 +204,25 @@ public class TestTest extends JPanel
         return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
     }
     
-    class PointPathBuilder extends AbstractPathBuilder {
+    class PointPathBuilder  {
     	
     	public Path2D buildFromLine(Line2D line) {
     		return buildPath(Arrays.asList(line.getP1(), line.getP2()));
     	}
-    	
+    	protected Path2D buildPath(List<Point2D> allpoints) {	
+    		Path2D path = new Path2D.Double();		
+    		boolean first = true;
+    		for(Point2D pos : allpoints) {
+    			if(first) {
+    				path.moveTo(pos.getX(), pos.getY());
+    				first = false;
+    			} else {
+    				path.lineTo(pos.getX(), pos.getY());
+    			}
+    		}
+    		path.closePath();		
+    		return path;
+    	}    	
     }
     
 }

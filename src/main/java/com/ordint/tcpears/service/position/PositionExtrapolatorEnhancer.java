@@ -16,27 +16,28 @@ import com.javadocmd.simplelatlng.LatLngTool;
 import com.javadocmd.simplelatlng.util.LengthUnit;
 import com.ordint.tcpears.domain.Position;
 import com.ordint.tcpears.track.StaticPathBuilder;
+import com.ordint.tcpears.track.Track;
+import com.ordint.tcpears.track.geom.PositionToPointConverterImpl;
 import com.ordint.tcpears.track.geom.MeasuredShape;
 import com.ordint.tcpears.util.ConversionUtil;
-import com.ordint.tcpears.util.PredictionUtil;
 
 public class PositionExtrapolatorEnhancer implements PositionEnhancer {
 	
 	private final static Logger log = LoggerFactory.getLogger(PositionExtrapolatorEnhancer.class);
 	private Clock clock = Clock.systemUTC();
-	private MeasuredShape track;
+	private Track track;
 	private StaticPathBuilder pathBuilder = new StaticPathBuilder();
 	private boolean useRelativeTime = false;
 	private long offset = 0;
 	public PositionExtrapolatorEnhancer() {
-		track = new MeasuredShape(pathBuilder.build(StaticPathBuilder.KEMPTON_740_TRACK));
+		track =  new Track(StaticPathBuilder.KEMPTON_740, StaticPathBuilder.KEMPTON_FINISH);
 	}
 	public PositionExtrapolatorEnhancer(boolean useRelativeTime) {
-		track = new MeasuredShape(pathBuilder.build(StaticPathBuilder.KEMPTON_740_TRACK));
+		track =  new Track(StaticPathBuilder.KEMPTON_740, StaticPathBuilder.KEMPTON_FINISH);
 		this.useRelativeTime =useRelativeTime;
 	}
 	public PositionExtrapolatorEnhancer(Clock clock) {
-		track = new MeasuredShape(pathBuilder.build(StaticPathBuilder.KEMPTON_740_TRACK));
+		track =  new Track(StaticPathBuilder.KEMPTON_740, StaticPathBuilder.KEMPTON_FINISH);
 		this.clock = clock;
 	}
 	@Override
@@ -67,44 +68,31 @@ public class PositionExtrapolatorEnhancer implements PositionEnhancer {
 			return p;
 		}
 		long timeInMilis = getAge(p);
-		if (timeInMilis > 100 && timeInMilis < 400) {
-			
-			return calculateLinearPoint(p, timeInMilis);
-		}
+
 /*		if ("kmp05".equals(p.getClientDetails().getFixedName())) {
 			log.info("Time in millis {}", timeInMilis);
 		}*/
 	
 		try {
-			return calculateTrackBasedPoint(p, timeInMilis);
+			return track.predict(p, (int)timeInMilis);
 		} catch (IllegalArgumentException e) {
-			return calculateLinearPoint(p, timeInMilis);
+			return p;
 		}
 		
 	}
 
-	private Position calculateTrackBasedPoint(Position p, long timeInMilis) {
-		
-		//log.info("Generating track point for {}", p.getClientDetails().getRunnerIdent());
-		Point2D extra = track.predict(PredictionUtil.toPoint(p), p.getSpeedValue(), timeInMilis);
-		
-	    return Position.builder().position(p)
-				.timeCreated(currrentInstant())
-				.timestampFromDateTime(p.getTimestamp().plus(timeInMilis, ChronoUnit.MILLIS))
-				.lat(Double.toString(PredictionUtil.metersToLat(extra.getY())))
-				.lon(Double.toString(PredictionUtil.metersToLon(extra.getX()))).build();
-	}
+/*
 	private Position calculateLinearPoint(Position p, long timeInMilis) {
-		Point2D previous = PredictionUtil.toPoint(Double.parseDouble(p.getLastLat()), Double.parseDouble(p.getLastLon()));
-		Point2D current = PredictionUtil.toPoint(p);
+		Point2D previous = PositionToPointConverterImpl.toPoint(Double.parseDouble(p.getLastLat()), Double.parseDouble(p.getLastLon()));
+		Point2D current = PositionToPointConverterImpl.toPoint(p);
 		double distance = current.distance(previous);
 		double sin = (current.getY() - previous.getY()) / distance;
 		double cos = (current.getX() - previous.getX()) / distance;
 		double extra = p.getSpeedValue() * timeInMilis/ 1000; 
 		double y = current.getY() + (extra * sin);
 		double x =current.getX() + (extra * cos);
-		double newLat = PredictionUtil.metersToLat(y);
-		double newLon = PredictionUtil.metersToLon(x);
+		double newLat = PositionToPointConverterImpl.metersToLat(y);
+		double newLon = PositionToPointConverterImpl.metersToLon(x);
 		LocalDateTime now = currrentInstant();
 		return Position.builder().position(p)
 				.timeCreated(now)
@@ -114,7 +102,7 @@ public class PositionExtrapolatorEnhancer implements PositionEnhancer {
 		
 	}
 	
-
+*/
 	public Position calculateLinearPoint3(Position p, long timeInMilis) {
 		//log.info("Generating linear point for {}", p.getClientDetails().getRunnerIdent());
 		LatLng start = ConversionUtil.toLatLng(p.getLastLat(), p.getLastLon());

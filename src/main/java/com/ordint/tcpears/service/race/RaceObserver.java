@@ -39,7 +39,7 @@ public class RaceObserver implements PositionEnhancer {
 	private int runnerCount;
 	
 	public RaceObserver(int runnerCount) {
-		track = new Track(new MeasuredShape(pathBuilder.build(StaticPathBuilder.KEMPTON_740_TRACK)), StaticPathBuilder.KEMPTON_FINISH);
+		track = new Track(StaticPathBuilder.KEMPTON_740_TRACK, StaticPathBuilder.KEMPTON_FINISH);
 		this.runnerCount = runnerCount;
 	}
 	

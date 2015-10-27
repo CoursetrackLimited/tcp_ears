@@ -1,5 +1,7 @@
 package com.ordint.tcpears.track.geom;
 
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
@@ -7,6 +9,7 @@ import static org.junit.Assert.assertTrue;
 import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 
 import org.apache.commons.math3.util.Precision;
 import org.hamcrest.Matchers;
@@ -19,148 +22,93 @@ import com.ordint.tcpears.track.StaticPathBuilder;
 
 
 public class MeasuredShapeTest {
-
+	private MeasuredShape shape;
 	@Before
 	public void setUp() throws Exception {
-	}
-	
-	@Test
-	public void testSetPoint() throws Exception {
 		
-		Path2D.Double path = new Path2D.Double();
+		double[][] points = new double[][] {
+			{3,2},{3,4},{4,7},{5,9},{7,11},{10,13},{13,14},{16,14},{19,12},{21,10},{22,7}
+		};
 		
-		path.moveTo(1, 1);
-		path.lineTo(2, 5);
-		path.lineTo(3, 1);
-		
-		path.closePath();
-		
-		MeasuredShape shape = new MeasuredShape(path);
-		
-		Point2D p = shape.getPoint(4);
-		
-		System.out.println(p);
-		
-	}
-	@Test 
-	public void testGetPointDistance() {
-		
-		Path2D.Double path = new Path2D.Double();
-		
-		path.moveTo(1, 1);
-		path.lineTo(2, 5);
-		path.lineTo(3, 1);
-		
-		path.closePath();
-		MeasuredShape shape = new MeasuredShape(path);
-		
-		Point2D.Double point = new Point2D.Double(1.9701426f, 4.8805704f);
-		
-		assertThat(Precision.round(shape.getPointDistance(point), 6), Matchers.equalTo(4.0));
-		
+		ArrayList<Point2D> points2D = new ArrayList<>();
+		for(double[] xy : points) {
+			points2D.add(new Point2D.Double(xy[0], xy[1]));
+		}
+		shape = new MeasuredShape(points2D);
 	}
 	
 	@Test 
-	public void testGetPoints() {
+	public void getPointDistance() throws Exception {
+		Point2D point = new Point2D.Double(6, 10);
+		double distance = shape.getPointDistance(point);
+		double expected = 2 + Math.sqrt(10) + Math.sqrt(5) + Math.sqrt(2);
+		assertThat(distance, equalTo(expected));
 		
-		Path2D.Double path = new Path2D.Double();
+	}
+	@Test 
+	public void getPointDistanceShouldReturnZeroIfNotOnShape() throws Exception {
 		
-		path.moveTo(1, 1);
-		path.lineTo(2, 5);
-		path.lineTo(3, 1);
+		Point2D point = new Point2D.Double(4, 10);
+		double distance = shape.getPointDistance(point);
 		
-		path.closePath();
-		MeasuredShape shape = new MeasuredShape(path);
-		
-		Point2D.Float point = new Point2D.Float(1.9701426f, 4.8805704f);
-		
-		System.out.println(shape.getPoints(4, 3));
-		
+		assertThat(distance, equalTo(0.0));
 	}
 	
 	@Test 
-	public void testGetPoints2() {
+	public void getPointShouldReturnPointSpecifiedDistanceFromStartOfShape() throws Exception {
+		double distance  = 2 + Math.sqrt(10) + Math.sqrt(5) + Math.sqrt(2);
+		Point2D expected = new Point2D.Double(6, 10);
+		Point2D actual = shape.getPoint(distance);
 		
-		Path2D.Double path = new Path2D.Double();
-		
-		path.moveTo(1, 1);
-		path.lineTo(1, 15);
-		path.lineTo(10, 15);
-		path.lineTo(10, 1);
-		
-		path.closePath();
-		MeasuredShape shape = new MeasuredShape(path);
-		
-		Point2D p = shape.getPoint(4);
-		
-		System.out.println(p);
-		
-		System.out.println(shape.getPoints(10, p, 4));
+		assertThat(eqPoint(actual, expected), equalTo(true));
 		
 	}
-	
+	@Test(expected = IllegalArgumentException.class)
+	public void getPointShouldThrowIllegalArgumentExceptionWhenDistanceExceedsShapeLength() throws Exception {
+		double distance  = shape.getClosedDistance() + 1;
+		
+		Point2D actual = shape.getPoint(distance);
+		
+		assertThat(actual, nullValue());
+		
+	}
+	@Test 
+	public void getPointShouldReturnPointSpecifiedDistanceFromStartPoint() throws Exception {
+		double distance  = Math.sqrt(10) + Math.sqrt(5) + Math.sqrt(2);
+		Point2D start = new Point2D.Double(3,4);
+		Point2D expected = new Point2D.Double(6, 10);
+		Point2D actual = shape.getPoint(distance, start);
+		
+		assertThat(eqPoint(actual, expected), equalTo(true));
+		
+	}
+	@Test 
+	public void getClosestPoint() throws Exception {
+		Point2D externalPoint = new Point2D.Double(6, 12);
+		Point2D actual = shape.getClosestPoint(externalPoint);
+		Point2D expected =  new Point2D.Double(7, 11);
+		
+		assertThat(eqPoint(actual, expected), equalTo(true));
+		
+	}
+	@Test 
+	public void getClosestPoint1() throws Exception {
+		Point2D externalPoint = new Point2D.Double(5, 12);
+		Point2D actual = shape.getOffTrackPoint(externalPoint, Math.sqrt(150));
+		Point2D expected =  new Point2D.Double(7, 11);
+		System.out.println(actual);
+		System.out.println(expected);
+		//assertThat(eqPoint(actual, expected), equalTo(true));
+		
+	}	
+	private static boolean eqPoint(Point2D p1, Point2D p2) {
+		return Precision.equals(p1.getX(), p2.getX(), MeasuredShape.EIGHT_DP) && 
+				Precision.equals(p1.getY(), p2.getY(), MeasuredShape.EIGHT_DP);		
+	}
 	
 
 	
-	@Test
-	public void helpme() {
-        Point2D a = new Point2D.Double(-0.4018246066470643, 51.41986586173692);
-        Point2D b = new Point2D.Double(-0.4017332700389376, 51.41977387312371);
-        Point2D p = new Point2D.Double(-0.401862, 51.419764);
-        Point2D r = new Point2D.Double(-0.4017922407539071, 51.419833264800296);	
-        
-        double s1 = (b.getY()-a.getY()) / (b.getX()-a.getX());
-        double s2 = (p.getY()-r.getY()) / (r.getX()-p.getX());
-        
-        
-        System.out.println(s1);
-        
-        System.out.println(s2);
-        System.out.println(-1/s1);   
-        
-	}
 	
-	
-	public void isValidSgement() {
-		StaticPathBuilder builder = new  StaticPathBuilder();
-		Path2D track = builder.build("KEMPTON_740");	
-		MeasuredShape shape = new  MeasuredShape(track);
-		
-		//System.out.println(shape.validSegment(new Line2D.Double(0, 0, 6, 0), new Point2D.Double(3, 4)));
-		
-		//System.out.println(shape.validSegment(new Line2D.Double(0, 0, 6, 0), new Point2D.Double(30, 4)));
-		//System.out.println(shape.validSegment(new Line2D.Double(0, 0, 6, 0), new Point2D.Double(3, -4)));
-		assertTrue(shape.validSegment(new Line2D.Double(0, -1, -6, 0), new Point2D.Double(-3, -4)));
-		
-		assertTrue(shape.validSegment(new Line2D.Double(0, -1, -6, 0), new Point2D.Double(-8, -4)));
-		
-		assertFalse(shape.validSegment(new Line2D.Double(10, 10, 20, 10), new Point2D.Double(30, 9)));
-		assertFalse(shape.validSegment(new Line2D.Double(10, 10, 20, 10), new Point2D.Double(30, 11)));
-		
-		assertTrue(shape.validSegment(new Line2D.Double(-10, -10, -20, -5), new Point2D.Double(-11, -9)));
-	}
-	
-	@Test
-	public void calculateDistanceTest() {
-		StaticPathBuilder builder = new  StaticPathBuilder();
-		Path2D track = builder.build("KEMPTON");	
-		MeasuredShape shape = new  MeasuredShape(track);
-		//-0.398705,51.416924
-		//-0.398677,51.416965
-		//-0.98769,51.416964		
-		Position p1=PositionUtil.createPosition("51.416924", "-0.398705", "-1");
-		Position p2=PositionUtil.createPosition("51.416965", "-0.398677","-1");
-		Position p3=PositionUtil.createPosition("51.416964","-0.398769", "-1");
-		
-		
-		System.out.println(shape.calculateDistanceInfo(p1));
-		System.out.println(shape.calculateDistanceInfo(p2));
-		System.out.println(shape.calculateDistanceInfo(p3));
-		
-		
-		
-		
-	}
 	
 	
 	

@@ -1,64 +1,43 @@
 package com.ordint.tcpears.track;
 
-import static java.lang.Double.parseDouble;
-
-import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.ordint.tcpears.domain.Position;
 import com.ordint.tcpears.domain.PositionDistanceInfo;
 import com.ordint.tcpears.track.geom.MeasuredShape;
-import com.ordint.tcpears.util.PredictionUtil;
+import com.ordint.tcpears.track.geom.PositionToPointConverter;
+import com.ordint.tcpears.track.geom.TrackGeomFactory;
 
 public class Track {
 	
 	private static final Logger log = LoggerFactory.getLogger(Track.class);
 
 	private double finishDistance;
-	private MeasuredShape guideTrack;
-	private PredictionUtil coordinateConverter;	
+	private MeasuredShape trackShape;
+	private PositionToPointConverter positionToPointConverter;	
 	
 
 	public Track(String kmlPoints, String finishLatLong) {
-		String[] trackPoints = kmlPoints.split(" "); 
-		coordinateConverter = new PredictionUtil(calculateCenter(trackPoints));
-		this.guideTrack = buildShapeFromKml(trackPoints);
-		double[] info = guideTrack.getDistanceAlongTrack(coordinateConverter.toPoint(finishLatLong));
+		this(kmlPoints, finishLatLong, new TrackGeomFactory());
+		
+	}
+	public Track(String kmlPoints, String finishLatLong, TrackGeomFactory geomFactory) {
+		positionToPointConverter = geomFactory.createPositionToPointConverter(kmlPoints);
+		this.trackShape = geomFactory.createTrackShape(kmlPoints, positionToPointConverter);
+		double[] info = trackShape.getDistanceAlongTrack(positionToPointConverter.toPoint(finishLatLong));
 		finishDistance = info[2];
 		
 	}
-	private double calculateCenter(String[] trackPoints) {
-		//average lat
-		double centre =0;
-		for(String point:trackPoints) {
-			centre = centre + Double.parseDouble(StringUtils.substringBetween(point, ","));
-		}
-		return centre = centre / trackPoints.length;
-	
-	}
-	protected MeasuredShape buildShapeFromKml(String[] trackPoints ) {
-		
-		List<Point2D> allpoints = new ArrayList<>();
-		for(String trackPosition : trackPoints) {
-			allpoints.add(coordinateConverter.toPoint(trackPosition));
-		}	
-		return new MeasuredShape(allpoints);
-		
-	}
-	
 	
 	
 	public PositionDistanceInfo calculateDistanceInfo(Position position) {
-		Point2D currentPoint = coordinateConverter.toPoint(position);
-		double[] info = guideTrack.getDistanceAlongTrack(currentPoint);
+		Point2D currentPoint = positionToPointConverter.toPoint(position);
+		double[] info = trackShape.getDistanceAlongTrack(currentPoint);
 		if (info != null) {
 			return new PositionDistanceInfo(position.getClientId(), info[2], finishDistance - info[2], 0);
 		} else {
@@ -71,16 +50,17 @@ public class Track {
 		return finishDistance;
 	}
 	
-	public Position predict(Position p, int timeInMillis) {
+	public Position predict(Position p, double timeInMillis) {
 		
 		//log.info("Generating track point for {}", p.getClientDetails().getRunnerIdent());
-		Point2D extra = guideTrack.predict(coordinateConverter.toPoint(p), p.getSpeedValue(), timeInMillis);
+		double distance = p.getSpeedValue() * (timeInMillis / 1000);
+		Point2D extra = trackShape.getOffTrackPoint(positionToPointConverter.toPoint(p), distance);
 		
 	    return Position.builder().position(p)
 				.timeCreated(LocalDateTime.now())
-				.timestampFromDateTime(p.getTimestamp().plus(timeInMillis, ChronoUnit.MILLIS))
-				.lat(Double.toString(coordinateConverter.metersToLat(extra.getY())))
-				.lon(Double.toString(coordinateConverter.metersToLon(extra.getX()))).build();
+				.timestampFromDateTime(p.getTimestamp().plus((long) timeInMillis, ChronoUnit.MILLIS))
+				.lat(Double.toString(positionToPointConverter.metersToLat(extra.getY())))
+				.lon(Double.toString(positionToPointConverter.metersToLon(extra.getX()))).build();
 	}		
 		
 	

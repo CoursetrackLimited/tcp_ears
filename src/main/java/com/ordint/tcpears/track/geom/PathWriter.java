@@ -27,7 +27,6 @@ import java.awt.geom.PathIterator;
 /** This object writes path data.
  * <P>With this abstract class you could filter shape data as it is
  * being written.  The simplest extension of this is the
- * {@link GeneralPathWriter}.
  * 
  * <P>This is designed to match the <code>GeneralPath</code> method
  * signatures.

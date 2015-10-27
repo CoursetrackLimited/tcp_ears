@@ -19,7 +19,7 @@ import com.javadocmd.simplelatlng.LatLngTool;
 import com.javadocmd.simplelatlng.util.LengthUnit;
 import com.ordint.tcpears.domain.ClientDetails;
 import com.ordint.tcpears.domain.Position;
-import com.ordint.tcpears.util.PredictionUtil;
+import com.ordint.tcpears.track.geom.PositionToPointConverterImpl;
 
 public class PositionExtrapolatorEnhancerTest {
 
@@ -87,9 +87,9 @@ public class PositionExtrapolatorEnhancerTest {
 		System.out.println(result.get(0));
 		
 		
-		double y = PredictionUtil.latToMeters(51.419754333333);
-		double x =PredictionUtil.lonToMeters(-0.406444166667);
-		System.out.println(PredictionUtil.metersToLon(x+1));
+		//double y = PositionToPointConverterImpl.latToMeters(51.419754333333);
+		//double x =PositionToPointConverterImpl.lonToMeters(-0.406444166667);
+		//System.out.println(PositionToPointConverterImpl.metersToLon(x+1));
 		LatLng start = new LatLng(51.419753, -0.406444166667);
 		System.out.println(start);
 		LatLng extra = LatLngTool.travel(start, 90, 10, LengthUnit.METER);

@@ -38,7 +38,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.ordint.tcpears.domain.PositionDistanceInfo;
-import com.ordint.tcpears.util.PredictionUtil;
 
 /** This represents a single closed path.
  * <P>This object can trace arbitrary amounts of itself using the
@@ -333,7 +332,7 @@ public class MeasuredShape implements Serializable {
 	 */
 	public static final double DEFAULT_SPACING = .05f;
 
-	private static final double EIGHT_DP = 0.00000001;
+	public static final double EIGHT_DP = 0.00000001;
 	
 	Segment[] segments;
 	double closedDistance = 0;
@@ -729,16 +728,15 @@ public class MeasuredShape implements Serializable {
 
 	/**
 	 * Returns a Point2D whose position is calculated by moving to the nearest
-	 * point on the track, travelling along the track for a distance determined
-	 * by the timeInMilis and speed parameters and then offsetting the point by
-	 * the amount required to place the original point on the track
+	 * point on the track, travelling along the track for the specified distance 
+	 * and then off setting the point by the inverse of the vector required to place the original 
+	 * point on the track in the first place
 	 * 
 	 * @param offTrackpoint
-	 * @param speed in meters per second
-	 * @param timeInMilis 
+	 * @param distance
 	 * @return
 	 */
-	public Point2D predict(Point2D offTrackpoint, double speed, double timeInMilis) {
+	public Point2D getOffTrackPoint(Point2D offTrackpoint, double distance) {
 		
 		Point2D startGuidePoint = getClosestPoint(offTrackpoint);
 		double offset = offTrackpoint.distance(startGuidePoint);
@@ -746,7 +744,6 @@ public class MeasuredShape implements Serializable {
 		double sin = (offTrackpoint.getY() - startGuidePoint.getY()) / offset;
 		
 		// get final prediction points based on distance
-		double distance = speed * (timeInMilis / 1000);
 		Point2D retval = getPoint(distance, startGuidePoint);
 		retval.setLocation(retval.getX() + (offset * cos), retval.getY() + (offset * sin));
 		return retval;
@@ -788,27 +785,7 @@ public class MeasuredShape implements Serializable {
 		
 	}	
 	
-	public static boolean validSegment(Line2D line1, Point2D externalPoint) {
-		double x1,x2,x3,y1,y2,y3;
-		if(true)return true;
-		x1 = line1.getX1();
-		x2 = line1.getX2();
-		x3 = externalPoint.getX();
-		y1 = line1.getY1();
-		y2 = line1.getY2();
-		y3 = externalPoint.getY();
-		
-		
-		double dotAB = (x3 - x1) * (x2 - x1) + (y3 - y1) * (y2 - y1);
-		double dotBC = (x3 - x2) * (x1-x2) + (y3-y2) * (y1-y2); 
-
-		if(dotAB * dotBC < 0) {
-			return  false;
-		} 
-		
-		return true;
-	}
-	public  Point2D calculateClosestPoint(Line2D segmentLine, Segment segment, double distance, Point2D from) {
+	private  Point2D calculateClosestPoint(Line2D segmentLine, Segment segment, double distance, Point2D from) {
 		
         double normal = getNormal(segmentLine);
         double cos = 1 /(Math.sqrt(1 + Math.pow(normal,2)));
@@ -829,11 +806,19 @@ public class MeasuredShape implements Serializable {
 		}
         
         Point2D closestPoint = new Point2D.Double(from.getX() - sgn * (distance * cos), from.getY() -  sgn * (distance * sin));
-
-        return closestPoint;
+        int range = inRange(x1, y1, x2, y2, closestPoint.getX(),closestPoint.getY());
+        if(range ==-1) {
+        	return segmentLine.getP1();
+        } else if (range ==1) {
+        	return segmentLine.getP2();
+		} else {
+			return closestPoint;
+		}        
+        
+        //return closestPoint;
 	}
 	
-	public double[] calculateDistance(int segmentIndex, double distance, Point2D from) {
+	private double[] calculateDistance(int segmentIndex, double distance, Point2D from) {
 		double x1, x2,x3,  y1, y2, y3;
 		x1 = segments[segmentIndex].data[0];
 		x2 = segments[segmentIndex].data[2];
@@ -875,9 +860,8 @@ public class MeasuredShape implements Serializable {
 	
 
 
-	public static int inRange(double x1, double y1, double x2, double y2,
+	private static int inRange(double x1, double y1, double x2, double y2,
             double px, double py) {
-		//double sgn = Math.signum(((x3-x1) * (dy) - ((y3-y1) * (dx)));
 		double dx = x2 - x1;
 		double dy = y2 - y1;
 		double innerProduct = (px - x1)*dx + (py - y1)*dy;
@@ -888,8 +872,6 @@ public class MeasuredShape implements Serializable {
 		} else {
 			return 0;
 		}
-			
-		//return 0 <= innerProduct && innerProduct <= dx*dx + dy*dy;
 	}	
 
     private static double getNormal(Line2D line)
@@ -967,21 +949,7 @@ public class MeasuredShape implements Serializable {
 		}
 		return distance;
 	}
-	
-	/** Trace the shape.
-	 * 
-	 * @param position a fraction from zero to one indicating where to start tracing
-	 * @param length a fraction from negative one to one indicating how much to trace.
-	 * If this value is negative then the shape will be traced backwards.
-	 * @return a new path
-	 */
-	public GeneralPath getShape(double position,double length) {
-		GeneralPath dest = new GeneralPath(Path2D.WIND_NON_ZERO);
-		PathWriter w = new GeneralPathWriter(dest);
-		writeShape(position,length,w,true);
-		return dest;
-	}
-	
+		
 	static class Position {
 		int i;
 		double innerPosition;
