@@ -17,7 +17,6 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-
 import com.ordint.tcpears.track.geom.MeasuredShape;
   
 public class TestTest extends JPanel

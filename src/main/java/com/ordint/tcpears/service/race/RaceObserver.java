@@ -13,7 +13,6 @@ import com.ordint.tcpears.domain.PositionDistanceInfo;
 import com.ordint.tcpears.service.position.PositionEnhancer;
 import com.ordint.tcpears.track.StaticPathBuilder;
 import com.ordint.tcpears.track.Track;
-import com.ordint.tcpears.track.geom.MeasuredShape;
 
 
 

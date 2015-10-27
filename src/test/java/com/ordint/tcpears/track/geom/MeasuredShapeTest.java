@@ -2,23 +2,14 @@ package com.ordint.tcpears.track.geom;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 
-import java.awt.geom.Line2D;
-import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 import org.apache.commons.math3.util.Precision;
-import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
-
-import com.ordint.tcpears.domain.Position;
-import com.ordint.tcpears.domain.PositionUtil;
-import com.ordint.tcpears.track.StaticPathBuilder;
 
 
 public class MeasuredShapeTest {

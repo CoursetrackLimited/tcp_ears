@@ -37,8 +37,6 @@ import java.util.Vector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ordint.tcpears.domain.PositionDistanceInfo;
-
 /** This represents a single closed path.
  * <P>This object can trace arbitrary amounts of itself using the
  * <code>writeShape()</code> methods.

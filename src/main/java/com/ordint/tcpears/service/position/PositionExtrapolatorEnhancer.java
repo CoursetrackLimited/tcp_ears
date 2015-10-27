@@ -1,6 +1,5 @@
 package com.ordint.tcpears.service.position;
 
-import java.awt.geom.Point2D;
 import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -17,8 +16,6 @@ import com.javadocmd.simplelatlng.util.LengthUnit;
 import com.ordint.tcpears.domain.Position;
 import com.ordint.tcpears.track.StaticPathBuilder;
 import com.ordint.tcpears.track.Track;
-import com.ordint.tcpears.track.geom.PositionToPointConverterImpl;
-import com.ordint.tcpears.track.geom.MeasuredShape;
 import com.ordint.tcpears.util.ConversionUtil;
 
 public class PositionExtrapolatorEnhancer implements PositionEnhancer {

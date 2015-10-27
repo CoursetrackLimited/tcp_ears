@@ -19,7 +19,6 @@ import com.javadocmd.simplelatlng.LatLngTool;
 import com.javadocmd.simplelatlng.util.LengthUnit;
 import com.ordint.tcpears.domain.ClientDetails;
 import com.ordint.tcpears.domain.Position;
-import com.ordint.tcpears.track.geom.PositionToPointConverterImpl;
 
 public class PositionExtrapolatorEnhancerTest {
 

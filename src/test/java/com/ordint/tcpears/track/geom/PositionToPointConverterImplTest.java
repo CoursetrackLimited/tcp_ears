@@ -1,7 +1,6 @@
 package com.ordint.tcpears.track.geom;
 
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 import java.awt.geom.Point2D;
@@ -11,7 +10,6 @@ import org.junit.Test;
 
 import com.ordint.tcpears.domain.Position;
 import com.ordint.tcpears.domain.PositionUtil;
-import com.ordint.tcpears.track.geom.PositionToPointConverterImpl;
 
 public class PositionToPointConverterImplTest {
 
