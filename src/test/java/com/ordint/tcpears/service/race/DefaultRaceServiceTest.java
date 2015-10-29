@@ -127,7 +127,7 @@ public class DefaultRaceServiceTest {
 		
 		given(jdbcTemplate.queryForMap(anyString(), anyLong())).willReturn(row); 
 		String raceName = defaultRaceService.replayRace(100);
-		then(clientManager).should().clearTrack("1");
+		then(clientManager).should().clearSnake("1");
 
 		then(replayService).should().replayFrom(any(LocalDateTime.class), eq(60), eq(true),eq("1-Some race-2015-09-16T22:32:38-60"));
 		then(jdbcTemplate).should().update(eq("update races set status ='REPLAYING' where race_id=?"), eq(100l));

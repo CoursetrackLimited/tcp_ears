@@ -6,11 +6,11 @@ public interface PositionPublisher {
 
 	void publishPositions() throws IOException;
 
-	void publishTracks() throws Exception;
+	void publishSnakes() throws Exception;
 
-	void clearTrack(String groupId);
+	void clearSnake(String groupId);
 	
-	void clearAllTracks();
+	void clearAllSnakes();
 
 	void clearPositions(String groupId);
 

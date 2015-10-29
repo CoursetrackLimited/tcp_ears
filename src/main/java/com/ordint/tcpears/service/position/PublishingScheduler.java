@@ -40,7 +40,7 @@ public class PublishingScheduler {
 			@Override
 			public void run() {
 				try {
-					positionPublisher.publishTracks();
+					positionPublisher.publishSnakes();
 				} catch (Exception e) {
 					log.error("error publishing tracks", e);
 				}

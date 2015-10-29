@@ -64,13 +64,13 @@ public class AdministrationServiceImpl implements AdministrationService {
 
 	@Override
 	public void clearTrack(String groupId) {
-		clientManager.clearTrack(groupId);
-		positionPublisher.clearTrack(groupId);
+		clientManager.clearSnake(groupId);
+		positionPublisher.clearSnake(groupId);
 	}
 	@Override
 	public void clearAllTracks() {
-		clientManager.clearAllTracks();
-		positionPublisher.clearAllTracks();
+		clientManager.clearAllSnakes();
+		positionPublisher.clearAllSnakes();
 	}
 	@Override
 	public String replay(String start, String numberOfSeconds, boolean userOriginalTimeStamp) {
@@ -92,7 +92,7 @@ public class AdministrationServiceImpl implements AdministrationService {
 
 	@Override
 	public ConcurrentMap<String, ConcurrentMap<String, String>> getGroupTracks() {
-		return clientManager.getGroupTracks();
+		return clientManager.getSnakes();
 	}
 
 	@Override

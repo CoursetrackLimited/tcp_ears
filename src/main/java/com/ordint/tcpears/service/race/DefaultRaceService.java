@@ -182,8 +182,8 @@ public class DefaultRaceService implements RaceService {
 		
 		jdbcTemplate.update("update races set status ='REPLAYING' where race_id=?", raceId);
 		List<ClientDetails> clientDetails = updateClientDetails(CLIENT_DETAILS_FOR_RACE_SQL, raceId);
-		positionPublisher.clearTrack(groupId);
-		clientManager.clearTrack(groupId);
+		positionPublisher.clearSnake(groupId);
+		clientManager.clearSnake(groupId);
 		positionEnhancers.addReplayPositionEnhancers(groupId, "trackConfigId", clientDetails.size());
 		clientManager.trackGroup(groupId);
 		

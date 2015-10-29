@@ -76,7 +76,7 @@ public class ClientManagerImplTest {
 		clientManager.updatePostion(p4);
 		clientManager.updatePostion(p5);
 		
-		ConcurrentMap<String, ConcurrentMap<String, String>> actual = clientManager.getGroupTracks();
+		ConcurrentMap<String, ConcurrentMap<String, String>> actual = clientManager.getSnakes();
 		
 		assertThat(actual.get("groupId"), Matchers.allOf(
 				hasEntry("clientId1", "111,99,-1 88,77,-1 22,11,-1 "),
@@ -98,7 +98,7 @@ public class ClientManagerImplTest {
 		
 		clientManager.stopTrackingGroup("groupId");
 		
-		ConcurrentMap<String, ConcurrentMap<String, String>> allTracks = clientManager.getGroupTracks();
+		ConcurrentMap<String, ConcurrentMap<String, String>> allTracks = clientManager.getSnakes();
 				
 		assertThat(allTracks.get("groupId"), is(nullValue()));	
 		
@@ -119,9 +119,9 @@ public class ClientManagerImplTest {
 		clientManager.updatePostion(p4);
 		clientManager.updatePostion(p5);
 		
-		clientManager.clearTrack("groupId");
+		clientManager.clearSnake("groupId");
 		
-		ConcurrentMap<String, ConcurrentMap<String, String>> actual = clientManager.getGroupTracks();
+		ConcurrentMap<String, ConcurrentMap<String, String>> actual = clientManager.getSnakes();
 		
 		assertThat(actual.get("groupId"),is(nullValue()));		
 		
@@ -146,7 +146,7 @@ public class ClientManagerImplTest {
 		clientManager.updatePostion(p1);
 		clientManager.updatePostion(p2);
 		//clientManager.publishPositions();
-		ConcurrentMap<String, ConcurrentMap<String, String>> actual = clientManager.getGroupTracks();
+		ConcurrentMap<String, ConcurrentMap<String, String>> actual = clientManager.getSnakes();
 
 		assertThat(actual.get("groupId"), Matchers.allOf(
 				hasEntry("newClient", "323.2,122.2,32 ")));

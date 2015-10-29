@@ -23,7 +23,7 @@ import com.ordint.tcpears.service.PositionPublisher;
 public class MemcachePositionPublisher implements PositionPublisher {
 	
 	private final static Logger log = LoggerFactory.getLogger(MemcachePositionPublisher.class);
-	private final static String TRACK_PREFIX = "/ggps/tracks/%s";
+	private final static String SNAKE_PREFIX = "/ggps/tracks/%s";
 	private final static String LOCATION_PREFIX = "/ggps/locations/%s";
 	private final static String PREDICTIONS_KEY = "/ggps/predictions/";
 	private OutputWriter outputBuilder = new DefaultOutputWriter();
@@ -67,13 +67,13 @@ public class MemcachePositionPublisher implements PositionPublisher {
 	 * @see com.ordint.tcpears.service.admin.PositionPublisher#publishTracks()
 	 */
 	@Override
-	public void publishTracks() throws Exception {
-		ConcurrentMap<String, ConcurrentMap<String, String>> groupTracks = dataProvider.getGroupTracks();
+	public void publishSnakes() throws Exception {
+		ConcurrentMap<String, ConcurrentMap<String, String>> snakes = dataProvider.getSnakes();
 
 		boolean atLeastOne = false;
-		for(String groupId : groupTracks.keySet()) {
-			String groupKeyName = String.format(TRACK_PREFIX, groupId);		
-			memcacheHelper.set(groupKeyName, groupKeyName, groupTracks.get(groupId));
+		for(String groupId : snakes.keySet()) {
+			String groupKeyName = String.format(SNAKE_PREFIX, groupId);		
+			memcacheHelper.set(groupKeyName, groupKeyName, snakes.get(groupId));
 			atLeastOne = true;			
 		}
 		if (atLeastOne) {
@@ -86,8 +86,8 @@ public class MemcachePositionPublisher implements PositionPublisher {
 	 * @see com.ordint.tcpears.service.admin.PositionPublisher#clearTrack(java.lang.String)
 	 */
 	@Override
-	public void clearTrack(String groupId) {
-		String groupKeyName = String.format(TRACK_PREFIX,groupId);
+	public void clearSnake(String groupId) {
+		String groupKeyName = String.format(SNAKE_PREFIX,groupId);
 		memcacheHelper.clear(groupKeyName, groupKeyName);		
 	}
 	
@@ -101,9 +101,9 @@ public class MemcachePositionPublisher implements PositionPublisher {
 	}
 
 	@Override
-	public void clearAllTracks() {
-		ConcurrentMap<String, ConcurrentMap<String, String>> groupTracks = dataProvider.getGroupTracks();
-		groupTracks.keySet().forEach(groupId -> clearTrack(groupId));
+	public void clearAllSnakes() {
+		ConcurrentMap<String, ConcurrentMap<String, String>> groupTracks = dataProvider.getSnakes();
+		groupTracks.keySet().forEach(groupId -> clearSnake(groupId));
 		
 	}
 	

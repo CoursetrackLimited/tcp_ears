@@ -87,9 +87,9 @@ public class MemcachePositionPublisherTest {
 		trackMap.put("clientId1", "111,99,-1 88,77,-1 22,11,-1 ");
 		groupTracks.put("groupId", trackMap);
 
-		given(dataProvider.getGroupTracks()).willReturn(groupTracks);
+		given(dataProvider.getSnakes()).willReturn(groupTracks);
 		
-		memcachePositionPublisher.publishTracks();
+		memcachePositionPublisher.publishSnakes();
 		
 		verify(memcacheHelper).set(Mockito.eq("/ggps/tracks/groupId"), Mockito.eq("/ggps/tracks/groupId"), 
 				mapCaptor.capture());	
@@ -102,10 +102,10 @@ public class MemcachePositionPublisherTest {
 
 
 	@Test
-	public void testClearTrack() throws Exception {
-		memcachePositionPublisher.clearTrack("groupId");
-		verify(memcacheHelper).clear(Mockito.eq("/ggps/tracks/groupId"), Mockito.eq("/ggps/tracks/groupId"));
-	}
+		public void testClearSnake() throws Exception {
+			memcachePositionPublisher.clearSnake("groupId");
+			verify(memcacheHelper).clear(Mockito.eq("/ggps/tracks/groupId"), Mockito.eq("/ggps/tracks/groupId"));
+		}
 
 	@Test
 	public void testClearPositions() throws Exception {

@@ -8,36 +8,36 @@ import com.javadocmd.simplelatlng.LatLng;
 import com.javadocmd.simplelatlng.LatLngTool;
 import com.javadocmd.simplelatlng.util.LengthUnit;
 
-public class SimplePredictingTrackWriter extends DefaultTrackWriter {
+public class SimplePredictingSnakeWriter extends DefaultSnakeWriter {
 
 	@Override
-	protected String concatTrack(Position position, String existingTrack, boolean alwaysConcat) {
+	protected String concatSnake(Position position, String existingSnake, boolean alwaysConcat) {
 		//if we have 0 existing points we call super
-		if(StringUtils.isEmpty(existingTrack)) {
-			return super.concatTrack(position, existingTrack, alwaysConcat);
+		if(StringUtils.isEmpty(existingSnake)) {
+			return super.concatSnake(position, existingSnake, alwaysConcat);
 		}
 		//if we have > 2 points we delete the most recent point (as it was a prediction)
-		String mostRecentPosition = getMostRecentPosition(existingTrack);
+		String mostRecentPosition = getMostRecentPosition(existingSnake);
 		
-		if (existingTrack.length() - mostRecentPosition.length() > 2) {
-			existingTrack = existingTrack.substring(mostRecentPosition.length(), existingTrack.length());
-		    mostRecentPosition = getMostRecentPosition(existingTrack);
+		if (existingSnake.length() - mostRecentPosition.length() > 2) {
+			existingSnake = existingSnake.substring(mostRecentPosition.length(), existingSnake.length());
+		    mostRecentPosition = getMostRecentPosition(existingSnake);
 		}
 		
 		//add new point and calculate predicted point and add that
-		StringBuilder newPosition = buildTrackPosition(position, existingTrack);
+		StringBuilder newPosition = buildSnake(position, existingSnake);
 		
 		if(!alwaysConcat) {
 			if (newPosition.toString().equals(mostRecentPosition)) {
-				return existingTrack;
+				return existingSnake;
 			}
 		}
 		
-		newPosition.append(existingTrack);
+		newPosition.append(existingSnake);
 		
 		Position predicted = buildPredictedPosition(position, mostRecentPosition, newPosition.toString());
 		
-		StringBuilder predictedPostion = buildTrackPosition(predicted, newPosition.toString());
+		StringBuilder predictedPostion = buildSnake(predicted, newPosition.toString());
 		
 		return predictedPostion.append(newPosition).toString();
 	}

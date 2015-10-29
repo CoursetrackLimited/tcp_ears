@@ -10,9 +10,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.ordint.tcpears.domain.DefaultTrackWriter;
+import com.ordint.tcpears.domain.DefaultSnakeWriter;
 import com.ordint.tcpears.domain.Position;
-import com.ordint.tcpears.domain.TrackWriter;
+import com.ordint.tcpears.domain.SnakeWriter;
 import com.ordint.tcpears.service.ClientManager;
 import com.ordint.tcpears.service.PositionDataProvider;
 
@@ -32,9 +32,9 @@ public class ClientManagerImpl implements ClientManager, PositionDataProvider {
 	
 	//map of position keyed on clientId
 	private final ConcurrentMap<String, Position> clients = new ConcurrentHashMap<>();
-	//map of map of client tracks, keyed on groupId
-	private ConcurrentMap<String, ConcurrentMap<String, String>> groupTracks = new ConcurrentHashMap<>();
-	private ConcurrentMap<String, TrackWriter> groupsToTrack = new ConcurrentHashMap<>();	
+	//map of map of client snakes, keyed on groupId
+	private ConcurrentMap<String, ConcurrentMap<String, String>> snakes = new ConcurrentHashMap<>();
+	private ConcurrentMap<String, SnakeWriter> groupsToTrack = new ConcurrentHashMap<>();	
 
 	
 	@Autowired
@@ -43,7 +43,7 @@ public class ClientManagerImpl implements ClientManager, PositionDataProvider {
 	@Override
 	public void trackGroup(String groupId) {
 		log.debug("Tracking group {}", groupId);
-		groupsToTrack.put(groupId, new DefaultTrackWriter());
+		groupsToTrack.put(groupId, new DefaultSnakeWriter());
 	}
 	
 	@Override
@@ -77,12 +77,12 @@ public class ClientManagerImpl implements ClientManager, PositionDataProvider {
 	}
 	
 	private void updateTracks(Position p) {
-		TrackWriter trackWriter = groupsToTrack.get(p.getGroupId());		
-		if (trackWriter != null) {
+		SnakeWriter snakeWriter = groupsToTrack.get(p.getGroupId());		
+		if (snakeWriter != null) {
 			ConcurrentMap<String, String> map = getTrackMap(p.getGroupId());
-			String track = map.computeIfPresent(p.getClientId(), (key,value) -> trackWriter.write(p, value));
-			if (track == null) {
-				track = map.computeIfAbsent(p.getClientId(), value -> trackWriter.write(p, ""));
+			String snake = map.computeIfPresent(p.getClientId(), (key,value) -> snakeWriter.write(p, value));
+			if (snake == null) {
+				snake = map.computeIfAbsent(p.getClientId(), value -> snakeWriter.write(p, ""));
 			}
 	  
 		}
@@ -91,37 +91,37 @@ public class ClientManagerImpl implements ClientManager, PositionDataProvider {
 
 	
 	public ConcurrentMap<String, String> getTrackMap(String groupId) {
-		return groupTracks.computeIfAbsent(groupId, map -> new ConcurrentHashMap<>());
+		return snakes.computeIfAbsent(groupId, map -> new ConcurrentHashMap<>());
 	}
 
 	@Override
-	public void clearTrack(String groupId) {
-		groupTracks.remove(groupId);
+	public void clearSnake(String groupId) {
+		snakes.remove(groupId);
 	}
 	@Override
-	public void clearAllTracks() {
-		groupTracks.clear();
+	public void clearAllSnakes() {
+		snakes.clear();
 	}
 	/* (non-Javadoc)
 	 * @see com.ordint.tcpears.service.admin.PositionDataProvider#getGroupTracks()
 	 */
 	@Override
-	public ConcurrentMap<String, ConcurrentMap<String, String>> getGroupTracks() {
+	public ConcurrentMap<String, ConcurrentMap<String, String>> getSnakes() {
 		ConcurrentMap<String, List<Position>> trackedClients =  groupClientsByTrackedGroup();
-		for(String groupId : groupTracks.keySet()) {
+		for(String groupId : snakes.keySet()) {
 			List<Position> clients = trackedClients.get(groupId);
 			if (clients == null) {
-				groupTracks.remove(groupId);
+				snakes.remove(groupId);
 			} else {
 				Set<String> clientsInGroup =  trackedClients.get(groupId)
 						.stream()
 						.map(p -> p.getClientId())
 						.collect(Collectors.toSet());
-				groupTracks.put(groupId, filterTrackMap(groupTracks.get(groupId), clientsInGroup));
-				groupsToTrack.get(groupId).calculateTrackLength(clientsInGroup.size());
+				snakes.put(groupId, filterSnakesMap(snakes.get(groupId), clientsInGroup));
+				groupsToTrack.get(groupId).calculateSnakeLength(clientsInGroup.size());
 			}
 		}
-		return groupTracks;
+		return snakes;
 	}
 	/* (non-Javadoc)
 	 * @see com.ordint.tcpears.service.admin.PositionDataProvider#groupClientsByGroup()
@@ -147,8 +147,8 @@ public class ClientManagerImpl implements ClientManager, PositionDataProvider {
 				.collect(Collectors.groupingByConcurrent(Position::getGroupId));
 	}	
 	
-	private ConcurrentMap<String, String> filterTrackMap(ConcurrentMap<String, String> trackMap, Set<String> clientsInGroup) {
-		return trackMap
+	private ConcurrentMap<String, String> filterSnakesMap(ConcurrentMap<String, String> snakeMap, Set<String> clientsInGroup) {
+		return snakeMap
 				.entrySet()
 				.stream()
 				.filter(p -> clientsInGroup.contains(p.getKey()))

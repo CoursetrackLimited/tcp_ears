@@ -7,7 +7,7 @@ import com.ordint.tcpears.domain.Position;
 
 public interface PositionDataProvider {
 
-	ConcurrentMap<String, ConcurrentMap<String, String>> getGroupTracks();
+	ConcurrentMap<String, ConcurrentMap<String, String>> getSnakes();
 
 	ConcurrentMap<String, List<Position>> groupClientsByGroup();
 

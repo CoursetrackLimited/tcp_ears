@@ -14,7 +14,7 @@ import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 
-public class DefaultTrackWriterTest {
+public class DefaultSnakeWriterTest {
 
 	private Clock clock = Clock.fixed(Instant.now(), ZoneId.systemDefault());
 	
@@ -24,7 +24,7 @@ public class DefaultTrackWriterTest {
 
 	@Test
 	public void writeShouldReturnValidTrackWithEmptyExistingTrack() throws Exception {
-		DefaultTrackWriter out = new DefaultTrackWriter();
+		DefaultSnakeWriter out = new DefaultSnakeWriter();
 		Position position = createPosition("51.0277", "-0.54", "6073.14");
 		
 		String actual = out.write(position, "");
@@ -35,7 +35,7 @@ public class DefaultTrackWriterTest {
 	}
 	@Test
 	public void writeShouldNotConcatExistingTrackIfSame() throws Exception {
-		DefaultTrackWriter out = new DefaultTrackWriter();
+		DefaultSnakeWriter out = new DefaultSnakeWriter();
 		Position position = createPosition("51.0277", "-0.54", "6073.14");
 		
 		String actual = out.write(position, "-0.54,51.0277,6073.14 ");
@@ -46,7 +46,7 @@ public class DefaultTrackWriterTest {
 	}
 	@Test
 	public void writeShouldConcatExistingTrackIfDifferent() throws Exception {
-		DefaultTrackWriter out = new DefaultTrackWriter();
+		DefaultSnakeWriter out = new DefaultSnakeWriter();
 		Position position = createPosition("31.0277", "-0.54", "6073.14");
 		
 		String actual = out.write(position, "-0.54,51.0277,6073.14 ");
@@ -55,7 +55,7 @@ public class DefaultTrackWriterTest {
 	
 	@Test
 	public void writeShouldConcatExistingTrackAndUsePreviousAltitudeIfMinusOne() throws Exception {
-		DefaultTrackWriter out = new DefaultTrackWriter();
+		DefaultSnakeWriter out = new DefaultSnakeWriter();
 		Position position = createPosition("31.0277", "-0.54", "-1");
 		
 		String actual = out.write(position, "-0.54,51.0277,6073.14 ");
@@ -64,7 +64,7 @@ public class DefaultTrackWriterTest {
 	
 	@Test
 	public void writeShouldNotExceedTheMaxLimit()  throws Exception {
-		DefaultTrackWriter out = new DefaultTrackWriter();
+		DefaultSnakeWriter out = new DefaultSnakeWriter();
 		out.setMaxLength(200);
 		//200 character string
 		String existingTrack = StringUtils.repeat("-0.54,51.027721,6073.14 ", 8);
@@ -81,7 +81,7 @@ public class DefaultTrackWriterTest {
 	}
 	@Test
 	public void writeShouldNotExceedTheMaxLimit2()  throws Exception {
-		DefaultTrackWriter out = new DefaultTrackWriter();
+		DefaultSnakeWriter out = new DefaultSnakeWriter();
 		out.setMaxLength(200);
 		//200 character string
 		String existingTrack = StringUtils.repeat("-0.54,51.027721,6073.14 ", 80);
@@ -98,16 +98,16 @@ public class DefaultTrackWriterTest {
 	@Test
 	public void increasingTheNumberOfClientsShouldReduceTrackSize() throws Exception {
 	
-		DefaultTrackWriter out = new DefaultTrackWriter();
+		DefaultSnakeWriter out = new DefaultSnakeWriter();
 
 		
 		String tuples = StringUtils.repeat("-0.54,51.027721,6073.14 ", 10);
-		String existingTrack = StringUtils.repeat("A", DefaultTrackWriter.DEFAULT_MAX_TRACK - tuples.length()) + " " + tuples;
+		String existingTrack = StringUtils.repeat("A", DefaultSnakeWriter.DEFAULT_MAX_TRACK - tuples.length()) + " " + tuples;
 		Position position = createPosition("31.0277", "-0.54", "-1");
 		
 		String before = out.write(position, existingTrack);
 		
-		out.calculateTrackLength(30);
+		out.calculateSnakeLength(30);
 		
 		String after = out.write(position, before);
 		
