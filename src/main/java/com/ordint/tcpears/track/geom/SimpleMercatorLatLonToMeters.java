@@ -1,11 +1,11 @@
 package com.ordint.tcpears.track.geom;
 
-public class SimpleMercatorConverter implements LatLonToMeters {
+public class SimpleMercatorLatLonToMeters implements LatLonToMeters {
 	
 	private final static double EARTH_RADIUS = 6356752.3142;
 											  
 	
-	public SimpleMercatorConverter() {
+	public SimpleMercatorLatLonToMeters() {
 		// TODO Auto-generated constructor stub
 	}
 

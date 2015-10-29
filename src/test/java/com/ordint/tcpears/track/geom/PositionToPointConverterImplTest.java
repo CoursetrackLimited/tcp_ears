@@ -97,7 +97,7 @@ public class PositionToPointConverterImplTest {
 		System.out.println("GoogleMaps from latLongToPoint " + p);
 		System.out.println("GoogleMaps from pointToLatLon " + fromPointToLatLng(p, 2));
 		
-		SimpleMercatorConverter s = new SimpleMercatorConverter();
+		SimpleMercatorLatLonToMeters s = new SimpleMercatorLatLonToMeters();
 		System.out.println("SMC lat " + s.latToMeters(lat));
 		System.out.println("SMC lon " + s.lonToMeters(lon));
 		
