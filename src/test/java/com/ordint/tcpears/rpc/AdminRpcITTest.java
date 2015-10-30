@@ -31,7 +31,7 @@ public class AdminRpcITTest {
 			//admin.startRace(raceId);
 			
 			//admin.replay("2015-09-16T16:13:21","180", false);
-			//admin.replayRace(140);
+			admin.replayRace(140);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();

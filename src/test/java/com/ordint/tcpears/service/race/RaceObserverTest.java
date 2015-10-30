@@ -17,7 +17,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import com.ordint.tcpears.domain.Position;
 import com.ordint.tcpears.domain.PositionDistanceInfo;
 import com.ordint.tcpears.domain.PositionUtil;
-import com.ordint.tcpears.service.race.RaceObserver.RaceStatus;
+import com.ordint.tcpears.service.race.RaceObserver.EventState;
 import com.ordint.tcpears.track.Track;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -25,7 +25,7 @@ public class RaceObserverTest {
 	@Mock
 	private Track track;
 	@InjectMocks
-	private RaceObserver raceObserver;
+	private RaceObserver raceObserver = new RaceObserver(track, 3);
 	
 	private RaceStatusListener statusListener;
 	
@@ -36,9 +36,9 @@ public class RaceObserverTest {
 	}
 
 	@Test
-		public void testEnhance() throws Exception {
-			
-		}
+	public void testEnhance() throws Exception {
+		
+	}
 
 	public void raceStatusShouldChangeToUnderStartrsOrdersWhenAllRunnersArsStill() {
 			
@@ -105,12 +105,12 @@ public class RaceObserverTest {
 }
 
 class StatusListener implements RaceStatusListener{	
-	private RaceStatus status;
+	private EventState status;
 	@Override
-	public void onStatusChange(RaceStatus status) {
+	public void onStatusChange(EventState status) {
 		this.status = status;
 	}
-	public RaceStatus getStatus() {
+	public EventState getStatus() {
 		return status;
 	}
 	

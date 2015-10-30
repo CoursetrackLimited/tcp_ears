@@ -75,6 +75,25 @@ public class PositionToPointConverterImplTest {
 		assertThat(actual, equalTo("12.33,04.00004,10.90 "));
 	}
 	*/
+	
+	@Test
+	public void compare() throws Exception {
+		
+		PositionToPointConverterImpl mercatorConverter = new PositionToPointConverterImpl(new SimpleMercatorLatLonToMeters());
+		double lat, lon, x, y;
+		lat = 51.419844;
+		lon =  -0.401731;
+		y =  latlongConverter.latToMeters(lat);
+		x =  latlongConverter.lonToMeters(lon);
+		System.out.println("Lat TO meters " + y);
+		System.out.println("Lon TO meters " + x);
+		System.out.println("Lat TO meters " + mercatorConverter.latToMeters(lat));
+		System.out.println("Lon TO meters " + mercatorConverter.lonToMeters(lon));
+		
+		System.out.println("and back " + mercatorConverter.metersToLat(mercatorConverter.latToMeters(lat) + 1));
+		System.out.println("and back " + latlongConverter.metersToLat(y + 1));
+	}
+	
 	@Test
 	public void latLongToMeters() throws Exception {
 		

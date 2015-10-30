@@ -11,6 +11,8 @@ import org.apache.commons.math3.util.Precision;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.ordint.tcpears.track.StaticPathBuilder;
+
 
 public class MeasuredShapeTest {
 	private MeasuredShape shape;
@@ -97,6 +99,12 @@ public class MeasuredShapeTest {
 				Precision.equals(p1.getY(), p2.getY(), MeasuredShape.EIGHT_DP);		
 	}
 	
+	
+	@Test
+	public void printTrack() {
+		
+		System.out.println(StaticPathBuilder.KEMPTON_740);
+	}
 
 	
 	

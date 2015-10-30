@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.RowMapper;
 
 import com.ordint.tcpears.domain.RaceDetail;
+import com.ordint.tcpears.domain.RaceDetail.RaceStatus;
 
 public class RaceRowMapper implements RowMapper<RaceDetail> {
 	private static final DateTimeFormatter MYSQL_DATETIME_FORMATTER =  DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -25,6 +26,8 @@ public class RaceRowMapper implements RowMapper<RaceDetail> {
 				.scheduledStartTime(parseDateTime(rs, "scheduledStartTime"))
 				.venueId(rs.getLong("venue_id"))
 				.venueName(rs.getString("venue_name"))
+				.trackConfigId(rs.getLong("track_config_id"))
+				.status(RaceStatus.valueOf(rs.getString("status")))
 				.build();
 	}
 	

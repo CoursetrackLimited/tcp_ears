@@ -20,17 +20,24 @@ public class TrackGeomFactory {
 	private double calculateCenter(String[] trackPoints) {
 		//average lat
 		double centre = 0;
+		int count = 0;
 		for(String point:trackPoints) {
-			centre = centre + Double.parseDouble(StringUtils.substringBetween(point, ","));
+			String val = StringUtils.substringBetween(point, ",");
+			if (!StringUtils.isBlank(val)) {
+				centre = centre + Double.parseDouble(val);
+				count++;
+			}
 		}
-		return centre = centre / trackPoints.length;
+		return centre / count;
 	
 	}
 	protected MeasuredShape buildShapeFromKml(String[] trackPoints, PositionToPointConverter converter) {
 		
 		List<Point2D> allpoints = new ArrayList<>();
 		for(String point : trackPoints) {
-			allpoints.add(converter.toPoint(point));
+			if (!StringUtils.isBlank(point)) {
+				allpoints.add(converter.toPoint(point));
+			}
 		}	
 		return new MeasuredShape(allpoints);
 		

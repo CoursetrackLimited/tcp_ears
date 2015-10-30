@@ -1,8 +1,8 @@
 package com.ordint.tcpears.service.race;
 
-import com.ordint.tcpears.service.race.RaceObserver.RaceStatus;
+import com.ordint.tcpears.service.race.RaceObserver.EventState;
 
 public interface RaceStatusListener {
 
-	void onStatusChange(RaceStatus status);
+	void onStatusChange(EventState status);
 }

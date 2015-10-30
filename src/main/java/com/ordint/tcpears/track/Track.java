@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import com.ordint.tcpears.domain.Position;
 import com.ordint.tcpears.domain.PositionDistanceInfo;
+import com.ordint.tcpears.domain.TrackConfig;
 import com.ordint.tcpears.track.geom.MeasuredShape;
 import com.ordint.tcpears.track.geom.PositionToPointConverter;
 import com.ordint.tcpears.track.geom.TrackGeomFactory;
@@ -32,6 +33,10 @@ public class Track {
 		double[] info = trackShape.getDistanceAlongTrack(positionToPointConverter.toPoint(finishLatLong));
 		finishDistance = info[2];
 		
+	}
+	
+	public Track(TrackConfig trackConfig, TrackGeomFactory geomFactory) {
+		this(trackConfig.getKml(), trackConfig.getFinishLine(), geomFactory);
 	}
 	
 	

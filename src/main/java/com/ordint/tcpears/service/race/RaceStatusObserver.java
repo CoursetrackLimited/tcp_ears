@@ -8,10 +8,10 @@ import org.slf4j.LoggerFactory;
 
 import com.ordint.tcpears.domain.Position;
 import com.ordint.tcpears.service.position.PositionEnhancer;
-import com.ordint.tcpears.service.race.RaceObserver.RaceStatus;
+import com.ordint.tcpears.service.race.RaceObserver.EventState;
 
 public class RaceStatusObserver implements PositionEnhancer {
-	private RaceStatus status = RaceStatus.PRE_RACE;
+	private EventState status = EventState.PRE_RACE;
 	private final static Logger log = LoggerFactory.getLogger(RaceStatusObserver.class);
 	private int runnerCount;
 	private List<RaceStatusListener> statusListeners = new ArrayList<>();
@@ -29,9 +29,9 @@ public class RaceStatusObserver implements PositionEnhancer {
 	}
 
 	private void checkForRaceStart(List<Position> positions) {
-		if (status == RaceStatus.PRE_RACE) {
+		if (status == EventState.PRE_RACE) {
 			checkIfUnderStartersOrders(positions);
-		} else if(status == RaceStatus.UNDER_STARTERS_ORDERS) {
+		} else if(status == EventState.UNDER_STARTERS_ORDERS) {
 			checkIfStarted(positions);
 		}		
 	}
@@ -39,11 +39,11 @@ public class RaceStatusObserver implements PositionEnhancer {
 	private void checkIfStarted(List<Position> positions) {		
 		long runningHorsesCount = positions.stream().filter(p -> p.getSpeedValue() > 5).count();
 		if (runningHorsesCount > runnerCount * .70) {
-			updateStatus(RaceStatus.STARTED);
+			updateStatus(EventState.STARTED);
 		}	
 	}
 	
-	private void updateStatus(RaceStatus status) {
+	private void updateStatus(EventState status) {
 		log.info("Status updated to {}", status);
 		this.status = status;
 		statusListeners.forEach(l -> l.onStatusChange(status));
@@ -54,7 +54,7 @@ public class RaceStatusObserver implements PositionEnhancer {
 		if (positions.size() > 3) {
 			long stillHorsesCount = positions.stream().filter(p -> p.getSpeedValue() < 0.2).count();
 			if (stillHorsesCount == runnerCount) {
-				updateStatus(RaceStatus.UNDER_STARTERS_ORDERS);
+				updateStatus(EventState.UNDER_STARTERS_ORDERS);
 			}
 		}	
 	}

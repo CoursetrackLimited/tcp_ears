@@ -13,6 +13,8 @@ import lombok.Value;
 @Value
 @Builder
 public class RaceDetail {
+	public enum RaceStatus {NOT_STARTED, STARTED, FINISHED, REPLAYING}
+	
 	private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
 	private String name;
 	private LocalDateTime scheduledStartTime;
@@ -22,6 +24,9 @@ public class RaceDetail {
 	private String venueName;
 	private Long id;
 	private Long groupId;
+	private Long trackConfigId;
+	private RaceStatus status;
+
 	
 	public String getStartTime() {
 		ZonedDateTime zdt = ZonedDateTime.of(scheduledStartTime, ZoneId.of("GMT"));

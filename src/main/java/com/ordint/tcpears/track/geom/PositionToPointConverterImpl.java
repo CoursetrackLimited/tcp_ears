@@ -12,7 +12,7 @@ public class PositionToPointConverterImpl implements PositionToPointConverter {
 	
 	private LatLonToMeters latLonToMeters;
 
-	public PositionToPointConverterImpl( LatLonToMeters latLonToMeters) {
+	public PositionToPointConverterImpl(LatLonToMeters latLonToMeters) {
 		this.latLonToMeters = latLonToMeters;
 	}
 	

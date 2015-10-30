@@ -7,21 +7,20 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import com.ordint.tcpears.domain.Position;
+import com.ordint.tcpears.domain.RaceDetail;
+import com.ordint.tcpears.domain.TrackConfig;
 import com.ordint.tcpears.service.race.RaceObserver;
+import com.ordint.tcpears.track.Track;
+import com.ordint.tcpears.track.geom.TrackGeomFactory;
 
 @Component
 public class PositionEnhancers {
 	private final static Logger log = LoggerFactory.getLogger(PositionEnhancers.class);
 	private Map<String, List<PositionEnhancer>> positionEnhancers = new HashMap<>();
-	
-	@Autowired
-	private JdbcTemplate jdbcTemplate;
-	
+	private TrackGeomFactory trackGeomFactory = new TrackGeomFactory();	
 	public PositionEnhancers() {
 		// TODO Auto-generated constructor stub
 	}
@@ -46,18 +45,12 @@ public class PositionEnhancers {
 	}
 
 	
-	public void addReplayPositionEnhancers(String groupId, String trackConfigId, int runnerCount) {
-		log.info("Adding replay psoition enhancers for groupId {}", groupId);
-		List<PositionEnhancer> pd = Arrays.asList(new RaceObserver(runnerCount));
+	public void addRacePositionEnhancers(RaceDetail race, TrackConfig trackConfig, int runnerCount) {
+		log.info("Adding race  psoition enhancers for groupId {}", race.getGroupId());
+		Track track = new Track(trackConfig, trackGeomFactory);
+		List<PositionEnhancer> pd = Arrays.asList(new RaceObserver(track, runnerCount));
 		//List<PositionEnhancer> pd = Arrays.asList(new RacePositionDecorator());
-		positionEnhancers.put(groupId, pd);
-	} 
-	
-	public void addRacePositionEnhancers(String groupId, String trackConfigId, int runnerCount) {
-		log.info("Adding race  psoition enhancers for groupId {}", groupId);
-		List<PositionEnhancer> pd = Arrays.asList(new RaceObserver(runnerCount));
-		//List<PositionEnhancer> pd = Arrays.asList(new RacePositionDecorator());
-		positionEnhancers.put(groupId, pd);		
+		positionEnhancers.put(race.getGroupId().toString(), pd);		
 	}
 	
 	public void clearEnhancers(String groupId) {

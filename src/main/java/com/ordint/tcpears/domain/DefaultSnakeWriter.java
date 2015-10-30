@@ -3,8 +3,6 @@ package com.ordint.tcpears.domain;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ordint.tcpears.service.position.ClientManagerImpl;
-
 public class DefaultSnakeWriter implements SnakeWriter{
 	
 	private final static Logger log = LoggerFactory.getLogger(DefaultSnakeWriter.class);

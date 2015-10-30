@@ -25,9 +25,9 @@ public class RaceObserver implements PositionEnhancer {
 	
 	private StaticPathBuilder pathBuilder = new StaticPathBuilder();
 	
-	public enum RaceStatus {PRE_RACE, UNDER_STARTERS_ORDERS, STARTED, FINSIHED};
+	public enum EventState {PRE_RACE, UNDER_STARTERS_ORDERS, STARTED, FINSIHED};
 	
-	private RaceStatus status = RaceStatus.PRE_RACE;
+	private EventState status = EventState.PRE_RACE;
 	
 	private List<RaceStatusListener> statusListeners = new ArrayList<>();
 	
@@ -37,15 +37,11 @@ public class RaceObserver implements PositionEnhancer {
 	private long raceId;
 	private int runnerCount;
 	
-	public RaceObserver(int runnerCount) {
-		track = new Track(StaticPathBuilder.KEMPTON_740_TRACK, StaticPathBuilder.KEMPTON_FINISH);
+	public RaceObserver(Track track, int runnerCount) {
+		this.track = track;
 		this.runnerCount = runnerCount;
 	}
-	
-	public RaceObserver(Track track) {
-		this.track = track;
-		//this.runnerCount = runnerCount;
-	}
+
 
 	@Override
 	public List<Position> decorate(List<Position> positions) {
@@ -56,9 +52,9 @@ public class RaceObserver implements PositionEnhancer {
 	}
 
 	private void checkForRaceStart(List<Position> positions) {
-		if (status == RaceStatus.PRE_RACE) {
+		if (status == EventState.PRE_RACE) {
 			checkIfUnderStartersOrders(positions);
-		} else if(status == RaceStatus.UNDER_STARTERS_ORDERS) {
+		} else if(status == EventState.UNDER_STARTERS_ORDERS) {
 			checkIfStarted(positions);
 		}		
 	}
@@ -66,11 +62,11 @@ public class RaceObserver implements PositionEnhancer {
 	private void checkIfStarted(List<Position> positions) {
 		long runningHorsesCount = positions.stream().filter(p -> p.getSpeedValue() > 5).count();
 		if (runningHorsesCount > runnerCount * .70) {
-			updateStatus(RaceStatus.STARTED);
+			updateStatus(EventState.STARTED);
 		}	
 	}
 	
-	private void updateStatus(RaceStatus status) {
+	private void updateStatus(EventState status) {
 		log.info("Status updated to {}", status);
 		this.status = status;
 		statusListeners.forEach(l -> l.onStatusChange(status));
@@ -81,7 +77,7 @@ public class RaceObserver implements PositionEnhancer {
 		if (positions.size() > 3) {
 			long stillHorsesCount = positions.stream().filter(p -> p.getSpeedValue() < 0.2).count();
 			if (stillHorsesCount == runnerCount) {
-				updateStatus(RaceStatus.UNDER_STARTERS_ORDERS);
+				updateStatus(EventState.UNDER_STARTERS_ORDERS);
 			}
 		}
 		
@@ -90,11 +86,11 @@ public class RaceObserver implements PositionEnhancer {
 	
 	private List<Position> addStandings(List<Position> positions) {
 		
-		if (status == RaceStatus.PRE_RACE || status == RaceStatus.UNDER_STARTERS_ORDERS) {
+		if (status == EventState.PRE_RACE || status == EventState.UNDER_STARTERS_ORDERS) {
 			//do nothing
 			return positions;
 		}
-		if (status == RaceStatus.STARTED) {
+		if (status == EventState.STARTED) {
 			calculateStandings(positions);
 		}
 		return addStandingsToPositions(positions);			
@@ -126,8 +122,8 @@ public class RaceObserver implements PositionEnhancer {
 				placings.putIfAbsent(pdi.getClientId(), placings.size() + 1);
 			}
 		}
-		if (placings.size() == runnerCount && status != RaceStatus.FINSIHED) {
-			updateStatus(RaceStatus.FINSIHED);
+		if (placings.size() == runnerCount && status != EventState.FINSIHED) {
+			updateStatus(EventState.FINSIHED);
 		}
 		
 		stillRunning.sort((PositionDistanceInfo pdi1, PositionDistanceInfo pdi2) -> Double.compare(pdi2.getDistanceFromStart(), pdi1.getDistanceFromStart()));
@@ -144,7 +140,7 @@ public class RaceObserver implements PositionEnhancer {
 	 */
 	@Override
 	public Position enhance(Position p) {	
-		if (status == RaceStatus.STARTED ) {		
+		if (status == EventState.STARTED ) {		
 			PositionDistanceInfo pdi = track.calculateDistanceInfo(p);	
 			distances.put(p.getClientId(), pdi);
 		}
