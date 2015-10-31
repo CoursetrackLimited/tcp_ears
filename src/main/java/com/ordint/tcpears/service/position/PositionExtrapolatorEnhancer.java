@@ -23,7 +23,6 @@ public class PositionExtrapolatorEnhancer implements PositionEnhancer {
 	private final static Logger log = LoggerFactory.getLogger(PositionExtrapolatorEnhancer.class);
 	private Clock clock = Clock.systemUTC();
 	private Track track;
-	private StaticPathBuilder pathBuilder = new StaticPathBuilder();
 	private boolean useRelativeTime = false;
 	private long offset = 0;
 	public PositionExtrapolatorEnhancer() {

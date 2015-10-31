@@ -24,7 +24,6 @@ import org.springframework.stereotype.Component;
 public class TCPServer {
 	private final static Logger log = LoggerFactory.getLogger(TCPServer.class); 
 	
-	@SuppressWarnings("rawtypes")
 	@Autowired
 	@Qualifier("tcpBootstrap")	
 	private ServerBootstrap tcpBootstrap;

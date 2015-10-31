@@ -92,10 +92,9 @@ public class DefaultRaceService implements RaceService {
 		jdbcTemplate.update("update races set status ='STARTED', actualStartTime = NOW() where race_id=?", raceId);
 		
 		//update the clientDetailsResolver with runner details
-		List<ClientDetails> clientDetails = updateClientDetails(CLIENT_DETAILS_FOR_RACE_SQL, raceId);
+		List<ClientDetails> clientDetails = updateClientDetailsResolver(CLIENT_DETAILS_FOR_RACE_SQL, raceId);
 		
 		configureRaceObserver(race, clientDetails.size());
-	
 		
 		publishRaceDetails(race, clientDetails);
 		
@@ -141,7 +140,7 @@ public class DefaultRaceService implements RaceService {
 	
 	
 	
-	private List<ClientDetails> updateClientDetails(String sql, long raceId) {
+	private List<ClientDetails> updateClientDetailsResolver(String sql, long raceId) {
 		 List<ClientDetails> clientDetails =jdbcTemplate.query(sql, new RowMapper<ClientDetails>() {
 			@Override
 			public ClientDetails mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -160,7 +159,7 @@ public class DefaultRaceService implements RaceService {
 		findRace(raceId, RaceStatus.STARTED);
 		jdbcTemplate.update("update races set status ='FINISHED', finishTime = NOW() where race_id=?", raceId);
 		//update the clientDetailsResolver with default details
-		updateClientDetails(RESET_CLIENT_DETAILS_SQL, raceId);
+		updateClientDetailsResolver(RESET_CLIENT_DETAILS_SQL, raceId);
 		positionEnhancers.clearEnhancers("");
 	}
 	
@@ -180,7 +179,7 @@ public class DefaultRaceService implements RaceService {
 		
 		jdbcTemplate.update("update races set status ='REPLAYING' where race_id=?", raceId);
 		
-		List<ClientDetails> clientDetails = updateClientDetails(CLIENT_DETAILS_FOR_RACE_SQL, raceId);
+		List<ClientDetails> clientDetails = updateClientDetailsResolver(CLIENT_DETAILS_FOR_RACE_SQL, raceId);
 		
 		clearSnake(race);
 		

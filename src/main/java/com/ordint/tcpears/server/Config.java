@@ -154,14 +154,6 @@ public class Config {
 					.channel(NioServerSocketChannel.class)
 					.handler(new LoggingHandler(LogLevel.DEBUG))
 				.childHandler(adminChannelInitializer);
-		/*
-		Map<ChannelOption<?>, Object> tcpChannelOptions = tcpChannelOptions();
-		Set<ChannelOption<?>> keySet = tcpChannelOptions.keySet();
-		for (@SuppressWarnings("rawtypes")
-		ChannelOption option : keySet) {
-			b.option(option, tcpChannelOptions.get(option));
-		}
-		*/
 		return b;
 	}	
 

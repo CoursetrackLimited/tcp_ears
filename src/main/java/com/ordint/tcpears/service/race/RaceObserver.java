@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import com.ordint.tcpears.domain.Position;
 import com.ordint.tcpears.domain.PositionDistanceInfo;
 import com.ordint.tcpears.service.position.PositionEnhancer;
-import com.ordint.tcpears.track.StaticPathBuilder;
 import com.ordint.tcpears.track.Track;
 
 
@@ -23,8 +22,6 @@ public class RaceObserver implements PositionEnhancer {
 	
 	private final static Logger log = LoggerFactory.getLogger(RaceObserver.class);
 	
-	private StaticPathBuilder pathBuilder = new StaticPathBuilder();
-	
 	public enum EventState {PRE_RACE, UNDER_STARTERS_ORDERS, STARTED, FINSIHED};
 	
 	private EventState status = EventState.PRE_RACE;
@@ -34,7 +31,6 @@ public class RaceObserver implements PositionEnhancer {
 	private ConcurrentMap<String, Integer> placings = new ConcurrentHashMap<>();
 
 	private Track track;
-	private long raceId;
 	private int runnerCount;
 	
 	public RaceObserver(Track track, int runnerCount) {

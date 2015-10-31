@@ -11,9 +11,9 @@
         </sealing>
     </manifest>
     <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
-        <javaElement handleIdentifier="=tcpears/src\/main\/java&lt;com.ordint.tcpears.service.admin{RaceServiceException.java"/>
         <javaElement handleIdentifier="=tcpears/src\/main\/java&lt;com.ordint.tcpears.domain.json"/>
         <javaElement handleIdentifier="=tcpears/src\/main\/java&lt;com.ordint.tcpears.domain{Position.java"/>
+        <javaElement handleIdentifier="=tcpears/src\/main\/java&lt;com.ordint.tcpears.service.race{RaceServiceException.java"/>
         <javaElement handleIdentifier="=tcpears/src\/main\/java&lt;com.ordint.tcpears.domain{ClientDetails.java"/>
         <javaElement handleIdentifier="=tcpears/src\/main\/java&lt;com.ordint.tcpears.service{AdministrationService.java"/>
     </selectedElements>
