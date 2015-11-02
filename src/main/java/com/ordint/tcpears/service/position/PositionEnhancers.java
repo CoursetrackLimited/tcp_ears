@@ -21,10 +21,8 @@ public class PositionEnhancers {
 	private final static Logger log = LoggerFactory.getLogger(PositionEnhancers.class);
 	private Map<String, List<PositionEnhancer>> positionEnhancers = new HashMap<>();
 	private TrackGeomFactory trackGeomFactory = new TrackGeomFactory();	
-	public PositionEnhancers() {
-		// TODO Auto-generated constructor stub
-	}
 	
+	public PositionEnhancers() {}
 	
 	public List<Position> applyGroupPositionEnhancer(String groupId, List<Position> positions) {
 		List<PositionEnhancer> enhancers = positionEnhancers.get(groupId);
