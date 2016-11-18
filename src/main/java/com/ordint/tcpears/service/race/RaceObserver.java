@@ -144,7 +144,7 @@ public class RaceObserver implements PositionEnhancer {
 			PositionDistanceInfo pdi = track.calculateDistanceInfo(p);	
 			distances.put(p.getClientId(), pdi);
 		//}
-		return p;
+		return Position.builder().position(p).distinceInfo(pdi).build();
 	}
 	
 	public void addRaceStatusListener(RaceStatusListener listener) {

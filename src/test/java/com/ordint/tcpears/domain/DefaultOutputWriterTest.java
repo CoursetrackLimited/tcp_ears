@@ -51,6 +51,7 @@ public class DefaultOutputWriterTest {
 				.lag(100)
 				.status("A")
 				.standing(4)
+				.distinceInfo(new PositionDistanceInfo("clientId", 1d, 300d, 0d))
 				.build();
 		DefaultOutputWriter out = new DefaultOutputWriter();
 		String actual = out.write(p);
@@ -65,6 +66,7 @@ public class DefaultOutputWriterTest {
 		assertThat(cells[9], equalTo("A"));
 		assertThat(cells[10], equalTo("11"));
 		assertThat(cells[11], equalTo("4"));
+		assertThat(cells[12], equalTo("300.0"));
 		assertThat(cells[16], equalTo("99"));
 		assertThat(cells[19], equalTo("100"));
 		assertThat(cells[20], equalTo("50.1"));

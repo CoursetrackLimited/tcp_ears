@@ -47,13 +47,13 @@ public class Position {
 	private ClientDetails clientDetails;
 	@JsonSerialize(using=JsonLocalDateTimeSerialiser.class)
 	@JsonDeserialize(using=JsonLocalDateTimeDeserializer.class)
-	private LocalDateTime timeCreated;
+	private LocalDateTime timeCreated; 
 	@NonFinal
 	private Long lag;
-	
 	private int standing;
 	private String lastLat;
 	private String lastLon;
+	private PositionDistanceInfo distanceInfo;
 	
 	@JsonCreator
 	public Position() {}
@@ -97,7 +97,7 @@ public class Position {
 		}
 		return this;
 	}
-
+ 
 	public double getSpeedValue() {
 		return parseDouble(speed);
 	}
@@ -120,6 +120,7 @@ public class Position {
 		private int standing;
 		private String lastLat;
 		private String lastLon;
+		private PositionDistanceInfo distanceInfo;
 
 		PositionBuilder(Clock clock) {
 			this.clock = clock;
@@ -140,6 +141,7 @@ public class Position {
 			this.standing = toCopy.standing;
 			this.lastLat = toCopy.lastLat;
 			this.lastLon = toCopy.lastLon;
+			this.distanceInfo = toCopy.distanceInfo;
 			return this;
 			
 		}
@@ -217,9 +219,13 @@ public class Position {
 			this.lastLon = lastLon;
 			return this;
 		}
+		public PositionBuilder distinceInfo(final PositionDistanceInfo distanceInfo) {
+			this.distanceInfo = distanceInfo;
+			return this;
+		}
 		public Position build() {
 			return new Position(timestamp, lat, lon, speed, altitude, heading, horizontalAccuracy, verticalAccuracy,
-					status, clientDetails, timeCreated, lag, standing, lastLat, lastLon);
+					status, clientDetails, timeCreated, lag, standing, lastLat, lastLon, distanceInfo);
 		}
 
 		@Override
