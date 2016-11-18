@@ -1,8 +1,11 @@
 package com.ordint.tcpears.domain;
 
+import java.util.Optional;
+
+import com.ordint.tcpears.service.ClientManager;
 
 public interface InputParser {
 	
-	Position parse(String message);
+	Optional<Position> parse(String message, ClientManager clientManager);
 
 }

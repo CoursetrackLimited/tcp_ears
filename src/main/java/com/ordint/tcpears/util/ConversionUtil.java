@@ -20,6 +20,9 @@ public final class ConversionUtil {
     }
 	
     public static String posToDec(String value) {
+		return formatDouble(posToDouble(value));		
+	}
+    public static double posToDouble(String value) {
 		//convert ddmm.mmmmm to decimal
 		//convert dddmm.mmmmm to decimal
 		int dp = value.indexOf(".");
@@ -28,12 +31,15 @@ public final class ConversionUtil {
 		double mins = Math.abs(Double.parseDouble(value.substring(upTo0(dp))));
 
 		if (value.charAt(0) == '-')
-			return formatDouble(degs -(mins)/60);
+			return (degs -(mins)/60);
 		else
-			return formatDouble(degs +(mins)/60);
-			
-			
-	}
+			return (degs +(mins)/60);		
+	}   
+    public static String applyPositionDelta(String decimalPostion, double deltaInMinutes) {
+    	double currentPosition = posToDouble(decimalPostion);
+    	return formatDouble(currentPosition + (deltaInMinutes/ 60));
+    }
+    
     private static int upTo0(int dp) {
 		return dp -2 < 0 ? 0 : dp -2;
 

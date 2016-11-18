@@ -2,6 +2,8 @@ package com.ordint.tcpears.service.position;
 
 
 
+import java.util.Optional;
+
 import com.ordint.tcpears.domain.DefaultInputParser;
 import com.ordint.tcpears.domain.InputParser;
 import com.ordint.tcpears.domain.Position;
@@ -31,17 +33,14 @@ public class PositionServiceImpl implements PositionService {
 	@Override
 	public void update(String positionInfo) {
 		
-		Position p = inputParser.parse(positionInfo);
-		positionLogger.log(p, "horse", "boxes");
-		clientManager.updatePostion(p);	
+		Optional<Position> p = inputParser.parse(positionInfo, clientManager);
+		p.ifPresent(pos -> { 
+			positionLogger.log(pos, "horse", "boxes");
+			clientManager.updatePostion(pos);
+		});
 
 	}
 	
-	public void update(Position p) {
-		positionLogger.log(p, "horse", "replay");
-		clientManager.updatePostion(p);			
-	}
-
 
 
 	

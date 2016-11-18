@@ -1,5 +1,7 @@
 package com.ordint.tcpears.service;
 
+import java.util.Optional;
+
 import com.ordint.tcpears.domain.Position;
 
 public interface ClientManager {
@@ -13,5 +15,7 @@ public interface ClientManager {
 	void clearAllSnakes();
 
 	void updatePostion(Position position);
+	
+	Optional<Position> getClientPosition(String clientId);
 
 }

@@ -1,6 +1,7 @@
 package com.ordint.tcpears.service.position;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -154,6 +155,11 @@ public class ClientManagerImpl implements ClientManager, PositionDataProvider {
 				.filter(p -> clientsInGroup.contains(p.getKey()))
 				.collect(Collectors.toConcurrentMap(p -> p.getKey(), p -> p.getValue()));
 		
+	}
+
+	@Override
+	public Optional<Position> getClientPosition(String clientId) {
+		return Optional.ofNullable(clients.get(clientId));
 	}
 	
 
