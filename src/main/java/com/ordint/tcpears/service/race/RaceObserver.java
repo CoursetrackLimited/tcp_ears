@@ -42,9 +42,10 @@ public class RaceObserver implements PositionEnhancer {
 	@Override
 	public List<Position> decorate(List<Position> positions) {
 		
-		checkForRaceStart(positions);
+		//checkForRaceStart(positions);
 		
-		return addStandings(positions);
+		calculateStandings(positions);
+		return addStandingsToPositions(positions);
 	}
 
 	private void checkForRaceStart(List<Position> positions) {
@@ -111,12 +112,15 @@ public class RaceObserver implements PositionEnhancer {
 	private void calculateStandings(List<Position> positions) {
 		List<PositionDistanceInfo> stillRunning = new ArrayList<>();	
 		for(PositionDistanceInfo pdi : distances.values()) {
-			if(pdi.getDistanceFromFinish() >= 0) {
+			
+			//HACK 
+			stillRunning.add(pdi);	
+/*			if(pdi.getDistanceFromFinish() >= 0) {
 				stillRunning.add(pdi);			
 			} else {
 				//crossed the finish line
 				placings.putIfAbsent(pdi.getClientId(), placings.size() + 1);
-			}
+			}*/
 		}
 		if (placings.size() == runnerCount && status != EventState.FINSIHED) {
 			updateStatus(EventState.FINSIHED);
@@ -136,10 +140,10 @@ public class RaceObserver implements PositionEnhancer {
 	 */
 	@Override
 	public Position enhance(Position p) {	
-		if (status == EventState.STARTED ) {		
+		//if (status == EventState.STARTED ) {		
 			PositionDistanceInfo pdi = track.calculateDistanceInfo(p);	
 			distances.put(p.getClientId(), pdi);
-		}
+		//}
 		return p;
 	}
 	
