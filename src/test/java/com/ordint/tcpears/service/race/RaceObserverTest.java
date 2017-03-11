@@ -51,7 +51,7 @@ public class RaceObserverTest {
 	public void raceStatusShouldChangeToFinishedWhenAllRunnersCrossFinishLine() {
 		
 	}
-	
+	@Test
 	public void positionsShouldHaveCorrectStandingsDuringRace() throws Exception {
 		Position p1 = PositionUtil.createPosition("1", "2", "1", "group", "client1");
 		Position p2 = PositionUtil.createPosition("1", "2", "1", "group", "client2");
@@ -73,7 +73,7 @@ public class RaceObserverTest {
 		
 		
 	}
-	
+
 	public void standingsShouldNotChangeOnceFinishIsPassed() throws Exception {
 		Position p1 = PositionUtil.createPosition("1", "2", "1", "group", "client1");
 		Position p2 = PositionUtil.createPosition("1", "2", "1", "group", "client2");

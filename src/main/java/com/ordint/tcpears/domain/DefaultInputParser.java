@@ -1,9 +1,10 @@
 package com.ordint.tcpears.domain;
 
-import static com.ordint.tcpears.util.ConversionUtil.applyPositionDelta;
 import static com.ordint.tcpears.util.ConversionUtil.formatDouble;
 import static com.ordint.tcpears.util.ConversionUtil.posToDec;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
@@ -12,13 +13,15 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.ordint.tcpears.domain.Position.PositionBuilder;
 import com.ordint.tcpears.service.ClientDetailsResolver;
 import com.ordint.tcpears.service.ClientManager;
 import com.ordint.tcpears.util.ConversionUtil;
 import com.ordint.tcpears.util.time.Timestamper;
 
 public class DefaultInputParser implements InputParser {
-	private final static Logger log = LoggerFactory.getLogger(DefaultInputParser.class);
+	private final static Logger intpuLog = LoggerFactory.getLogger(DefaultInputParser.class);
+	private final static Logger log = LoggerFactory.getLogger("com.ordint.tcpears.domain.DefaultInputParser2");
 	private ClientDetailsResolver clientDetailsResolver;	
 	private Timestamper timestamper;
 	
@@ -36,57 +39,27 @@ public class DefaultInputParser implements InputParser {
 	 * </ul>
 	 */
 
-	public Position parse(String message) {
-		log.debug(message);
-		String parts[] = message.split(",");
-		Position.PositionBuilder builder = Position.builder()
-				.clientDetails(clientDetailsResolver.resolveClientDetails(parts[0]))
-				.timestampFromTime(parts[1])
-				.lat(posToDec(parts[2]))
-				.lon(posToDec(parts[3]))
-				.speed(formatDouble(Double.parseDouble(parts[4])))
-				.timeCreated(timestamper.now().truncatedTo(ChronoUnit.MICROS));
-				
-		if (parts.length == 10) {
-			builder = builder.heading(formatDouble(parts[5]))
-					.horizontalAccuracy(formatDouble(parts[6]))
-					.verticalAccuracy(formatDouble(parts[7]))
-					.altitude(parts[8])
-					.status(parts[9]);
-		} else {
-			builder = builder.altitude("-1")
-					.heading("-1")
-					.horizontalAccuracy("-1")
-					.verticalAccuracy("-1")
-					.status("-1");
-			
-		}
-		
-		return builder.build();
-	}
+
 	@Override
 	public Optional<Position> parse(String message, ClientManager clientManager) {
-		log.debug(message);
+		intpuLog.debug(message);
 		int count = StringUtils.countMatches(message, ',');
-		
-		if (count == 9) {
-			return parseLongMessage(message);
-		} else if (count == 5) {
-			return parseShortMessage(message, clientManager);
+		switch (count) {
+		case 9: return parseLongMessage(message);
+		case 5: return parseDeltaMessage(message, clientManager);
+		case 4: return parseShortMessage(message);
+		default:
 		}
+
 		return Optional.empty();
 	}
-	
+	/*
+	 * <li>ident,time(hhmmss.ss),lat(mmss.sssss),long(mmmss.sssss),speed,heading,horizontalAccuracy,verticalAccuracy,altitude,status
+	 */
 	private Optional<Position> parseLongMessage(String message) {
 		String parts[] = message.split(",");
 		try {
-			return Optional.of(Position.builder()
-					.clientDetails(clientDetailsResolver.resolveClientDetails(parts[0]))
-					.timestampFromTime(parts[1])
-					.lat(posToDec(parts[2]))
-					.lon(posToDec(parts[3]))
-					.speed(formatDouble(Double.parseDouble(parts[4])))
-					.timeCreated(timestamper.now().truncatedTo(ChronoUnit.MICROS))
+			return Optional.of(parseCommon(parts)
 					.heading(formatDouble(parts[5]))
 					.horizontalAccuracy(formatDouble(parts[6]))
 					.verticalAccuracy(formatDouble(parts[7]))
@@ -94,16 +67,35 @@ public class DefaultInputParser implements InputParser {
 					.status(parts[9])
 					.build());
 		} catch (Exception e) {
-			log.warn("Could not parse message " + message, e);
+			log.warn("Could not parse long message " + message, e);
 		}
 		return Optional.empty();
 	}
+	/*
+	 * ident,time(hhmmss.ss),lat(mmss.sssss),long(mmmss.sssss),speed
+	 */
+	private Optional<Position> parseShortMessage(String message) {
+		String parts[] = message.split(",");
+		try {
+			return Optional.of(parseCommon(parts)
+					.altitude("-1")
+					.heading("-1")
+					.horizontalAccuracy("-1")
+					.verticalAccuracy("-1")
+					.status("-1")
+					.build());
+		} catch (Exception e) {
+			log.warn("Could not parse short message " + message, e);
+		}
+		return Optional.empty();
+	}
+	
 	/**
-	 * Short message is a delta in the form  ident,timeDelta,latDelta,lonDelta,speedDelta,AltDelta
+	 * Delta message is a delta in the form  ident,timeDelta,latDelta,lonDelta,speedDelta,AltDelta
 	 * where all the values are scaled up to ints
 	 * 
 	 */
-	private Optional<Position> parseShortMessage(String message, ClientManager clientManager) {
+	private Optional<Position> parseDeltaMessage(String message, ClientManager clientManager) {
 		String parts[] = message.split(",");
 		//get the existing postion
 		String clientId = parts[0];
@@ -117,15 +109,20 @@ public class DefaultInputParser implements InputParser {
 					double lonDelta = scaleDown(parts[3], 100 *1000);
 					double speedDelta = scaleDown(parts[4], 100);
 					double altDelta = scaleDown(parts[5], 100);
+					String rawLat = applyPositionDelta(current.getRawLat(), latDelta);
+					String rawLon = applyPositionDelta(current.getRawLon(), lonDelta);
 					return Optional.of(Position.builder().position(current)
+						.timeCreated(timestamper.now().truncatedTo(ChronoUnit.MICROS))
 						.timestampFromDateTime(current.getTimestamp().plus(timeDelta, ChronoUnit.MILLIS))
-						.lat(applyPositionDelta(current.getLat(), latDelta))
-						.lon(applyPositionDelta(current.getLon(), lonDelta))
+						.rawLat(rawLat)
+						.rawLon(rawLon)
+						.lat(posToDec(rawLat))
+						.lon(posToDec(rawLon))
 						.speed(applyDoubleDelta(current.getSpeed(), speedDelta))
 						.altitude(applyDoubleDelta(current.getAltitude(), altDelta))
 						.build());
 				}  catch (Exception e) {
-					log.warn("Could not parse message " + message, e);
+					log.warn("Could not parse delta message " + message, e);
 				}					
 			}
 		} else {
@@ -134,7 +131,17 @@ public class DefaultInputParser implements InputParser {
 		return Optional.empty();
 		
 	}
-	
+	private PositionBuilder parseCommon(String[] parts) {
+   		return Position.builder().clientDetails(clientDetailsResolver.resolveClientDetails(parts[0]))
+			.timestampFromTime(parts[1])
+			.rawLat(parts[2])
+			.rawLon(parts[3])
+			.lat(posToDec(parts[2]))
+			.lon(posToDec(parts[3]))
+			.speed(formatDouble(Double.parseDouble(parts[4])))
+			.timeCreated(timestamper.now().truncatedTo(ChronoUnit.MICROS));
+
+	}
 	private String applyDoubleDelta(String current, double delta) {
 		if (!NumberUtils.isParsable(current)) {
 			return null;
@@ -144,10 +151,16 @@ public class DefaultInputParser implements InputParser {
 	}
 	
 	private double scaleDown(String intNumber, int by) {
-		return (double)Integer.parseInt(intNumber) / by;
+		
+		return (double)Integer.parseInt(intNumber)/ by;
+		
 	}
 	
-	
+    private static String applyPositionDelta(String rawPos, double delta) {
+    	double currentPosition = Double.parseDouble(rawPos) + delta;
+    	return new BigDecimal(currentPosition).setScale(5, RoundingMode.HALF_DOWN).toString();
+
+    }	
 
 
 	

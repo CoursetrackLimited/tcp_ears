@@ -11,6 +11,7 @@ import java.util.concurrent.ConcurrentMap;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,9 +65,10 @@ public class HorseDetailsResolver implements ClientDetailsResolver {
 
 	@Override
 	public ClientDetails resolveClientDetails(String clientId) {
-		ClientDetails cd = clientDetailsMap.get(clientId);
+		String val = StringUtils.trim(clientId);
+		ClientDetails cd = clientDetailsMap.get(val);
 		if(cd == null) {
-			cd = clientDetailsMap.computeIfAbsent(clientId, val -> addUnrecognisedClient(clientId));
+			cd = clientDetailsMap.computeIfAbsent(val, v -> addUnrecognisedClient(val));
 			updateMemcache();
 		}
 		return cd;
@@ -93,8 +95,11 @@ public class HorseDetailsResolver implements ClientDetailsResolver {
 	
 	@Override
 	public void updateClientDetails(List<ClientDetails> clientDetails) {
-		
-		clientDetails.forEach(clientDetail -> clientDetailsMap.put(clientDetail.getClientId(), clientDetail));
+		log.debug("Updating list of client details");
+		for(ClientDetails clientDetail : clientDetails) {
+			log.debug("Updating client details {} ", clientDetail);
+			clientDetailsMap.put(clientDetail.getClientId(), clientDetail);			
+		}
 		updateMemcache();
 		
 	}

@@ -28,7 +28,7 @@ import com.ordint.tcpears.domain.json.JsonLocalDateTimeSerialiser;
 @AllArgsConstructor
 @ToString
 @EqualsAndHashCode()
-@JsonIgnoreProperties({"groupId","clientId","currentLag", "gpstimestamp","speedValue"})
+@JsonIgnoreProperties(value = {"groupId","clientId","currentLag", "gpstimestamp","speedValue"}, ignoreUnknown = true)
 public class Position {
 	private static final DateTimeFormatter GPS_TIMESTAMP_FORMAT = DateTimeFormatter.ofPattern("Hmmss.SS");
 	@NonFinal
@@ -54,6 +54,8 @@ public class Position {
 	private String lastLat;
 	private String lastLon;
 	private PositionDistanceInfo distanceInfo;
+	private String rawLat;
+	private String rawLon;
 	
 	@JsonCreator
 	public Position() {}
@@ -121,6 +123,8 @@ public class Position {
 		private String lastLat;
 		private String lastLon;
 		private PositionDistanceInfo distanceInfo;
+		private String rawLat;
+		private String rawLon;
 
 		PositionBuilder(Clock clock) {
 			this.clock = clock;
@@ -142,6 +146,8 @@ public class Position {
 			this.lastLat = toCopy.lastLat;
 			this.lastLon = toCopy.lastLon;
 			this.distanceInfo = toCopy.distanceInfo;
+			this.rawLat = toCopy.rawLat;
+			this.rawLon = toCopy.rawLon;
 			return this;
 			
 		}
@@ -223,9 +229,18 @@ public class Position {
 			this.distanceInfo = distanceInfo;
 			return this;
 		}
+		public PositionBuilder rawLat(final String rawLat) {
+			this.rawLat = rawLat;
+			return this;
+		}
+
+		public PositionBuilder rawLon(final String rawLon) {
+			this.rawLon = rawLon;
+			return this;
+		}
 		public Position build() {
 			return new Position(timestamp, lat, lon, speed, altitude, heading, horizontalAccuracy, verticalAccuracy,
-					status, clientDetails, timeCreated, lag, standing, lastLat, lastLon, distanceInfo);
+					status, clientDetails, timeCreated, lag, standing, lastLat, lastLon, distanceInfo, rawLat, rawLon);
 		}
 
 		@Override

@@ -35,10 +35,7 @@ public final class ConversionUtil {
 		else
 			return (degs +(mins)/60);		
 	}   
-    public static String applyPositionDelta(String decimalPostion, double deltaInMinutes) {
-    	double currentPosition = posToDouble(decimalPostion);
-    	return formatDouble(currentPosition + (deltaInMinutes/ 60));
-    }
+
     
     private static int upTo0(int dp) {
 		return dp -2 < 0 ? 0 : dp -2;
