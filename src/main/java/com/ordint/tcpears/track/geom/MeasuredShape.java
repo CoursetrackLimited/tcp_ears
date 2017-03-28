@@ -450,7 +450,7 @@ public class MeasuredShape implements Serializable {
 				path.lineTo(pos.getX(), pos.getY());
 			}
 		}
-		path.closePath();		
+		//path.closePath();
 		init(path.getPathIterator(null), DEFAULT_SPACING);
 		
 
@@ -697,11 +697,13 @@ public class MeasuredShape implements Serializable {
 	public Point2D getClosestPoint(Point2D externalPoint) {
 
 		double shortestDistance = java.lang.Double.MAX_VALUE;
-		double currentDistance = shortestDistance; 
+		double currentDistance;
 		Line2D lineToUse = null;
 		Segment segmentToUse = null;
-		
-		for (int i = 0 ; i< segments.length-1; i++) {
+        int startingSegment = getSegmentIndex(300);
+        int finishSegment = startingSegment == segments.length -1 ? startingSegment : startingSegment + 1;
+        for (int i = startingSegment ; i< finishSegment; i++) {
+
 			if(segments[i].type != PathIterator.SEG_LINETO) {
 				throw new IllegalArgumentException("Cant run getCLosestPoint on track not made of line segments");
 			}
@@ -723,6 +725,17 @@ public class MeasuredShape implements Serializable {
 		
 	}
 	
+
+	private int getSegmentIndex(double distance) {
+	    double total = 0;
+	    for (int i = 0 ; i< segments.length-1; i++) {
+	        if (distance > total && distance <= total + segments[i].realDistance) {
+	            return i;
+	        }
+	        total += segments[i].realDistance;
+	    }
+	    return 0;
+	}
 
 	/**
 	 * Returns a Point2D whose position is calculated by moving to the nearest
@@ -747,6 +760,41 @@ public class MeasuredShape implements Serializable {
 		return retval;
 		
 	}
+
+	public double[] getDistanceAlongTrack(Point2D offTrackpoint, double distanceFromStartOfTrackShape) {
+
+	        int startingSegment = getSegmentIndex(distanceFromStartOfTrackShape);
+	        int lastSegment = startingSegment == segments.length -1 ? startingSegment : startingSegment + 1;
+
+	        return getDistanceAlongTrack(offTrackpoint, startingSegment, lastSegment);
+
+
+	}
+
+
+    public double[] getDistanceAlongTrack(Point2D offTrackpoint, int startingSegment, int lastSegment) {
+        double shortestDistance = java.lang.Double.MAX_VALUE;
+         double currentDistance;
+         int segmentIndex =  -1;
+         for (int i = startingSegment ; i< lastSegment; i++) {
+             if(segments[i].type != PathIterator.SEG_LINETO) {
+                 throw new IllegalArgumentException("Cant call getDistanceAlongTrack on track not made of line segments");
+             }
+             currentDistance = ptSegDist(segments[i].data[0], segments[i].data[1], segments[i].data[2], segments[i].data[3],
+                         offTrackpoint.getX(),offTrackpoint.getY());
+             if (currentDistance < shortestDistance) {
+                 shortestDistance =  currentDistance;
+                 segmentIndex = i;
+             }
+         }
+         if (segmentIndex == -1) {
+             return null;
+         }
+         return calculateDistance(segmentIndex, shortestDistance, offTrackpoint);
+
+ }
+
+
 	/**
 	 * Finds the nearset point on this track to the offTrackpoint value and
 	 * calculates how far from the start of the track the point is
@@ -756,40 +804,15 @@ public class MeasuredShape implements Serializable {
 	 */
 	public double[] getDistanceAlongTrack(Point2D offTrackpoint) {
 
-		double shortestDistance = java.lang.Double.MAX_VALUE;
-		double currentDistance = java.lang.Double.MAX_VALUE; 
-		int segmentIndex =  -1;
-		
-		for (int i = 0 ; i< segments.length-1; i++) {
-			if(segments[i].type != PathIterator.SEG_LINETO) {
-				throw new IllegalArgumentException("Cant call getDistanceAlongTrack on track not made of line segments");
-			}
-			currentDistance = ptSegDist(segments[i].data[0], segments[i].data[1], segments[i].data[2], segments[i].data[3],
-						offTrackpoint.getX(),offTrackpoint.getY());
-			if (currentDistance < shortestDistance) {
-				shortestDistance =  currentDistance;
-				//System.out.println(shortestDistance);
-				//System.out.println("--- " + externalPoint.distance(line.getP1()) + " -- " + externalPoint.distance(line.getP2()));
-				segmentIndex = i;
-			}
-			//}
-		}
-		if (segmentIndex == -1) {
-			return null;
-		}
-		return calculateDistance(segmentIndex, shortestDistance, offTrackpoint);
-		
-		
-		
+	    return getDistanceAlongTrack(offTrackpoint, 0, segments.length-1);
+
 	}	
 	
 	private  Point2D calculateClosestPoint(Line2D segmentLine, Segment segment, double distance, Point2D from) {
-		
-        double normal = getNormal(segmentLine);
-        double cos = 1 /(Math.sqrt(1 + Math.pow(normal,2)));
-        double sin = normal / (Math.sqrt(1 + Math.pow(normal,2)));
+
         
-		double x1, x2,x3,  y1, y2, y3;
+
+		double x1, x2,x3,  y1, y2, y3, cos, sin, tan;
 		x1 = segmentLine.getX1();
 		x2 = segmentLine.getX2();
 		x3 = from.getX();
@@ -797,6 +820,20 @@ public class MeasuredShape implements Serializable {
 		y2 = segmentLine.getY2();
 		y3 = from.getY();
 		
+		double deltaX = (y2-y1) - (-(y2-y1));
+		double deltaY = -(x2-x1) - (x2-x1);
+		if (deltaX == 0) {
+		    cos =0;
+		    sin = -1;
+		} else if (deltaY == 0) {
+		    sin = 0;
+		    cos = 1;
+		} else {
+		    tan = deltaY/ deltaX;
+		    double length = Math.sqrt(1 + Math.pow(tan, 2));
+		    sin = tan / length;
+		    cos = 1 / length;
+		}
 		
 		double sgn = Math.signum(((x3-x1) * (y2-y1)) - ((y3-y1) * (x2-x1))); 
 		if(y2 < y1) {
@@ -804,7 +841,8 @@ public class MeasuredShape implements Serializable {
 		}
         
         Point2D closestPoint = new Point2D.Double(from.getX() - sgn * (distance * cos), from.getY() -  sgn * (distance * sin));
-        int range = inRange(x1, y1, x2, y2, closestPoint.getX(),closestPoint.getY());
+
+		int range = inRange(x1, y1, x2, y2, closestPoint.getX(),closestPoint.getY());
         if(range ==-1) {
         	return segmentLine.getP1();
         } else if (range ==1) {
@@ -816,8 +854,10 @@ public class MeasuredShape implements Serializable {
         //return closestPoint;
 	}
 	
-	private double[] calculateDistance(int segmentIndex, double distance, Point2D from) {
-		double x1, x2,x3,  y1, y2, y3;
+
+
+	private double[] calculateDistance(int segmentIndex, double offset, Point2D from) {
+		double x1, x2,x3,  y1, y2, y3, cos, sin, tan;
 		x1 = segments[segmentIndex].data[0];
 		x2 = segments[segmentIndex].data[2];
 		x3 = from.getX();
@@ -825,19 +865,30 @@ public class MeasuredShape implements Serializable {
 		y2 = segments[segmentIndex].data[3];
 		y3 = from.getY();		
 
-        double normal = -1 / ((y2-y1)/(x2-x1));
-        double cos = 1 /(Math.sqrt(1 + Math.pow(normal,2)));
-        double sin = normal / (Math.sqrt(1 + Math.pow(normal,2)));
+        double deltaX = (y2-y1) - (-(y2-y1));
+        double deltaY = -(x2-x1) - (x2-x1);
+        if (deltaX == 0) {
+            cos =0;
+            sin = -1;
+        } else if (deltaY == 0) {
+            sin = 0;
+            cos = 1;
+        } else {
+            tan = deltaY/ deltaX;
+            double length = Math.sqrt(1 + Math.pow(tan, 2));
+            sin = tan / length;
+            cos = 1 / length;
+        }
         
 
 		double sgn = Math.signum(((x3-x1) * (y2-y1)) - ((y3-y1) * (x2-x1))); 
 		if(y2 < y1) {
 			sgn  = sgn * -1;
 		}
-		
-        double cpx = from.getX() - sgn *(distance * cos);
-        double cpy = from.getY() -  sgn * (distance * sin);
-        double dist = 0;     
+
+        double cpx = from.getX() - sgn *(offset * cos);
+        double cpy = from.getY() - sgn * (offset * sin);
+        double dist ;
         int range = inRange(x1, y1, x2, y2, cpx,cpy);
         if(range ==-1) {
         	dist = 0;
@@ -872,19 +923,7 @@ public class MeasuredShape implements Serializable {
 		}
 	}	
 
-    private static double getNormal(Line2D line)
-    {
-        return -1 / getSlope(line);
-    }
-   
-    
-    private static double getSlope(Line2D line)
-    {
-        double deltaY = line.getY2()- line.getY1();
-        double deltaX = line.getX2() - line.getX1();
-  
-        return deltaY/ deltaX;
-    }	
+
     private double distance(Point2D pt, Segment a) {
         double px = pt.getX() - a.getX(0);
         double py = pt.getY() - a.getY(0);

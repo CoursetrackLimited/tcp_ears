@@ -26,14 +26,14 @@ public class PositionExtrapolatorEnhancer implements PositionEnhancer {
 	private boolean useRelativeTime = false;
 	private long offset = 0;
 	public PositionExtrapolatorEnhancer() {
-		track =  new Track(StaticPathBuilder.KEMPTON_740, StaticPathBuilder.KEMPTON_FINISH);
+		track =  new Track(StaticPathBuilder.KEMPTON_740, StaticPathBuilder.KEMPTON_FINISH, 1000);
 	}
 	public PositionExtrapolatorEnhancer(boolean useRelativeTime) {
-		track =  new Track(StaticPathBuilder.KEMPTON_740, StaticPathBuilder.KEMPTON_FINISH);
+		track =  new Track(StaticPathBuilder.KEMPTON_740, StaticPathBuilder.KEMPTON_FINISH,1000);
 		this.useRelativeTime =useRelativeTime;
 	}
 	public PositionExtrapolatorEnhancer(Clock clock) {
-		track =  new Track(StaticPathBuilder.KEMPTON_740, StaticPathBuilder.KEMPTON_FINISH);
+		track =  new Track(StaticPathBuilder.KEMPTON_740, StaticPathBuilder.KEMPTON_FINISH, 1000);
 		this.clock = clock;
 	}
 	@Override

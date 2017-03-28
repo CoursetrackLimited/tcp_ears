@@ -79,7 +79,7 @@ public class MeasuredShapeTest {
 	public void getClosestPoint() throws Exception {
 		Point2D externalPoint = new Point2D.Double(6, 12);
 		Point2D actual = shape.getClosestPoint(externalPoint);
-		Point2D expected =  new Point2D.Double(7, 11);
+		Point2D expected =  new Point2D.Double(3, 4);
 		
 		assertThat(eqPoint(actual, expected), equalTo(true));
 		

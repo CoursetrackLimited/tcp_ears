@@ -11,6 +11,7 @@ import java.awt.geom.GeneralPath;
 import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.util.Arrays;
 import java.util.List;
 
@@ -80,9 +81,10 @@ public class TestTest extends JPanel
     	g2d.draw(grid1);
     	g2d.draw(grid2);
     	if (p1 != null && p2 != null) {
+	    Rectangle2D.Double rect = new Rectangle2D.Double(p1.getX(), p1.getY(), Math.abs(p2.getX()-p1.getX()), Math.abs(p2.getY()-p1.getY()));
 	    	Line2D arse = new Line2D.Double(p1,p2);
 	    	g2d.setColor(Color.RED);
-	    	g2d.draw(arse);
+		g2d.draw(rect);
 	    	if (externalPoint != null) {
 	    		shape = new MeasuredShape(pathBuilder.buildFromLine(arse));
 	    		
@@ -138,6 +140,7 @@ public class TestTest extends JPanel
 	            if (true) {
 	            	if (p1 == null) {
 	            		p1 = new Point2D.Double(1*p.getX() -750 ,1*p.getY()- 500);
+				//p2 = new Point2D.Double(1*p.getX() -300 ,1*p.getY()- 500);
 	            	} else {
 	            		if (p2 == null) {
 	            			p2 = new Point2D.Double(1*p.getX()-750,1*p.getY()-500);
@@ -206,7 +209,10 @@ public class TestTest extends JPanel
     class PointPathBuilder  {
     	
     	public Path2D buildFromLine(Line2D line) {
-    		return buildPath(Arrays.asList(line.getP1(), line.getP2()));
+		return buildPath(Arrays.asList(line.getP1(), new Point2D.Double(line.getP2().getX(), line.getP1().getY()), line.getP2(),
+		       new Point2D.Double(line.getP1().getX(), line.getP2().getY())));
+	   // return buildPath(Arrays.asList(line.getP1(), line.getP2()));
+
     	}
     	protected Path2D buildPath(List<Point2D> allpoints) {	
     		Path2D path = new Path2D.Double();		

@@ -18,49 +18,122 @@ public class Track {
 	
 	private static final Logger log = LoggerFactory.getLogger(Track.class);
 
-	private double finishDistance;
+	private double finishLineDistanceFromStartOfTrackShape;
+	private double officialRaceDistance;
 	private MeasuredShape trackShape;
-	private PositionToPointConverter positionToPointConverter;	
-	
+	private PositionToPointConverter positionToPointConverter;
 
-	public Track(String kmlPoints, String finishLatLong) {
-		this(kmlPoints, finishLatLong, new TrackGeomFactory());
+
+
+	public Track(String kmlPoints, String finishLatLong, double raceDistanceMeters) {
+		this(kmlPoints, finishLatLong, new TrackGeomFactory(), raceDistanceMeters);
 		
 	}
-	public Track(String kmlPoints, String finishLatLong, TrackGeomFactory geomFactory) {
+	public Track(String kmlPoints, String finishLatLong, TrackGeomFactory geomFactory, double raceDistanceMeters) {
 		positionToPointConverter = geomFactory.createPositionToPointConverter(kmlPoints);
 		this.trackShape = geomFactory.createTrackShape(kmlPoints, positionToPointConverter);
-		double[] info = trackShape.getDistanceAlongTrack(positionToPointConverter.toPoint(finishLatLong));
-		finishDistance = info[2];
+		this.officialRaceDistance = raceDistanceMeters;
+		Point2D temp = positionToPointConverter.toPoint(finishLatLong);
+		double[] info = trackShape.getDistanceAlongTrack(temp);
+		finishLineDistanceFromStartOfTrackShape = info[2];
+
+		System.out.println(positionToPointConverter.metersToLat(info[1]) + " " + positionToPointConverter.metersToLon(info[0]));
 		
 	}
 	
-	public Track(TrackConfig trackConfig, TrackGeomFactory geomFactory) {
-		this(trackConfig.getKml(), trackConfig.getFinishLine(), geomFactory);
+
+	public Track(TrackConfig trackConfig, TrackGeomFactory geomFactory,  double raceDistanceMeters) {
+		this(trackConfig.getKml(), trackConfig.getFinishLine(), geomFactory, raceDistanceMeters);
 	}
-	
-	
-	public PositionDistanceInfo calculateDistanceInfo(Position position) {
-		Point2D currentPoint = positionToPointConverter.toPoint(position);
-		double[] info = trackShape.getDistanceAlongTrack(currentPoint);
-		if (info != null) {
-			return new PositionDistanceInfo(position.getClientId(), info[2], finishDistance - info[2], 0);
+
+/*	private void calculateRaceDistance(){
+	           numberOfLaps = (int) (officialRaceDistance / trackShape.getClosedDistance());
+	    double lastLapDistance = officialRaceDistance - (numberOfLaps * trackShape.getClosedDistance());
+
+        if (lastLapDistance > finishLineDistanceFromStartOfTrackShape) {
+            // startLine is before the start of the track shape
+            startLineDistanceFromStartOfTrackShape = trackShape.getClosedDistance() - (lastLapDistance - finishLineDistanceFromStartOfTrackShape);
+
+        } else {
+            startLineDistanceFromStartOfTrackShape = finishLineDistanceFromStartOfTrackShape - lastLapDistance;
+        }
+        startPoint = trackShape.getPoint(startLineDistanceFromStartOfTrackShape);
+
+	}*/
+
+    private double calculateDistance(Point2D currentPoint, double distanceFromFinish) {
+        double[] info = trackShape.getDistanceAlongTrack(currentPoint);
+        if (info != null) {
+            double distanceFromStartOfShape = info[2];
+            double distancetToFinish = delta(distanceFromStartOfShape);
+            int lapsToGo = 0;
+            if (distanceFromFinish > trackShape.getClosedDistance()) {
+                double wholeNumberOfLapsPart = ((int) (distanceFromFinish / trackShape.getClosedDistance())) * trackShape.getClosedDistance();
+                lapsToGo = (int)((wholeNumberOfLapsPart + distancetToFinish) / trackShape.getClosedDistance());
+            }
+
+
+            distancetToFinish = distancetToFinish + (lapsToGo * trackShape.getClosedDistance());
+
+
+            return distancetToFinish;
+        } else {
+            log.warn("Could not cacluclate distance info for {}", currentPoint);
+            return -1;
+        }
+    }
+    private double calculateDistance2(Point2D currentPoint, double distanceFromFinish) {
+        double[] info = trackShape.getDistanceAlongTrack(currentPoint, finishLineDistanceFromStartOfTrackShape - distanceFromFinish);
+        if (info != null) {
+            double distanceFromStartOfShape = info[2];
+            return finishLineDistanceFromStartOfTrackShape - distanceFromStartOfShape;
+        } else {
+            log.warn("Could not cacluclate distance info for {}", currentPoint);
+            return -1;
+        }
+    }
+    private double calculateDistance(Position position) {
+        Point2D currentPoint = positionToPointConverter.toPoint(position);
+        return calculateDistance2(currentPoint, position.getDistanceInfo() != null ? position.getDistanceInfo().getDistanceFromFinish() : 0);
+    }
+
+
+
+
+
+    public PositionDistanceInfo calculateDistanceInfo(Position position) {
+		double distance = calculateDistance(position);
+		if (distance  >  0) {
+		    return new PositionDistanceInfo(position.getClientId(),  officialRaceDistance - distance , distance, 0);
 		} else {
 			log.warn("Could not cacluclate distance info for {}", position);
-			return  new PositionDistanceInfo(position.getClientId(), -1, finishDistance, 0);
+			return  new PositionDistanceInfo(position.getClientId(), -1, -1, 0);
 		}		
 	}
 
 	public double getFinishDistance() {
-		return finishDistance;
+
+	    return officialRaceDistance;
 	}
-	
+
+
+
+
+	private double delta(double horseDistance) {
+	    if (horseDistance > finishLineDistanceFromStartOfTrackShape) {
+	        return (trackShape.getClosedDistance() - horseDistance + finishLineDistanceFromStartOfTrackShape);
+	    } else {
+	        return finishLineDistanceFromStartOfTrackShape - horseDistance;
+	    }
+
+	}
+
+
 	public Position predict(Position p, double timeInMillis) {
-		
-		//log.info("Generating track point for {}", p.getClientDetails().getRunnerIdent());
+
 		double distance = p.getSpeedValue() * (timeInMillis / 1000);
 		Point2D extra = trackShape.getOffTrackPoint(positionToPointConverter.toPoint(p), distance);
-		
+
 	    return Position.builder().position(p)
 				.timeCreated(LocalDateTime.now())
 				.timestampFromDateTime(p.getTimestamp().plus((long) timeInMillis, ChronoUnit.MILLIS))
