@@ -40,7 +40,7 @@ public class TrackGeomFactory {
 				allpoints.add(converter.toPoint(point));
 			}
 		}
-		Collections.reverse(allpoints);
+		
 		return new MeasuredShape(allpoints);
 		
 	}

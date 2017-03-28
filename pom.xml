@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.ordint</groupId>
   <artifactId>tcpears</artifactId>
-  <version>0.0.2-SNAPSHOT</version>
+  <version>0.0.2-Multilap</version>
   
     <properties>
         <spring.version>4.1.2.RELEASE</spring.version>
