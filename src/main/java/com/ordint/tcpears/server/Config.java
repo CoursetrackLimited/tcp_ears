@@ -3,6 +3,7 @@ package com.ordint.tcpears.server;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelOption;
+import io.netty.channel.epoll.EpollChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioDatagramChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
@@ -143,6 +144,8 @@ public class Config {
 		Bootstrap b = new Bootstrap();
 		b.group(new NioEventLoopGroup(bossCount))
 			.channel(NioDatagramChannel.class)
+			.option(ChannelOption.SO_BROADCAST, true)
+            .option(EpollChannelOption.SO_REUSEPORT, true)
 			.handler(udpChannelInitializer);
 		return b;
 	}
