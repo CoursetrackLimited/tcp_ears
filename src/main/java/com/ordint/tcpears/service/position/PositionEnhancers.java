@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import com.ordint.tcpears.domain.ClientDetails;
 import com.ordint.tcpears.domain.Position;
 import com.ordint.tcpears.domain.RaceDetail;
 import com.ordint.tcpears.domain.TrackConfig;
@@ -43,12 +44,14 @@ public class PositionEnhancers {
 	}
 
 	
-	public void addRacePositionEnhancers(RaceDetail race, TrackConfig trackConfig, int runnerCount) {
+	public RaceObserver addRacePositionEnhancers(RaceDetail race, TrackConfig trackConfig, List<ClientDetails> runners) {
 		log.info("Adding race  psoition enhancers for groupId {}", race.getGroupId());
 		Track track = new Track(trackConfig, trackGeomFactory, 1000);
-		List<PositionEnhancer> pd = Arrays.asList(new RaceObserver(track, runnerCount));
+		RaceObserver observer = new RaceObserver(track, runners);
+		List<PositionEnhancer> pd = Arrays.asList(observer);
 		//List<PositionEnhancer> pd = Arrays.asList(new RacePositionDecorator());
-		positionEnhancers.put(race.getGroupId().toString(), pd);		
+		positionEnhancers.put(race.getGroupId().toString(), pd);
+		return observer;
 	}
 	
 	public void clearEnhancers(String groupId) {

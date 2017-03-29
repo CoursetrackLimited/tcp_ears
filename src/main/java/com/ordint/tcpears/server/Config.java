@@ -145,7 +145,7 @@ public class Config {
 		b.group(new NioEventLoopGroup(bossCount))
 			.channel(NioDatagramChannel.class)
 			.option(ChannelOption.SO_BROADCAST, true)
-            .option(EpollChannelOption.SO_REUSEPORT, true)
+            //.option(EpollChannelOption.SO_REUSEPORT, true)
 			.handler(udpChannelInitializer);
 		return b;
 	}
@@ -184,8 +184,8 @@ public class Config {
 	}
 	@Bean
 	public MemcacheHelper memcacheHelper() throws Exception {
-		//return  new MemcacheHelper();
-		return  new MemcacheHelper("localhost", 11211);
+		return  new MemcacheHelper();
+		//return  new MemcacheHelper("localhost", 11211);
 	}
 
 	@Bean

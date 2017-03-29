@@ -27,7 +27,7 @@ public class DevMemcachedClient implements Memcached {
 
 	@Override
 	public Future<Boolean> set(final String key, int exp, final Object o) {
-		log.info("set ({}, {})", key, o);
+		//log.info("set ({}, {})", key, o);
 		cached.put(key, o);
 		CompletableFuture<Boolean> f = new CompletableFuture<>();
 		f.complete(true);
@@ -39,7 +39,7 @@ public class DevMemcachedClient implements Memcached {
 	@Override
 	public Object get(String key) {
 		Object val = cached.get(key);
-		log.info("get {} = {}", key, val);
+		//log.info("get {} = {}", key, val);
 		return val;
 	}
 

@@ -3,12 +3,15 @@ package com.ordint.tcpears.track;
 import java.awt.geom.Point2D;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.ordint.tcpears.domain.Position;
 import com.ordint.tcpears.domain.PositionDistanceInfo;
+import com.ordint.tcpears.domain.Sector;
 import com.ordint.tcpears.domain.TrackConfig;
 import com.ordint.tcpears.track.geom.MeasuredShape;
 import com.ordint.tcpears.track.geom.PositionToPointConverter;
@@ -16,10 +19,13 @@ import com.ordint.tcpears.track.geom.TrackGeomFactory;
 
 public class Track {
 	
+	private static final double FURLONG_IN_METERS = 201.168;
+
 	private static final Logger log = LoggerFactory.getLogger(Track.class);
 
 	private double finishLineDistanceFromStartOfTrackShape;
 	private double officialRaceDistance;
+	private double startLineDistanceFromStartOfTrackShape;
 	private MeasuredShape trackShape;
 	private PositionToPointConverter positionToPointConverter;
 
@@ -34,9 +40,9 @@ public class Track {
 		this.trackShape = geomFactory.createTrackShape(kmlPoints, positionToPointConverter);
 		this.officialRaceDistance = raceDistanceMeters;
 		Point2D temp = positionToPointConverter.toPoint(finishLatLong);
-		double[] info = trackShape.getDistanceAlongTrack(temp);
+		double[] info = trackShape.getDistanceAlongTrackScanToEnd(temp, officialRaceDistance);
 		finishLineDistanceFromStartOfTrackShape = info[2];
-
+		startLineDistanceFromStartOfTrackShape = finishLineDistanceFromStartOfTrackShape - officialRaceDistance;
 		System.out.println(positionToPointConverter.metersToLat(info[1]) + " " + positionToPointConverter.metersToLon(info[0]));
 		
 	}
@@ -94,7 +100,8 @@ public class Track {
     }
     private double calculateDistance(Position position) {
         Point2D currentPoint = positionToPointConverter.toPoint(position);
-        return calculateDistance2(currentPoint, position.getDistanceInfo() != null ? position.getDistanceInfo().getDistanceFromFinish() : 0);
+        return calculateDistance2(currentPoint, position.getDistanceInfo() != null ? position.getDistanceInfo().getDistanceFromFinish() : 
+        	officialRaceDistance);
     }
 
 
@@ -114,6 +121,19 @@ public class Track {
 	public double getFinishDistance() {
 
 	    return officialRaceDistance;
+	}
+	
+	public List<Sector> getSectors() {
+		ArrayList<Sector> sectors = new ArrayList<>();
+		int sectorCount = (int)(officialRaceDistance/ FURLONG_IN_METERS);
+		for (int i =0; i < sectorCount; i++) {
+			if ( i < sectorCount -1) {
+				sectors.add(Sector.builder().name("Furlong "+ (i + 1)).sectorDistance(FURLONG_IN_METERS * (i + 1)).build());
+			} else {
+				sectors.add(Sector.builder().name("Finish").sectorDistance(officialRaceDistance).build());
+			}
+		}
+		return sectors;
 	}
 
 

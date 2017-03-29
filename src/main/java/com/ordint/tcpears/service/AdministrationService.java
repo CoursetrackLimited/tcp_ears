@@ -1,10 +1,12 @@
 package com.ordint.tcpears.service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
 
 import com.ordint.tcpears.domain.ClientDetails;
 import com.ordint.tcpears.domain.Position;
+import com.ordint.tcpears.domain.SectorTime;
 import com.ordint.tcpears.service.race.RaceServiceException;
 
 public interface AdministrationService {
@@ -41,4 +43,7 @@ public interface AdministrationService {
 	String replayRace(long raceId) throws RaceServiceException;
 	
 	void updateClientDetails(ClientDetails clientDetails);
+	
+	Map<String, List<SectorTime>> getSectorTimes();
+	
 }

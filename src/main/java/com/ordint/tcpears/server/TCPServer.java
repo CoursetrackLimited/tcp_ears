@@ -23,8 +23,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class TCPServer {
 	private final static Logger log = LoggerFactory.getLogger(TCPServer.class); 
-	private static final int THREADS = Runtime.getRuntime().availableProcessors() * 2; // Default EventLoopGroup Size
-
+	//private static final int THREADS = Runtime.getRuntime().availableProcessors() * 2; // Default EventLoopGroup Size
+	private static final int THREADS =1;
 	@Autowired
 	@Qualifier("tcpBootstrap")	
 	private ServerBootstrap tcpBootstrap;

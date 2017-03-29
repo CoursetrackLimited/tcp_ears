@@ -21,6 +21,7 @@ import org.springframework.stereotype.Component;
 import com.ordint.tcpears.domain.ClientDetails;
 import com.ordint.tcpears.domain.RaceDetail;
 import com.ordint.tcpears.domain.RaceDetail.RaceStatus;
+import com.ordint.tcpears.domain.SectorTime;
 import com.ordint.tcpears.domain.TrackConfig;
 import com.ordint.tcpears.memcache.MemcacheHelper;
 import com.ordint.tcpears.service.ClientDetailsResolver;
@@ -77,6 +78,8 @@ public class DefaultRaceService implements RaceService {
 	@Autowired
 	private PositionEnhancers positionEnhancers;
 	
+	private RaceObserver currentRaceObserver;
+	
 	private static final RaceRowMapper RACE_ROW_MAPPER = new RaceRowMapper();
 	private static final TrackConfigRowMapper TRACK_CONFIG_ROW_MAPPER = new TrackConfigRowMapper();
 	
@@ -94,7 +97,7 @@ public class DefaultRaceService implements RaceService {
 		//update the clientDetailsResolver with runner details
 		List<ClientDetails> clientDetails = updateClientDetailsResolver(CLIENT_DETAILS_FOR_RACE_SQL, raceId);
 		
-		configureRaceObserver(race, clientDetails.size());
+		configureRaceObserver(race, clientDetails);
 		
 		publishRaceDetails(race, clientDetails);
 		
@@ -183,7 +186,7 @@ public class DefaultRaceService implements RaceService {
 		
 		clearSnake(race);
 		
-		configureRaceObserver(race, clientDetails.size());
+		configureRaceObserver(race, clientDetails);
 		
 		publishRaceDetails(race, clientDetails);
 		String replayId = race.getVenueId() + "-" + race.getName() + "-" + race.getActualStartTime() + "-" + timeInSecs;
@@ -200,11 +203,11 @@ public class DefaultRaceService implements RaceService {
 		clientManager.clearSnake(race.getGroupId().toString());
 	}
 	
-	private void configureRaceObserver(RaceDetail race, int numberOfRunners) {
+	private void configureRaceObserver(RaceDetail race, List<ClientDetails> runners) {
 		clientManager.trackGroup(race.getGroupId().toString());
 		TrackConfig trackConfig = jdbcTemplate.queryForObject(TRACK_CONFIG_SQL, TRACK_CONFIG_ROW_MAPPER, race.getTrackConfigId());
 		
-		positionEnhancers.addRacePositionEnhancers(race, trackConfig, numberOfRunners);	
+		currentRaceObserver = positionEnhancers.addRacePositionEnhancers(race, trackConfig, runners);	
 	}
 	
 	public void replayEnded(String replayId) {
@@ -218,6 +221,12 @@ public class DefaultRaceService implements RaceService {
 	
 	public Long getCurrentReplayRaceId(long venueId) {
 		return currentReplayRaces.get(venueId);
+	}
+
+
+	@Override
+	public Map<String, List<SectorTime>> getSectorTimes() {
+		return currentRaceObserver.getSectorTimes();
 	}
 
 

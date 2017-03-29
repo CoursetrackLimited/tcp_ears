@@ -7,17 +7,22 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Deque;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.ordint.tcpears.domain.Sector;
 import com.ordint.tcpears.domain.SectorTime;
 
 public class SectorTimeCalculator {
-
+	
+	private static final Logger log = LoggerFactory.getLogger(SectorTimeCalculator.class);
     private Clock clock = Clock.systemUTC();
     private Instant start;
     private List<Sector> sectors;
-    private ConcurrentMap<String, Deque<SectorTime>> clientSectorTimes;
+    private ConcurrentMap<String, List<SectorTime>> clientSectorTimes = new ConcurrentHashMap<>();
 
     public SectorTimeCalculator(Clock clock, List<Sector> sectors) {
         this.sectors = sectors;
@@ -29,23 +34,23 @@ public class SectorTimeCalculator {
     }
 
 
-    public void checkSector(String clientId, double distanceFromFinish) {
+    public void checkSector(String clientId, double distanceFromStart) {
 
-        Deque<SectorTime> clientSectors = clientSectorTimes.getOrDefault(clientId, new ArrayDeque<>());
+        List<SectorTime> clientSectors = clientSectorTimes.getOrDefault(clientId, new ArrayList<>());
         int sectorIndex = clientSectors.size();
 
         if (sectorIndex  < sectors.size()) {
-            Sector sector = sectors.get(clientSectors.size());
-
-            if (distanceFromFinish > sector.getSectorDistance()) {
-                clientSectors.push(SectorTime.builder().time(clock.instant().toEpochMilli() - start.toEpochMilli()).sector(sector).build());
+            Sector sector = sectors.get(sectorIndex);
+            log.info("Sectors {} > {}", distanceFromStart, sector.getSectorDistance());
+            if (distanceFromStart > sector.getSectorDistance()) {
+                clientSectors.add(SectorTime.builder().time(clock.instant().toEpochMilli() - start.toEpochMilli()).sector(sector).build());
             }
         }
 
     }
 
     public List<SectorTime> getSectorTimes(String clientId){
-        return Collections.unmodifiableList(new ArrayList<>(clientSectorTimes.getOrDefault(clientId, new ArrayDeque<>())));
+        return Collections.unmodifiableList(clientSectorTimes.getOrDefault(clientId, new ArrayList<>()));
     }
 
 

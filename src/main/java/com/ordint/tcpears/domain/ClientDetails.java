@@ -2,6 +2,7 @@ package com.ordint.tcpears.domain;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import lombok.experimental.NonFinal;
@@ -9,6 +10,7 @@ import lombok.experimental.NonFinal;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+@Builder
 @Value
 @RequiredArgsConstructor
 @AllArgsConstructor

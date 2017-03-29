@@ -1,16 +1,22 @@
 package com.ordint.tcpears.service.race;
 
+import java.time.Clock;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.ordint.tcpears.domain.ClientDetails;
 import com.ordint.tcpears.domain.Position;
 import com.ordint.tcpears.domain.PositionDistanceInfo;
+import com.ordint.tcpears.domain.SectorTime;
 import com.ordint.tcpears.service.position.PositionEnhancer;
+import com.ordint.tcpears.track.SectorTimeCalculator;
 import com.ordint.tcpears.track.Track;
 
 
@@ -32,17 +38,21 @@ public class RaceObserver implements PositionEnhancer {
 
 	private Track track;
 	private int runnerCount;
+	private List<ClientDetails> runners;
+	private SectorTimeCalculator sectorTimeCalculator;
 	
-	public RaceObserver(Track track, int runnerCount) {
+	public RaceObserver(Track track, List<ClientDetails> runners) {
 		this.track = track;
-		this.runnerCount = runnerCount;
+		this.runnerCount = runners.size();
+		this.runners = runners;
+		this.sectorTimeCalculator = new SectorTimeCalculator(Clock.systemUTC(), track.getSectors());
 	}
-
-
+	
+	
 	@Override
 	public List<Position> decorate(List<Position> positions) {
 		
-		//checkForRaceStart(positions);
+		checkIfStarted(positions);
 		
 		calculateStandings(positions);
 		return addStandingsToPositions(positions);
@@ -64,9 +74,15 @@ public class RaceObserver implements PositionEnhancer {
 	}
 	
 	private void updateStatus(EventState status) {
-		log.info("Status updated to {}", status);
-		this.status = status;
-		statusListeners.forEach(l -> l.onStatusChange(status));
+		
+		if (this.status != status) {
+			log.info("Status updated to {}", status);
+			this.status = status;
+			statusListeners.forEach(l -> l.onStatusChange(status));
+			if (EventState.STARTED == this.status) {
+				sectorTimeCalculator.start();
+			}
+		}
 	}
 
 
@@ -141,14 +157,28 @@ public class RaceObserver implements PositionEnhancer {
 	@Override
 	public Position enhance(Position p) {	
 		//if (status == EventState.STARTED ) {		
-			PositionDistanceInfo pdi = track.calculateDistanceInfo(p);	
-			distances.put(p.getClientId(), pdi);
+
+			
 		//}
+		PositionDistanceInfo pdi = null;
+		if (status == EventState.STARTED) {
+			 pdi = track.calculateDistanceInfo(p);	
+			distances.put(p.getClientId(), pdi);
+			sectorTimeCalculator.checkSector(p.getClientId(), pdi.getDistanceFromStart());
+		}
 		return Position.builder().position(p).distinceInfo(pdi).build();
 	}
 	
 	public void addRaceStatusListener(RaceStatusListener listener) {
 		statusListeners.add(listener);
+	}
+	
+	public Map<String, List<SectorTime>> getSectorTimes() {
+		 Map<String, List<SectorTime>> retval = new HashMap<>();
+		 for(ClientDetails cd : runners) {
+			 retval.put(cd.getTempName(), sectorTimeCalculator.getSectorTimes(cd.getClientId()));
+		 }
+		 return retval;
 	}
 
 }

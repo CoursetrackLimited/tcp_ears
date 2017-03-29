@@ -2,6 +2,7 @@ package com.ordint.tcpears.service.admin;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
 
 import org.slf4j.Logger;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import com.ordint.tcpears.domain.ClientDetails;
 import com.ordint.tcpears.domain.Position;
+import com.ordint.tcpears.domain.SectorTime;
 import com.ordint.tcpears.service.AdministrationService;
 import com.ordint.tcpears.service.ClientDetailsResolver;
 import com.ordint.tcpears.service.PositionPublisher;
@@ -132,6 +134,11 @@ public class AdministrationServiceImpl implements AdministrationService {
 	public void updateClientDetails(ClientDetails clientDetails) {
 		clientDetailsResolver.updateClientDetails(clientDetails);
 		
+	}
+
+	@Override
+	public Map<String, List<SectorTime>> getSectorTimes() {
+		return raceService.getSectorTimes();
 	}
 
 

@@ -63,7 +63,7 @@ public class MySqlReplayService implements ReplayService {
 		
 		Object start = startDateTime.toString();
 		Object end = startDateTime.plusSeconds(numberOfSeconds).toString();
-		log.debug("REplaying from {} to {}", start, end);
+		log.info("REplaying from {} to {}", start, end);
 		
 		SqlRowSet rs = jdbcTemplate.queryForRowSet("select * from replays where replay_id=?", replayId);
 		if (rs.next()) {
@@ -131,12 +131,12 @@ public class MySqlReplayService implements ReplayService {
 			String sql = "SELECT * FROM positionHistory WHERE positionHistoryId > ? AND positionHistoryId <  ? ORDER BY gpsTimestamp ASC";
 			int duplicateCount = 0;
 			if (params[0] instanceof String) {
-				log.debug("Getting replay positionids..");
+				log.info("Getting replay positionids..");
 				SqlRowSet rs =jdbcTemplate.queryForRowSet("SELECT MIN(positionHistoryId),MAX(positionHistoryId) FROM positionHistory where timeReceived > ? and timeReceived < ?", params);
 				if(rs.next()) {
 					params[0] = rs.getObject(1);
 					params[1] = rs.getObject(2);
-					log.debug("Inserting start and fun");
+					log.info("Inserting start and finish");
 					jdbcTemplate.update("insert into replays (replay_id, start, finish) values (?,?,?) on duplicate key update start=?, finish=?",
 							replayId, params[0], params[1], params[0], params[1]);
 				} else {
