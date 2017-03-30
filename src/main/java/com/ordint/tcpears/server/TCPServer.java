@@ -23,8 +23,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class TCPServer {
 	private final static Logger log = LoggerFactory.getLogger(TCPServer.class); 
-	//private static final int THREADS = Runtime.getRuntime().availableProcessors() * 2; // Default EventLoopGroup Size
-	private static final int THREADS =1;
+
 	@Autowired
 	@Qualifier("tcpBootstrap")	
 	private ServerBootstrap tcpBootstrap;
@@ -63,7 +62,7 @@ public class TCPServer {
 	private void bindPorts(@SuppressWarnings("rawtypes") AbstractBootstrap bootstrap) throws InterruptedException {
 		for(Integer port : tcpPorts) {
 			log.info("Listening on port {}", port);
-            for(int i = 0; i < THREADS; ++i) {
+            for(int i = 0; i < Config.THREADS; ++i) {
             	serverChannelFutures.add(udpBootstrap.bind(port));
              }
 			

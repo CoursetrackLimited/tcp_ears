@@ -53,6 +53,8 @@ import com.ordint.tcpears.service.replay.MySqlReplayService;
 @PropertySource("classpath:netty.properties")
 public class Config {
 	
+	public static int THREADS =1;
+	
 	@Value("${boss.thread.count}")
 	private int bossCount;
 
@@ -165,11 +167,23 @@ public class Config {
 		if(!mode.contains("udp")) {
 			return null;
 		}
-		Bootstrap b = new Bootstrap();
-		b.group(new NioEventLoopGroup(bossCount))
-			.channel(NioDatagramChannel.class)
-			.handler(udpChannelInitializer);
-		return b;
+		if(mode.contains("64")) {
+			int THREADS = Runtime.getRuntime().availableProcessors() * 2;
+			EventLoopGroup group = new EpollEventLoopGroup(THREADS);
+			Bootstrap b = new Bootstrap();
+			b.group(group)
+				.channel(EpollDatagramChannel.class)
+				.option(ChannelOption.SO_BROADCAST, true)
+	            .option(EpollChannelOption.SO_REUSEPORT, true)
+				.handler(udpChannelInitializer);
+			return b;			
+		} else {	
+			Bootstrap b = new Bootstrap();
+			b.group(new NioEventLoopGroup(bossCount))
+				.channel(NioDatagramChannel.class)
+				.handler(udpChannelInitializer);
+			return b;
+		}
 	}
 	
 	@Bean(name = "adminServerBootstrap")
