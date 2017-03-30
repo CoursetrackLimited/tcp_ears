@@ -55,11 +55,20 @@ public class ClientManagerImpl implements ClientManager, PositionDataProvider {
 	
 	@Override
 	public void updatePostion(Position position1) {
+		
+		Position lastPosition = clients.get(position1.getClientId());
+		
+		if (lastPosition != null) {
+			position1.setPreviousLatLon(lastPosition);
+		}
+		
 		Position position = positionEnhancers.applyPositionEnhancers(position1);
+		
 		clients.compute(position.getClientId(), (k, v) -> { if(v==null) {
 			return position;
 		} else {
-			return position.smoothAltitude(v).setPreviousLatLon(v);	
+			
+			return position.smoothAltitude(v);	
 		}});
 		
 		updateTracks(position);

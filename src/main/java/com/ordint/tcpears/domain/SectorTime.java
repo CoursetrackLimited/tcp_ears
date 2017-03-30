@@ -1,12 +1,18 @@
 package com.ordint.tcpears.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Value;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+
 
 @Builder
-@Value
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class SectorTime {
 
-    private long time;
+    private float time;
     private Sector sector;
 }

@@ -3,7 +3,10 @@ package com.ordint.tcpears.server;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelOption;
+import io.netty.channel.EventLoopGroup;
 import io.netty.channel.epoll.EpollChannelOption;
+import io.netty.channel.epoll.EpollDatagramChannel;
+import io.netty.channel.epoll.EpollEventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioDatagramChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
@@ -11,6 +14,7 @@ import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 
 import java.beans.PropertyVetoException;
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,6 +25,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.env.Environment;
@@ -63,6 +68,9 @@ public class Config {
 	
 	@Value("${listener.mode}")
 	private String mode;
+	
+	@Value("${sectorDirectory}")
+	private String sectorDirectoryPath;
 	
 	@Autowired
 	private Environment environment;	
@@ -136,6 +144,22 @@ public class Config {
 		return b;
 	}
 	
+/*	@Bean(name = "udpBootstrap")
+	public Bootstrap udpBootstrap() {
+		if(!mode.contains("udp")) {
+			return null;
+		}
+		final int THREADS = Runtime.getRuntime().availableProcessors() * 2;
+		EventLoopGroup group = new EpollEventLoopGroup(THREADS);
+		Bootstrap b = new Bootstrap();
+		b.group(group)
+			.channel(EpollDatagramChannel	.class)
+			.option(ChannelOption.SO_BROADCAST, true)
+            .option(EpollChannelOption.SO_REUSEPORT, true)
+			.handler(udpChannelInitializer);
+		return b;
+	}*/
+	
 	@Bean(name = "udpBootstrap")
 	public Bootstrap udpBootstrap() {
 		if(!mode.contains("udp")) {
@@ -144,11 +168,10 @@ public class Config {
 		Bootstrap b = new Bootstrap();
 		b.group(new NioEventLoopGroup(bossCount))
 			.channel(NioDatagramChannel.class)
-			.option(ChannelOption.SO_BROADCAST, true)
-            //.option(EpollChannelOption.SO_REUSEPORT, true)
 			.handler(udpChannelInitializer);
 		return b;
 	}
+	
 	@Bean(name = "adminServerBootstrap")
 	public ServerBootstrap adminBootstrap() {
 		ServerBootstrap b = new ServerBootstrap();
@@ -183,11 +206,26 @@ public class Config {
 		return new PropertySourcesPlaceholderConfigurer();
 	}
 	@Bean
+	@Profile("!dev")
 	public MemcacheHelper memcacheHelper() throws Exception {
-		return  new MemcacheHelper();
-		//return  new MemcacheHelper("localhost", 11211);
+		
+		return  new MemcacheHelper("localhost", 11211);
 	}
-
+	@Bean
+	@Profile("dev")
+	public MemcacheHelper devMemcacheHelper() throws Exception {
+		return  new MemcacheHelper();
+		
+	}	
+	@Bean
+	public File sectorReportsDir() {
+		File sectorDirectory = new File(sectorDirectoryPath);
+		if (!sectorDirectory.exists()) {
+			sectorDirectory.mkdirs();
+		}
+		return sectorDirectory;
+	}
+	
 	@Bean
 	public ClientDetailsResolver clientDetailsResolver() {
 		return new HorseDetailsResolver();

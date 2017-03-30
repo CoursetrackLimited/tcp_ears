@@ -25,7 +25,7 @@ public class DefaultOutputWriter implements OutputWriter {
 		cells[9] = p.getStatus();
 		cells[10] = p.getHorizontalAccuracy();
 		cells[11] = String.valueOf(p.getStanding());
-		cells[12] = String.valueOf(getDistanceFromFinish(p.getDistanceInfo()));
+		cells[12] = String.valueOf(getDistanceFromEndOfTrack(p.getDistanceInfo()));
 		cells[16] = p.getSpeed();
 		cells[19] = String.valueOf(p.getLag());
 		cells[20] = p.getLat();
@@ -37,11 +37,11 @@ public class DefaultOutputWriter implements OutputWriter {
 
 	}
 	
-	private double getDistanceFromFinish(PositionDistanceInfo distanceInfo) {
+	private double getDistanceFromEndOfTrack(PositionDistanceInfo distanceInfo) {
 		if (distanceInfo == null) {
 			return -1;
 		} else {
-			return distanceInfo.getDistanceFromFinish();
+			return distanceInfo.getDistanceFromEndOfTrack();
 		}
 	}
 

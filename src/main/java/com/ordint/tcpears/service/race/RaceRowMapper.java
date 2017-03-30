@@ -28,6 +28,7 @@ public class RaceRowMapper implements RowMapper<RaceDetail> {
 				.venueName(rs.getString("venue_name"))
 				.trackConfigId(rs.getLong("track_config_id"))
 				.status(RaceStatus.valueOf(rs.getString("status")))
+				.raceDistance(rs.getDouble("raceDistanceMetres"))
 				.build();
 	}
 	

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import com.ordint.tcpears.domain.ClientDetails;
 import com.ordint.tcpears.domain.Position;
 import com.ordint.tcpears.domain.PositionDistanceInfo;
+import com.ordint.tcpears.domain.Sector;
 import com.ordint.tcpears.domain.SectorTime;
 import com.ordint.tcpears.service.position.PositionEnhancer;
 import com.ordint.tcpears.track.SectorTimeCalculator;
@@ -176,9 +178,16 @@ public class RaceObserver implements PositionEnhancer {
 	public Map<String, List<SectorTime>> getSectorTimes() {
 		 Map<String, List<SectorTime>> retval = new HashMap<>();
 		 for(ClientDetails cd : runners) {
-			 retval.put(cd.getTempName(), sectorTimeCalculator.getSectorTimes(cd.getClientId()));
+			 retval.put(cd.getRunnerIdent() + " : " + cd.getTempName(), sectorTimeCalculator.getSectorTimes(cd.getClientId()));
 		 }
 		 return retval;
+	}
+	
+	public String[] getReportHeader() {
+		ArrayList list = new ArrayList<>();
+		list.add("Runner");
+		list.addAll(sectorTimeCalculator.getSectors().stream().map(Sector::getName).collect(Collectors.toList()));
+		return (String[]) list.toArray(new String[] {});
 	}
 
 }

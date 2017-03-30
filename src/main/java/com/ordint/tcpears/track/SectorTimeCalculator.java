@@ -27,6 +27,7 @@ public class SectorTimeCalculator {
     public SectorTimeCalculator(Clock clock, List<Sector> sectors) {
         this.sectors = sectors;
         this.clock = clock;
+        
     }
 
     public void start() {
@@ -41,9 +42,10 @@ public class SectorTimeCalculator {
 
         if (sectorIndex  < sectors.size()) {
             Sector sector = sectors.get(sectorIndex);
-            log.info("Sectors {} > {}", distanceFromStart, sector.getSectorDistance());
-            if (distanceFromStart > sector.getSectorDistance()) {
-                clientSectors.add(SectorTime.builder().time(clock.instant().toEpochMilli() - start.toEpochMilli()).sector(sector).build());
+          
+            if (distanceFromStart  >= sector.getSectorDistance()) {
+                clientSectors.add(SectorTime.builder().time((clock.instant().toEpochMilli() - start.toEpochMilli())/1000f).sector(sector).build());
+                clientSectorTimes.put(clientId, clientSectors);
             }
         }
 
@@ -51,6 +53,10 @@ public class SectorTimeCalculator {
 
     public List<SectorTime> getSectorTimes(String clientId){
         return Collections.unmodifiableList(clientSectorTimes.getOrDefault(clientId, new ArrayList<>()));
+    }
+    
+    public List<Sector> getSectors() {
+    	return Collections.unmodifiableList(sectors);
     }
 
 

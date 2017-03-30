@@ -1,15 +1,22 @@
 package com.ordint.tcpears.service.race;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
+import org.apache.commons.csv.QuoteMode;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
+
 
 import com.ordint.tcpears.domain.ClientDetails;
 import com.ordint.tcpears.domain.RaceDetail;
@@ -37,11 +45,13 @@ public class DefaultRaceService implements RaceService {
 	private static final String CURRENT_RACE_DETAILS_MEMCACHE_KEY = "/ggps/CurrentRaceDetails";
 	private static final String RACE_DETAILS_MEMCACHE_KEY = "/ggps/RaceDetails/%s";
 	private static final Logger log = LoggerFactory.getLogger(DefaultRaceService.class);
+	
+
 
 
 	
 	static final String RACE_DETAIL_SQL = "SELECT races.race_id, group_id, races.name as race_name, scheduledStartTime, actualStartTime, "
-			+ "finishTime, races.venue_id, venues.name AS venue_name, status, track_config_id FROM races INNER JOIN venues "
+			+ "finishTime, races.venue_id, venues.name AS venue_name, status, track_config_id, raceDistanceMetres FROM races INNER JOIN venues "
 			+ "ON races.venue_id = venues.venue_id WHERE races.race_id=?";
 	
 	static final String CLIENT_DETAILS_FOR_RACE_SQL = 
@@ -77,6 +87,8 @@ public class DefaultRaceService implements RaceService {
 	private PositionPublisher positionPublisher;
 	@Autowired
 	private PositionEnhancers positionEnhancers;
+	@Autowired
+	private File sectorDirectory;
 	
 	private RaceObserver currentRaceObserver;
 	
@@ -159,11 +171,53 @@ public class DefaultRaceService implements RaceService {
 
 	@Override
 	public void finishRace(long raceId) {
-		findRace(raceId, RaceStatus.STARTED);
+		RaceDetail race = findRace(raceId, RaceStatus.STARTED);
 		jdbcTemplate.update("update races set status ='FINISHED', finishTime = NOW() where race_id=?", raceId);
+		
+		try {
+			writeRaceReport("race_" + raceId);
+		} catch (IOException e) {
+			log.error("Failed to write out sector times", e);
+		}
 		//update the clientDetailsResolver with default details
 		updateClientDetailsResolver(RESET_CLIENT_DETAILS_SQL, raceId);
 		positionEnhancers.clearEnhancers("");
+	}
+	
+	private void writeRaceReport(String fileName) throws IOException {
+		if (currentRaceObserver == null) {
+			log.info("No sector times aviablae to write");
+		} else {
+		
+			Map<String, List<SectorTime>> sectorTimes = currentRaceObserver.getSectorTimes();
+			if (!sectorTimes.isEmpty()) {
+				File file = new File(sectorDirectory, fileName + ".csv");
+				if (!file.exists()) {
+					file.createNewFile();
+				}
+				FileOutputStream os = new FileOutputStream(file);
+				PrintWriter out = new PrintWriter(os);
+	
+				CSVPrinter printer = CSVFormat.newFormat(',')
+						.withHeader(currentRaceObserver.getReportHeader())
+						.withQuoteMode(QuoteMode.ALL)
+						.withRecordSeparator("\r\n").print(out);
+				
+				for (String runner : sectorTimes.keySet()) {
+					List<SectorTime> times = sectorTimes.get(runner);
+					List<Object> row = new ArrayList<>();
+					row.add(runner);
+					for(int i = 0; i < times.size(); i ++) {
+						row.add("" + times.get(i).getTime());
+					}
+					printer.printRecord(row);
+					
+				}
+				printer.flush();
+				printer.close();
+				
+			}
+		}
 	}
 	
 	
@@ -213,6 +267,7 @@ public class DefaultRaceService implements RaceService {
 	public void replayEnded(String replayId) {
 		positionEnhancers.clearEnhancers("");
 		Long raceId = currentReplayRaces.remove(Long.parseLong(StringUtils.substringBefore(replayId, "-")));
+		
 		if (raceId != null) {
 			jdbcTemplate.update("update races set status ='FINISHED' where race_id=?", raceId);	
 		}
@@ -226,6 +281,11 @@ public class DefaultRaceService implements RaceService {
 
 	@Override
 	public Map<String, List<SectorTime>> getSectorTimes() {
+		try {
+			writeRaceReport("currentRace");
+		} catch (IOException e) {
+			log.error("Failed to write current race report", e);
+		}
 		return currentRaceObserver.getSectorTimes();
 	}
 

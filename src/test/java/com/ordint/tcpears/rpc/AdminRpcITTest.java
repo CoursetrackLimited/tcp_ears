@@ -38,8 +38,12 @@ public class AdminRpcITTest {
 			//admin.startRace(150);
 			
 			//admin.replay("2015-09-16T16:13:21","180", false);
-			admin.replayRace(3635);
-			//System.out.println(mapper.writeValueAsString(admin.getSectorTimes()));
+			//
+			
+			//
+			
+			//admin.replayRace(3635);
+			System.out.println(mapper.writeValueAsString(admin.getSectorTimes()));
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();

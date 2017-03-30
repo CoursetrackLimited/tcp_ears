@@ -763,10 +763,9 @@ public class MeasuredShape implements Serializable {
 
 	public double[] getDistanceAlongTrack(Point2D offTrackpoint, double distanceFromStartOfTrackShape) {
 
-	        int startingSegment = getSegmentIndex(distanceFromStartOfTrackShape);
-	        int lastSegment = startingSegment == segments.length -1 ? startingSegment : startingSegment + 1;
-
-	        return getDistanceAlongTrack(offTrackpoint, startingSegment, lastSegment);
+        int startingSegment = getSegmentIndex(distanceFromStartOfTrackShape);
+        int lastSegment = (startingSegment == segments.length -1 ? startingSegment : startingSegment + 1);
+        return getDistanceAlongTrack(offTrackpoint, startingSegment, lastSegment);
 
 
 	}
@@ -782,7 +781,7 @@ public class MeasuredShape implements Serializable {
         double shortestDistance = java.lang.Double.MAX_VALUE;
          double currentDistance;
          int segmentIndex =  -1;
-         for (int i = startingSegment ; i< lastSegment; i++) {
+         for (int i = startingSegment ; i< lastSegment + 1; i++) {
              if(segments[i].type != PathIterator.SEG_LINETO) {
                  throw new IllegalArgumentException("Cant call getDistanceAlongTrack on track not made of line segments");
              }

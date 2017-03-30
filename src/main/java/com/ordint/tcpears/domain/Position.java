@@ -98,6 +98,7 @@ public class Position {
 			lastLat = previous.getLastLat();
 			lastLon = previous.getLastLon();
 		}
+		distanceInfo = previous.getDistanceInfo();
 		return this;
 	}
  

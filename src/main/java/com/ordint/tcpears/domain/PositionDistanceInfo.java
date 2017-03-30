@@ -17,7 +17,7 @@ public class PositionDistanceInfo {
 
 		private String clientId;
 		private double distanceFromStart;
-		private double distanceFromFinish;
+		private double distanceFromEndOfTrack;
 		private double percentage;
 		
 		

@@ -26,6 +26,7 @@ public class RaceDetail {
 	private Long groupId;
 	private Long trackConfigId;
 	private RaceStatus status;
+	private Double raceDistance;
 
 	
 	public String getStartTime() {

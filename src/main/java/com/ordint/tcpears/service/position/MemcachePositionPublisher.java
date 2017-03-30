@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import com.ordint.tcpears.domain.DefaultOutputWriter;
@@ -20,6 +21,7 @@ import com.ordint.tcpears.service.PositionDataProvider;
 import com.ordint.tcpears.service.PositionPublisher;
 
 @Component
+@Profile("!dev")
 public class MemcachePositionPublisher implements PositionPublisher {
 	
 	private final static Logger log = LoggerFactory.getLogger(MemcachePositionPublisher.class);
