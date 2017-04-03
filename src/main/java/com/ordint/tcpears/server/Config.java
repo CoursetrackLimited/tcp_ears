@@ -1,18 +1,5 @@
 package com.ordint.tcpears.server;
 
-import io.netty.bootstrap.Bootstrap;
-import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.ChannelOption;
-import io.netty.channel.EventLoopGroup;
-import io.netty.channel.epoll.EpollChannelOption;
-import io.netty.channel.epoll.EpollDatagramChannel;
-import io.netty.channel.epoll.EpollEventLoopGroup;
-import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.nio.NioDatagramChannel;
-import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.logging.LogLevel;
-import io.netty.handler.logging.LoggingHandler;
-
 import java.beans.PropertyVetoException;
 import java.io.File;
 import java.util.HashMap;
@@ -36,6 +23,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import com.ordint.rpc.JsonRpcHandler;
 import com.ordint.tcpears.memcache.MemcacheHelper;
+import com.ordint.tcpears.server.udp.NioUdpServerChannel;
 import com.ordint.tcpears.service.AdministrationService;
 import com.ordint.tcpears.service.ClientDetailsResolver;
 import com.ordint.tcpears.service.ClientManager;
@@ -48,6 +36,21 @@ import com.ordint.tcpears.service.position.MySqlPositionLogger;
 import com.ordint.tcpears.service.position.PositionLogger;
 import com.ordint.tcpears.service.position.PositionServiceImpl;
 import com.ordint.tcpears.service.replay.MySqlReplayService;
+
+import io.netty.bootstrap.AbstractBootstrap;
+import io.netty.bootstrap.Bootstrap;
+import io.netty.bootstrap.ServerBootstrap;
+import io.netty.channel.ChannelOption;
+import io.netty.channel.DefaultEventLoopGroup;
+import io.netty.channel.EventLoopGroup;
+import io.netty.channel.epoll.EpollChannelOption;
+import io.netty.channel.epoll.EpollDatagramChannel;
+import io.netty.channel.epoll.EpollEventLoopGroup;
+import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.nio.NioDatagramChannel;
+import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.logging.LogLevel;
+import io.netty.handler.logging.LoggingHandler;
 @Configuration
 @ComponentScan("com.ordint.tcpears")
 @PropertySource("classpath:netty.properties")
@@ -163,7 +166,7 @@ public class Config {
 	}*/
 	
 	@Bean(name = "udpBootstrap")
-	public Bootstrap udpBootstrap() {
+	public AbstractBootstrap udpBootstrap() {
 		if(!mode.contains("udp")) {
 			return null;
 		}
@@ -177,7 +180,9 @@ public class Config {
 	            .option(EpollChannelOption.SO_REUSEPORT, true)
 				.handler(udpChannelInitializer);
 			return b;			
-		} else {	
+		} else if (mode.contains("beta")) {
+		    return newUdp();
+		}else {	
 			Bootstrap b = new Bootstrap();
 			b.group(new NioEventLoopGroup(bossCount))
 				.channel(NioDatagramChannel.class)
@@ -185,6 +190,15 @@ public class Config {
 			return b;
 		}
 	}
+	
+	private ServerBootstrap newUdp() {
+	    return new ServerBootstrap()
+	            .group(new NioEventLoopGroup(), new DefaultEventLoopGroup())
+	            .channel(NioUdpServerChannel.class)
+	            .childHandler(udpChannelInitializer);
+	    
+	}
+	
 	
 	@Bean(name = "adminServerBootstrap")
 	public ServerBootstrap adminBootstrap() {

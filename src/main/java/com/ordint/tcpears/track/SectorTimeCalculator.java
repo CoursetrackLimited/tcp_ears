@@ -2,10 +2,10 @@ package com.ordint.tcpears.track;
 
 import java.time.Clock;
 import java.time.Instant;
-import java.util.ArrayDeque;
+import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Deque;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -13,6 +13,7 @@ import java.util.concurrent.ConcurrentMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.ordint.tcpears.domain.Position;
 import com.ordint.tcpears.domain.Sector;
 import com.ordint.tcpears.domain.SectorTime;
 
@@ -33,6 +34,10 @@ public class SectorTimeCalculator {
     public void start() {
         start = clock.instant();
     }
+    
+    public void start(Position p) {
+        start = p.getTimestamp().toInstant(ZoneOffset.UTC);
+    }
 
 
     public void checkSector(String clientId, double distanceFromStart) {
@@ -49,6 +54,20 @@ public class SectorTimeCalculator {
             }
         }
 
+    }
+    
+    public void checkSector(Position p) {
+        List<SectorTime> clientSectors = clientSectorTimes.getOrDefault(p.getClientId(), new ArrayList<>());
+        int sectorIndex = clientSectors.size();
+       
+        if (sectorIndex  < sectors.size()) {
+            Sector sector = sectors.get(sectorIndex);
+          
+            if (p.getDistanceInfo().getDistanceFromStart()  >= sector.getSectorDistance()) {
+                clientSectors.add(SectorTime.builder().time(ChronoUnit.MILLIS.between(start, p.getTimestamp()) / 1000f).sector(sector).build());
+                clientSectorTimes.put(p.getClientId(), clientSectors);
+            }
+        }        
     }
 
     public List<SectorTime> getSectorTimes(String clientId){
