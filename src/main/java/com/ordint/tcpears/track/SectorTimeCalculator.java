@@ -2,6 +2,7 @@ package com.ordint.tcpears.track;
 
 import java.time.Clock;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -35,11 +36,13 @@ public class SectorTimeCalculator {
         start = clock.instant();
     }
     
-    public void start(Position p) {
-        start = p.getTimestamp().toInstant(ZoneOffset.UTC);
+    public void start(LocalDateTime startTime) {
+        start = startTime.toInstant(ZoneOffset.UTC);
     }
 
-
+    public boolean isStarted() {
+        return start != null;
+    }
     public void checkSector(String clientId, double distanceFromStart) {
 
         List<SectorTime> clientSectors = clientSectorTimes.getOrDefault(clientId, new ArrayList<>());

@@ -1,7 +1,9 @@
 package com.ordint.tcpears.service.race;
 
 import java.time.Clock;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +39,12 @@ public class RaceObserver implements PositionEnhancer {
 	private List<RaceStatusListener> statusListeners = new ArrayList<>();
 	
 	private ConcurrentMap<String, Integer> placings = new ConcurrentHashMap<>();
+	private static final Comparator<LocalDateTime> TIMESTAMP_COMPARATOR = new Comparator<LocalDateTime>() {
+        @Override
+        public int compare(LocalDateTime o1, LocalDateTime o2) {
+            return o1.compareTo(o2);
+        }
+    };
 
 	private Track track;
 	private int runnerCount;
@@ -53,8 +61,9 @@ public class RaceObserver implements PositionEnhancer {
 	
 	@Override
 	public List<Position> decorate(List<Position> positions) {
-		
-		checkIfStarted(positions);
+	    if (EventState.STARTED != status){
+	        checkIfStarted(positions);
+	    }
 		
 		calculateStandings(positions);
 		return addStandingsToPositions(positions);
@@ -71,6 +80,9 @@ public class RaceObserver implements PositionEnhancer {
 	private void checkIfStarted(List<Position> positions) {
 		long runningHorsesCount = positions.stream().filter(p -> p.getSpeedValue() > 5).count();
 		if (runningHorsesCount > runnerCount * .70) {
+		    if (!sectorTimeCalculator.isStarted()) {
+		        sectorTimeCalculator.start(positions.stream().map(Position::getTimestamp).max(TIMESTAMP_COMPARATOR).orElseGet(LocalDateTime::now));
+		    }
 			updateStatus(EventState.STARTED);
 		}	
 	}
@@ -81,9 +93,6 @@ public class RaceObserver implements PositionEnhancer {
 			log.info("Status updated to {}", status);
 			this.status = status;
 			statusListeners.forEach(l -> l.onStatusChange(status));
-			if (EventState.STARTED == this.status) {
-				sectorTimeCalculator.start();
-			}
 		}
 	}
 
@@ -166,7 +175,7 @@ public class RaceObserver implements PositionEnhancer {
 		if (status == EventState.STARTED) {
 			 pdi = track.calculateDistanceInfo(p);	
 			distances.put(p.getClientId(), pdi);
-			sectorTimeCalculator.checkSector(p.getClientId(), pdi.getDistanceFromStart());
+			sectorTimeCalculator.checkSector(p);
 		}
 		return Position.builder().position(p).distinceInfo(pdi).build();
 	}
