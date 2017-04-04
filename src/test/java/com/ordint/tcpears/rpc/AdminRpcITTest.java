@@ -2,7 +2,6 @@ package com.ordint.tcpears.rpc;
 
 import java.net.URL;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,7 +10,7 @@ import com.ordint.rpc.JsonRpcHttpClient;
 import com.ordint.rpc.ProxyUtil;
 import com.ordint.tcpears.service.AdministrationService;
 
-@Ignore
+
 public class AdminRpcITTest {
 
     private ObjectMapper mapper = new ObjectMapper();
@@ -19,8 +18,8 @@ public class AdminRpcITTest {
 	@Test
 	public void test() throws Exception {
 	    mapper.enable(SerializationFeature.INDENT_OUTPUT);
-		JsonRpcHttpClient client = new JsonRpcHttpClient(new URL("http://10.10.0.142:6013"));
-		//JsonRpcHttpClient client = new JsonRpcHttpClient(new URL("http://78.110.162.225:6013"));
+		//JsonRpcHttpClient client = new JsonRpcHttpClient(new URL("http://10.10.0.142:6013"));
+		JsonRpcHttpClient client = new JsonRpcHttpClient(new URL("http://78.110.162.226:6013"));
 		//JsonRpcHttpClient client = new JsonRpcHttpClient(new URL("http://localhost:6013"));
 		
 		System.out.println("REsult = " ); 
@@ -43,7 +42,7 @@ public class AdminRpcITTest {
 			//
 			
 			//admin.replayRace(3635);
-			System.out.println(mapper.writeValueAsString(admin.getSectorTimes()));
+			System.out.println(mapper.writeValueAsString(admin.getGroupTracks()));
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
