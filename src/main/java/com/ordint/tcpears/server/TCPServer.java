@@ -29,7 +29,7 @@ public class TCPServer {
 	private ServerBootstrap tcpBootstrap;
 	@Autowired
 	@Qualifier("udpBootstrap")	
-	private Bootstrap udpBootstrap;	
+	private AbstractBootstrap udpBootstrap;	
 	
 	@Autowired
 	@Qualifier("adminServerBootstrap")	
@@ -63,6 +63,7 @@ public class TCPServer {
 		for(Integer port : tcpPorts) {
 			log.info("Listening on port {}", port);
             for(int i = 0; i < Config.THREADS; ++i) {
+            	log.info("Binding {} thread to port {}", i + 1, port);
             	serverChannelFutures.add(udpBootstrap.bind(port));
              }
 			

@@ -171,7 +171,7 @@ public class Config {
 			return null;
 		}
 		if(mode.contains("64")) {
-			int THREADS = Runtime.getRuntime().availableProcessors() * 2;
+			THREADS = Runtime.getRuntime().availableProcessors() * 2;
 			EventLoopGroup group = new EpollEventLoopGroup(THREADS);
 			Bootstrap b = new Bootstrap();
 			b.group(group)
