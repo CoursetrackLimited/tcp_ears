@@ -769,11 +769,8 @@ public class MeasuredShape implements Serializable {
 
 
 	}
-	public double[] getDistanceAlongTrackScanToEnd(Point2D offTrackpoint, double distanceFromStartOfTrackShape) {
-
-        int startingSegment = getSegmentIndex(distanceFromStartOfTrackShape);
-        return getDistanceAlongTrack(offTrackpoint, startingSegment, segments.length -1 );
-
+	public double[] getDistanceAlongTrackLastThreeSegments(Point2D offTrackpoint) {
+        return getDistanceAlongTrack(offTrackpoint, segments.length -4, segments.length -1 );
 	}
 
 

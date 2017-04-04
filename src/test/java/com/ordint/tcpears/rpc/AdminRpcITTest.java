@@ -19,8 +19,8 @@ public class AdminRpcITTest {
 	@Test
 	public void test() throws Exception {
 	    mapper.enable(SerializationFeature.INDENT_OUTPUT);
-		JsonRpcHttpClient client = new JsonRpcHttpClient(new URL("http://10.10.0.142:6013"));
-		//JsonRpcHttpClient client = new JsonRpcHttpClient(new URL("http://78.110.162.225:6013"));
+		//JsonRpcHttpClient client = new JsonRpcHttpClient(new URL("http://10.10.0.142:6013"));
+		JsonRpcHttpClient client = new JsonRpcHttpClient(new URL("http://78.110.162.226:6013"));
 		//JsonRpcHttpClient client = new JsonRpcHttpClient(new URL("http://localhost:6013"));
 		
 		System.out.println("REsult = " ); 

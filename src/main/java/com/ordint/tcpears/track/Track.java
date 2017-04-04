@@ -40,7 +40,7 @@ public class Track {
 		this.trackShape = geomFactory.createTrackShape(kmlPoints, positionToPointConverter);
 		this.officialRaceDistance = raceDistanceMeters;
 		Point2D temp = positionToPointConverter.toPoint(finishLatLong);
-		double[] info = trackShape.getDistanceAlongTrackScanToEnd(temp, trackShape.getOriginalDistance()-30);
+		double[] info = trackShape.getDistanceAlongTrackLastThreeSegments(temp);
 		finishLineDistanceFromStartOfTrackShape = info[2];
 		finishOffset = trackShape.getOriginalDistance() - finishLineDistanceFromStartOfTrackShape;
 		System.out.println(positionToPointConverter.metersToLat(info[1]) + " " + positionToPointConverter.metersToLon(info[0]));
