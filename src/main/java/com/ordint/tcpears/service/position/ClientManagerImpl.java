@@ -36,21 +36,30 @@ public class ClientManagerImpl implements ClientManager, PositionDataProvider {
 	//map of map of client snakes, keyed on groupId
 	private ConcurrentMap<String, ConcurrentMap<String, String>> snakes = new ConcurrentHashMap<>();
 	private ConcurrentMap<String, SnakeWriter> groupsToTrack = new ConcurrentHashMap<>();	
-
 	
-	@Autowired
+	private boolean useSnakes;
+	
 	private PositionEnhancers positionEnhancers = new PositionEnhancers();
+	
+	
+	public ClientManagerImpl(boolean useSnakes) {
+		this.useSnakes = useSnakes;
+	}
 	
 	@Override
 	public void trackGroup(String groupId) {
-		log.debug("Tracking group {}", groupId);
-		groupsToTrack.put(groupId, new DefaultSnakeWriter());
+		if (useSnakes) {
+			log.debug("Tracking group {}", groupId);
+			groupsToTrack.put(groupId, new DefaultSnakeWriter());
+		}
 	}
 	
 	@Override
 	public void stopTrackingGroup(String groupId) {
-		log.debug("Stop Tracking group {}", groupId);
-		groupsToTrack.remove(groupId);
+		if (useSnakes) {
+			log.debug("Stop Tracking group {}", groupId);
+			groupsToTrack.remove(groupId);
+		}
 	}
 	
 	@Override
@@ -87,14 +96,16 @@ public class ClientManagerImpl implements ClientManager, PositionDataProvider {
 	}
 	
 	private void updateTracks(Position p) {
-		SnakeWriter snakeWriter = groupsToTrack.get(p.getGroupId());		
-		if (snakeWriter != null) {
-			ConcurrentMap<String, String> map = getTrackMap(p.getGroupId());
-			String snake = map.computeIfPresent(p.getClientId(), (key,value) -> snakeWriter.write(p, value));
-			if (snake == null) {
-				snake = map.computeIfAbsent(p.getClientId(), value -> snakeWriter.write(p, ""));
+		if (useSnakes) {
+			SnakeWriter snakeWriter = groupsToTrack.get(p.getGroupId());		
+			if (snakeWriter != null) {
+				ConcurrentMap<String, String> map = getTrackMap(p.getGroupId());
+				String snake = map.computeIfPresent(p.getClientId(), (key,value) -> snakeWriter.write(p, value));
+				if (snake == null) {
+					snake = map.computeIfAbsent(p.getClientId(), value -> snakeWriter.write(p, ""));
+				}
+		  
 			}
-	  
 		}
 	}
 	

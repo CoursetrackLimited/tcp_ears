@@ -2,6 +2,7 @@ package com.ordint.tcpears.server;
 
 import java.beans.PropertyVetoException;
 import java.io.File;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,22 +36,33 @@ import com.ordint.tcpears.service.position.HorseDetailsResolver;
 import com.ordint.tcpears.service.position.MySqlPositionLogger;
 import com.ordint.tcpears.service.position.PositionLogger;
 import com.ordint.tcpears.service.position.PositionServiceImpl;
+import com.ordint.tcpears.service.position.PublishingScheduler;
 import com.ordint.tcpears.service.replay.MySqlReplayService;
 
 import io.netty.bootstrap.AbstractBootstrap;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.bootstrap.ServerBootstrap;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.DefaultEventLoopGroup;
 import io.netty.channel.EventLoopGroup;
+import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.epoll.EpollChannelOption;
 import io.netty.channel.epoll.EpollDatagramChannel;
 import io.netty.channel.epoll.EpollEventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioDatagramChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.DelimiterBasedFrameDecoder;
+import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
+import io.netty.handler.timeout.ReadTimeoutHandler;
+import io.netty.util.CharsetUtil;
 @Configuration
 @ComponentScan("com.ordint.tcpears")
 @PropertySource("classpath:netty.properties")
@@ -77,6 +89,9 @@ public class Config {
 	@Value("${sectorDirectory}")
 	private String sectorDirectoryPath;
 	
+	@Value("${useSnakes}")
+	private boolean useSnakes;
+	
 	@Autowired
 	private Environment environment;	
 	
@@ -88,6 +103,9 @@ public class Config {
 	
 	@Autowired
 	private UdpChannelInitializer udpChannelInitializer;
+	
+	@Autowired
+	private Udp2ChannelInitializer udp2ChannelInitializer;
 	
 	@Bean
 	public DataSource dataSource() {
@@ -193,13 +211,14 @@ public class Config {
 	
 	private ServerBootstrap newUdp() {
 	    return new ServerBootstrap()
-	            .group(new NioEventLoopGroup(), new DefaultEventLoopGroup())
+	            .group(new NioEventLoopGroup(bossCount), new DefaultEventLoopGroup())
 	            .channel(NioUdpServerChannel.class)
-	            .childHandler(udpChannelInitializer);
+	            .handler(new LoggingHandler(LogLevel.DEBUG))
+	            .childHandler(udp2ChannelInitializer);
 	    
 	}
 	
-	
+
 	@Bean(name = "adminServerBootstrap")
 	public ServerBootstrap adminBootstrap() {
 		ServerBootstrap b = new ServerBootstrap();
@@ -259,9 +278,12 @@ public class Config {
 		return new HorseDetailsResolver();
 	}
 	@Bean
-	@Autowired
 	public ClientManager clientManager() throws Exception {
-		return new ClientManagerImpl();
+		return new ClientManagerImpl(useSnakes);
+	}
+	@Bean
+	public PublishingScheduler publishingScheduler() {
+		return new PublishingScheduler(useSnakes);
 	}
 	@Bean
 	public PositionLogger positionLogger() {

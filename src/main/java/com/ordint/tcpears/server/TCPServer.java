@@ -64,7 +64,7 @@ public class TCPServer {
 			log.info("Listening on port {}", port);
             for(int i = 0; i < Config.THREADS; ++i) {
             	log.info("Binding {} thread to port {}", i + 1, port);
-            	serverChannelFutures.add(udpBootstrap.bind(port));
+            	serverChannelFutures.add(bootstrap.bind(port));
              }
 			
 		}		

@@ -30,7 +30,7 @@ public class ClientManagerImplTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		 clientManager = new ClientManagerImpl();
+		 clientManager = new ClientManagerImpl(true);
 	}
 	
 
