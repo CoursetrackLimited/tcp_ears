@@ -92,6 +92,9 @@ public class Config {
 	@Value("${useSnakes}")
 	private boolean useSnakes;
 	
+	@Value("${udpbeta.threads}")
+	private int threadCount;
+	
 	@Autowired
 	private Environment environment;	
 	
@@ -211,9 +214,9 @@ public class Config {
 	
 	private ServerBootstrap newUdp() {
 	    return new ServerBootstrap()
-	            .group(new NioEventLoopGroup(bossCount), new DefaultEventLoopGroup())
+	            .group(new NioEventLoopGroup(bossCount), new DefaultEventLoopGroup(threadCount))
 	            .channel(NioUdpServerChannel.class)
-	            .handler(new LoggingHandler(LogLevel.DEBUG))
+	            .handler(new LoggingHandler(LogLevel.ERROR))
 	            .childHandler(udp2ChannelInitializer);
 	    
 	}
