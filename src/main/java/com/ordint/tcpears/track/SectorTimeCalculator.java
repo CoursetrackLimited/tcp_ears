@@ -50,27 +50,31 @@ public class SectorTimeCalculator {
 
         if (sectorIndex  < sectors.size()) {
             Sector sector = sectors.get(sectorIndex);
-          
-            if (distanceFromStart  >= sector.getSectorDistance()) {
-                clientSectors.add(SectorTime.builder().time((clock.instant().toEpochMilli() - start.toEpochMilli())/1000f).sector(sector).build());
-                clientSectorTimes.put(clientId, clientSectors);
+            if (sector != null) {
+	            if (distanceFromStart  >= sector.getSectorDistance()) {
+	                clientSectors.add(SectorTime.builder().time((clock.instant().toEpochMilli() - start.toEpochMilli())/1000f).sector(sector).build());
+	                clientSectorTimes.put(clientId, clientSectors);
+	            }
             }
         }
 
     }
     
     public void checkSector(Position p) {
-        List<SectorTime> clientSectors = clientSectorTimes.getOrDefault(p.getClientId(), new ArrayList<>());
-        int sectorIndex = clientSectors.size();
-       
-        if (sectorIndex  < sectors.size()) {
-            Sector sector = sectors.get(sectorIndex);
-          
-            if (p.getDistanceInfo().getDistanceFromStart()  >= sector.getSectorDistance()) {
-                clientSectors.add(SectorTime.builder().time(ChronoUnit.MILLIS.between(start, p.getTimestamp()) / 1000f).sector(sector).build());
-                clientSectorTimes.put(p.getClientId(), clientSectors);
-            }
-        }        
+    	if (p != null) {
+	        List<SectorTime> clientSectors = clientSectorTimes.getOrDefault(p.getClientId(), new ArrayList<>());
+	        int sectorIndex = clientSectors.size();
+	       
+	        if (sectorIndex  < sectors.size()) {
+	            Sector sector = sectors.get(sectorIndex);
+	            if (sector != null) {
+		            if (p.getDistanceInfo().getDistanceFromStart()  >= sector.getSectorDistance()) {
+		                clientSectors.add(SectorTime.builder().time(ChronoUnit.MILLIS.between(start, p.getTimestamp()) / 1000f).sector(sector).build());
+		                clientSectorTimes.put(p.getClientId(), clientSectors);
+		            }
+	            }
+	        }
+    	}
     }
 
     public List<SectorTime> getSectorTimes(String clientId){
