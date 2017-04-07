@@ -265,9 +265,14 @@ public class DefaultRaceService implements RaceService {
 	}
 	
 	public void replayEnded(String replayId) {
-		positionEnhancers.clearEnhancers("");
-		Long raceId = currentReplayRaces.remove(Long.parseLong(StringUtils.substringBefore(replayId, "-")));
 		
+		Long raceId = currentReplayRaces.remove(Long.parseLong(StringUtils.substringBefore(replayId, "-")));
+		try {
+			writeRaceReport("replay_race_" + raceId);
+		} catch (IOException e) {
+			log.error("Failed to write out sector times for replay", e);
+		}
+		positionEnhancers.clearEnhancers("");
 		if (raceId != null) {
 			jdbcTemplate.update("update races set status ='FINISHED' where race_id=?", raceId);	
 		}

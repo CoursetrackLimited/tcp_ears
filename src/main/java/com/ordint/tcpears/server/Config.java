@@ -281,6 +281,7 @@ public class Config {
 		return new HorseDetailsResolver();
 	}
 	@Bean
+	@Autowired
 	public ClientManager clientManager() throws Exception {
 		return new ClientManagerImpl(useSnakes);
 	}

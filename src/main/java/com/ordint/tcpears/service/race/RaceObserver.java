@@ -39,17 +39,18 @@ public class RaceObserver implements PositionEnhancer {
 	private List<RaceStatusListener> statusListeners = new ArrayList<>();
 	
 	private ConcurrentMap<String, Integer> placings = new ConcurrentHashMap<>();
+
+	private Track track;
+	private int runnerCount;
+	private List<ClientDetails> runners;
+	private SectorTimeCalculator sectorTimeCalculator;
+	
 	private static final Comparator<LocalDateTime> TIMESTAMP_COMPARATOR = new Comparator<LocalDateTime>() {
         @Override
         public int compare(LocalDateTime o1, LocalDateTime o2) {
             return o1.compareTo(o2);
         }
     };
-
-	private Track track;
-	private int runnerCount;
-	private List<ClientDetails> runners;
-	private SectorTimeCalculator sectorTimeCalculator;
 	
 	public RaceObserver(Track track, List<ClientDetails> runners) {
 		this.track = track;
@@ -61,9 +62,8 @@ public class RaceObserver implements PositionEnhancer {
 	
 	@Override
 	public List<Position> decorate(List<Position> positions) {
-	    if (EventState.STARTED != status){
-	        checkIfStarted(positions);
-	    }
+		
+		checkIfStarted(positions);
 		
 		calculateStandings(positions);
 		return addStandingsToPositions(positions);
@@ -81,7 +81,7 @@ public class RaceObserver implements PositionEnhancer {
 		long runningHorsesCount = positions.stream().filter(p -> p.getSpeedValue() > 5).count();
 		if (runningHorsesCount > runnerCount * .70) {
 		    if (!sectorTimeCalculator.isStarted()) {
-		        sectorTimeCalculator.start(positions.stream().map(Position::getTimestamp).max(TIMESTAMP_COMPARATOR).orElseGet(LocalDateTime::now));
+		        sectorTimeCalculator.start();
 		    }
 			updateStatus(EventState.STARTED);
 		}	
@@ -175,7 +175,7 @@ public class RaceObserver implements PositionEnhancer {
 		if (status == EventState.STARTED) {
 			 pdi = track.calculateDistanceInfo(p);	
 			distances.put(p.getClientId(), pdi);
-			sectorTimeCalculator.checkSector(p);
+			sectorTimeCalculator.checkSector(p.getClientId(), pdi.getDistanceFromStart());
 		}
 		return Position.builder().position(p).distinceInfo(pdi).build();
 	}

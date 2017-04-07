@@ -11,7 +11,7 @@ import com.ordint.rpc.JsonRpcHttpClient;
 import com.ordint.rpc.ProxyUtil;
 import com.ordint.tcpears.service.AdministrationService;
 
-@Ignore
+
 public class AdminRpcITTest {
 
     private ObjectMapper mapper = new ObjectMapper();
@@ -20,8 +20,8 @@ public class AdminRpcITTest {
 	public void test() throws Exception {
 	    mapper.enable(SerializationFeature.INDENT_OUTPUT);
 		//JsonRpcHttpClient client = new JsonRpcHttpClient(new URL("http://10.10.0.142:6013"));
-		JsonRpcHttpClient client = new JsonRpcHttpClient(new URL("http://78.110.162.226:6013"));
-		//JsonRpcHttpClient client = new JsonRpcHttpClient(new URL("http://localhost:6013"));
+		//JsonRpcHttpClient client = new JsonRpcHttpClient(new URL("http://78.110.162.226:6013"));
+		JsonRpcHttpClient client = new JsonRpcHttpClient(new URL("http://localhost:6013"));
 		
 		System.out.println("REsult = " ); 
 		AdministrationService admin = ProxyUtil.createClientProxy(AdminRpcITTest.class.getClassLoader(), AdministrationService.class, client);
@@ -42,9 +42,9 @@ public class AdminRpcITTest {
 			
 			//
 			
-			//admin.replayRace(3635);
-			//admin.startRace(4386l);
-			System.out.println(mapper.writeValueAsString(admin.groupClientsByGroup()));
+			admin.replayRace(4366);
+			//admin.getSectorTimes();
+			//System.out.println(mapper.writeValueAsString(admin.groupClientsByGroup()));
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();

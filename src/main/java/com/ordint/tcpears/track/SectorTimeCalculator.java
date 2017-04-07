@@ -60,7 +60,7 @@ public class SectorTimeCalculator {
 
     }
     
-    public void checkSector(Position p) {
+    public void checkSector(Position p,  double distanceFromStart) {
     	if (p != null) {
 	        List<SectorTime> clientSectors = clientSectorTimes.getOrDefault(p.getClientId(), new ArrayList<>());
 	        int sectorIndex = clientSectors.size();
@@ -68,7 +68,7 @@ public class SectorTimeCalculator {
 	        if (sectorIndex  < sectors.size()) {
 	            Sector sector = sectors.get(sectorIndex);
 	            if (sector != null) {
-		            if (p.getDistanceInfo().getDistanceFromStart()  >= sector.getSectorDistance()) {
+	            	if (distanceFromStart  >= sector.getSectorDistance()) {
 		                clientSectors.add(SectorTime.builder().time(ChronoUnit.MILLIS.between(start, p.getTimestamp()) / 1000f).sector(sector).build());
 		                clientSectorTimes.put(p.getClientId(), clientSectors);
 		            }

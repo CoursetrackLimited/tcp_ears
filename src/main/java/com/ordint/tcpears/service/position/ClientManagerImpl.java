@@ -39,7 +39,8 @@ public class ClientManagerImpl implements ClientManager, PositionDataProvider {
 	
 	private boolean useSnakes;
 	
-	private PositionEnhancers positionEnhancers = new PositionEnhancers();
+	@Autowired
+	private PositionEnhancers positionEnhancers = new PositionEnhancers();;
 	
 	
 	public ClientManagerImpl(boolean useSnakes) {
