@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
 
 import org.apache.commons.csv.CSVFormat;
@@ -24,7 +25,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
-
 
 import com.ordint.tcpears.domain.ClientDetails;
 import com.ordint.tcpears.domain.RaceDetail;
@@ -104,7 +104,7 @@ public class DefaultRaceService implements RaceService {
 	public void startRace(long raceId) throws RaceServiceException {
 		//update race status in db
 		RaceDetail race = findRace(raceId, RaceStatus.NOT_STARTED);
-		jdbcTemplate.update("update races set status ='STARTED', actualStartTime = NOW() where race_id=?", raceId);
+		jdbcTemplate.update("update races set status ='STARTED' where race_id=?", raceId);
 		
 		//update the clientDetailsResolver with runner details
 		List<ClientDetails> clientDetails = updateClientDetailsResolver(CLIENT_DETAILS_FOR_RACE_SQL, raceId);
@@ -144,8 +144,7 @@ public class DefaultRaceService implements RaceService {
 
 
 	private RaceDetail findRace(long raceId, RaceStatus requirdStatus) {
-		RaceDetail race = jdbcTemplate.queryForObject(RACE_DETAIL_SQL,RACE_ROW_MAPPER, raceId);
-		Objects.requireNonNull(race, "no race with race_id " + raceId);
+		RaceDetail race = findRace(raceId);
 		if (race.getStatus() != requirdStatus) {
 			throw new IllegalStateException(String.format("Race with race_id %s was in %s state, needed to be %s",
 					raceId, race.getStatus(), requirdStatus));
@@ -153,6 +152,11 @@ public class DefaultRaceService implements RaceService {
 		return race;
 	}
 	
+	private RaceDetail findRace(long raceId) {
+        RaceDetail race = jdbcTemplate.queryForObject(RACE_DETAIL_SQL,RACE_ROW_MAPPER, raceId);
+        Objects.requireNonNull(race, "no race with race_id " + raceId);
+        return race;
+	}
 	
 	
 	private List<ClientDetails> updateClientDetailsResolver(String sql, long raceId) {
@@ -184,11 +188,11 @@ public class DefaultRaceService implements RaceService {
 		positionEnhancers.clearEnhancers("");
 	}
 	
-	private void writeRaceReport(String fileName) throws IOException {
+	private void writeRaceReport(String fileName, int raceId) throws IOException {
 		if (currentRaceObserver == null) {
 			log.info("No sector times aviablae to write");
 		} else {
-		
+		    RaceDetail race = findRace(raceId);
 			Map<String, List<SectorTime>> sectorTimes = currentRaceObserver.getSectorTimes();
 			if (!sectorTimes.isEmpty()) {
 				File file = new File(sectorDirectory, fileName + ".csv");
@@ -203,12 +207,12 @@ public class DefaultRaceService implements RaceService {
 						.withQuoteMode(QuoteMode.ALL)
 						.withRecordSeparator("\r\n").print(out);
 				
-				for (String runner : sectorTimes.keySet()) {
-					List<SectorTime> times = sectorTimes.get(runner);
+				for (Entry<String, List<SectorTime>> runner : sectorTimes.entrySet()) {
+					List<SectorTime> times = runner.getValue();
 					List<Object> row = new ArrayList<>();
-					row.add(runner);
+					row.add(runner.getKey());
 					for(int i = 0; i < times.size(); i ++) {
-						row.add("" + times.get(i).getTime());
+						row.add("" + times.get(i).getTimestamp());
 					}
 					printer.printRecord(row);
 					

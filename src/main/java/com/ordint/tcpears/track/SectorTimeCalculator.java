@@ -4,7 +4,6 @@ import java.time.Clock;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -69,7 +68,7 @@ public class SectorTimeCalculator {
 	            Sector sector = sectors.get(sectorIndex);
 	            if (sector != null) {
 	            	if (distanceFromStart  >= sector.getSectorDistance()) {
-		                clientSectors.add(SectorTime.builder().time(ChronoUnit.MILLIS.between(start, p.getTimestamp()) / 1000f).sector(sector).build());
+		                clientSectors.add(SectorTime.builder().timestamp(p.getTimestamp()).sector(sector).build());
 		                clientSectorTimes.put(p.getClientId(), clientSectors);
 		            }
 	            }

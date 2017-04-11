@@ -175,7 +175,7 @@ public class RaceObserver implements PositionEnhancer {
 		if (status == EventState.STARTED) {
 			 pdi = track.calculateDistanceInfo(p);	
 			distances.put(p.getClientId(), pdi);
-			sectorTimeCalculator.checkSector(p.getClientId(), pdi.getDistanceFromStart());
+			sectorTimeCalculator.checkSector(p, pdi.getDistanceFromStart());
 		}
 		return Position.builder().position(p).distinceInfo(pdi).build();
 	}
