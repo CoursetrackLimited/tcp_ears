@@ -11,7 +11,7 @@ import com.ordint.rpc.JsonRpcHttpClient;
 import com.ordint.rpc.ProxyUtil;
 import com.ordint.tcpears.service.AdministrationService;
 
-
+@Ignore
 public class AdminRpcITTest {
 
     private ObjectMapper mapper = new ObjectMapper();

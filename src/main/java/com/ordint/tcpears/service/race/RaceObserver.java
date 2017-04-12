@@ -39,6 +39,7 @@ public class RaceObserver implements PositionEnhancer {
 	private List<RaceStatusListener> statusListeners = new ArrayList<>();
 	
 	private ConcurrentMap<String, Integer> placings = new ConcurrentHashMap<>();
+	private long raceId;
 
 	private Track track;
 	private int runnerCount;
@@ -52,11 +53,12 @@ public class RaceObserver implements PositionEnhancer {
         }
     };
 	
-	public RaceObserver(Track track, List<ClientDetails> runners) {
+	public RaceObserver(Track track, List<ClientDetails> runners, long raceId) {
 		this.track = track;
 		this.runnerCount = runners.size();
 		this.runners = runners;
 		this.sectorTimeCalculator = new SectorTimeCalculator(Clock.systemUTC(), track.getSectors());
+		this.raceId = raceId;
 	}
 	
 	
@@ -192,6 +194,11 @@ public class RaceObserver implements PositionEnhancer {
 		 return retval;
 	}
 	
+	public long getRaceId() {
+		return raceId;
+	}
+
+
 	public String[] getReportHeader() {
 		ArrayList list = new ArrayList<>();
 		list.add("Runner");

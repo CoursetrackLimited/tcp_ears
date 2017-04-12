@@ -29,7 +29,7 @@ public class RaceObserverTest {
 	@Mock
 	private Track track;
 	@InjectMocks
-	private RaceObserver raceObserver = new RaceObserver(track, Arrays.asList(ClientDetails.builder().build(),ClientDetails.builder().build(),ClientDetails.builder().build() ));
+	private RaceObserver raceObserver = new RaceObserver(track, Arrays.asList(ClientDetails.builder().build(),ClientDetails.builder().build(),ClientDetails.builder().build() ), 1);
 	
 	private RaceStatusListener statusListener;
 	

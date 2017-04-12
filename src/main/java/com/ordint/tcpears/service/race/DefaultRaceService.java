@@ -4,8 +4,13 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.RoundingMode;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -14,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
@@ -97,7 +103,7 @@ public class DefaultRaceService implements RaceService {
 	
 	private Map<Long, Long> currentReplayRaces = new HashMap<Long, Long>();
 	
-	
+
 	
 	public static final DateTimeFormatter MYSQL_DATETIME_FORMATTER =  DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 	@Override
@@ -179,7 +185,7 @@ public class DefaultRaceService implements RaceService {
 		jdbcTemplate.update("update races set status ='FINISHED', finishTime = NOW() where race_id=?", raceId);
 		
 		try {
-			writeRaceReport("race_" + raceId);
+			writeRaceReport("race_", raceId);
 		} catch (IOException e) {
 			log.error("Failed to write out sector times", e);
 		}
@@ -188,14 +194,19 @@ public class DefaultRaceService implements RaceService {
 		positionEnhancers.clearEnhancers("");
 	}
 	
-	private void writeRaceReport(String fileName, int raceId) throws IOException {
+	private void writeRaceReport(String fileName, long raceId) throws IOException {
 		if (currentRaceObserver == null) {
 			log.info("No sector times aviablae to write");
 		} else {
+			
 		    RaceDetail race = findRace(raceId);
+		    log.info("Writing race report for race id {} the {}", race.getId(), race.getName());
+		    //actual start time is in fact a zoned time, so convert to utc like timestamps
+		    Optional<LocalDateTime> startOpt = getStartTime(race);
+		    
 			Map<String, List<SectorTime>> sectorTimes = currentRaceObserver.getSectorTimes();
 			if (!sectorTimes.isEmpty()) {
-				File file = new File(sectorDirectory, fileName + ".csv");
+				File file = new File(sectorDirectory, fileName  + race.getId() + ".csv");
 				if (!file.exists()) {
 					file.createNewFile();
 				}
@@ -212,7 +223,7 @@ public class DefaultRaceService implements RaceService {
 					List<Object> row = new ArrayList<>();
 					row.add(runner.getKey());
 					for(int i = 0; i < times.size(); i ++) {
-						row.add("" + times.get(i).getTimestamp());
+						row.add("" + getValueForSector(times.get(i).getTimestamp(), startOpt));
 					}
 					printer.printRecord(row);
 					
@@ -220,11 +231,33 @@ public class DefaultRaceService implements RaceService {
 				printer.flush();
 				printer.close();
 				
+			} else {
+				log.info("No sector times for race with id {}", raceId);
 			}
 		}
 	}
 	
+	private String getValueForSector(LocalDateTime sectorTimestamp, Optional<LocalDateTime> startOp) {
+		DecimalFormat df = new DecimalFormat("#.###");
+		df.setRoundingMode(RoundingMode.CEILING);
+		if (sectorTimestamp == null) return "";
+		if (startOp.isPresent()) {
+			return df.format(ChronoUnit.MILLIS.between(startOp.get(), sectorTimestamp) / 1000d);
+		} else {
+			return sectorTimestamp.toString();
+		}
+	}
 	
+	private Optional<LocalDateTime> getStartTime(RaceDetail race) {
+		try {
+		    return Optional.of(ZonedDateTime.of(race.getActualStartTime(), ZoneId.of("Europe/London"))
+		    		.withZoneSameInstant(ZoneId.of("UTC")).toLocalDateTime());			
+		} catch (Exception e) {
+			
+			log.warn("Could not parese actualStartTime for race with id " + race.getId(), e);
+			return Optional.empty();
+		}
+	}
 	
 	@Override
 	public String replayRace(long raceId) throws RaceServiceException {
@@ -247,8 +280,9 @@ public class DefaultRaceService implements RaceService {
 		configureRaceObserver(race, clientDetails);
 		
 		publishRaceDetails(race, clientDetails);
-		String replayId = race.getVenueId() + "-" + race.getName() + "-" + race.getActualStartTime() + "-" + timeInSecs;
-		replayService.replayFrom(race.getActualStartTime(), timeInSecs, true, replayId);
+		LocalDateTime startTime = getStartTime(race).orElseThrow(() -> new IllegalArgumentException("No start date for race"));
+		String replayId = race.getVenueId() + "-" + race.getName() + "-" + startTime + "-" + timeInSecs;
+		replayService.replayFrom(startTime, timeInSecs, true, replayId);
 		
 		currentReplayRaces.put(race.getVenueId(), raceId);
 		
@@ -272,7 +306,7 @@ public class DefaultRaceService implements RaceService {
 		
 		Long raceId = currentReplayRaces.remove(Long.parseLong(StringUtils.substringBefore(replayId, "-")));
 		try {
-			writeRaceReport("replay_race_" + raceId);
+			writeRaceReport("replay_race_",  raceId);
 		} catch (IOException e) {
 			log.error("Failed to write out sector times for replay", e);
 		}
@@ -291,7 +325,7 @@ public class DefaultRaceService implements RaceService {
 	@Override
 	public Map<String, List<SectorTime>> getSectorTimes() {
 		try {
-			writeRaceReport("currentRace");
+			writeRaceReport("currentRace_", currentRaceObserver.getRaceId());
 		} catch (IOException e) {
 			log.error("Failed to write current race report", e);
 		}
