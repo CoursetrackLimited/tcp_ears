@@ -33,4 +33,5 @@ public class RaceDetail {
 		ZonedDateTime zdt = ZonedDateTime.of(scheduledStartTime, ZoneId.of("GMT"));
 		return zdt.withZoneSameInstant(ZoneId.of("Europe/London")).truncatedTo(ChronoUnit.MINUTES).format(TIME_FORMATTER);
 	}
+	
 }

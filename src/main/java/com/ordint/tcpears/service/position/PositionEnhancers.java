@@ -47,7 +47,7 @@ public class PositionEnhancers {
 	public RaceObserver addRacePositionEnhancers(RaceDetail race, TrackConfig trackConfig, List<ClientDetails> runners) {
 		log.info("Adding race  psoition enhancers for groupId {}", race.getGroupId());
 		Track track = new Track(trackConfig, trackGeomFactory, race.getRaceDistance());
-		RaceObserver observer = new RaceObserver(track, runners, race.getId());
+		RaceObserver observer = new RaceObserver(track, runners, race);
 		List<PositionEnhancer> pd = Arrays.asList(observer);
 		//List<PositionEnhancer> pd = Arrays.asList(new RacePositionDecorator());
 		positionEnhancers.put(race.getGroupId().toString(), pd);

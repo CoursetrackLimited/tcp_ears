@@ -129,7 +129,7 @@ public class DefaultRaceServiceTest {
 		
 		then(clientManager).should().clearSnake("100");
 		then(clientManager).should().trackGroup("100");
-		then(replayService).should().replayFrom(any(LocalDateTime.class), eq(60), eq(true),eq("1-Some race-2015-09-16T22:32:38-60"));
+		then(replayService).should().replayFrom(any(LocalDateTime.class), eq(60), eq(true),eq("1-Some race-2015-11-16T22:32:38-60"));
 		then(jdbcTemplate).should().update(eq("update races set status ='REPLAYING' where race_id=?"), eq(100l));
 		
 		assertThat(raceName, equalTo("Some race"));
@@ -142,8 +142,8 @@ public class DefaultRaceServiceTest {
 				.id(id)
 				.venueId(1l)
 				.status(RaceStatus.FINISHED)
-				.actualStartTime(LocalDateTime.parse("2015-09-16 22:32:38", DefaultRaceService.MYSQL_DATETIME_FORMATTER))
-				.finishTime(LocalDateTime.parse("2015-09-16 22:33:38", DefaultRaceService.MYSQL_DATETIME_FORMATTER))
+				.actualStartTime(LocalDateTime.parse("2015-11-16 22:32:38", DefaultRaceService.MYSQL_DATETIME_FORMATTER))
+				.finishTime(LocalDateTime.parse("2015-11-16 22:33:38", DefaultRaceService.MYSQL_DATETIME_FORMATTER))
 				.name("Some race")
 				.scheduledStartTime(LocalDateTime.now()).build();
 		

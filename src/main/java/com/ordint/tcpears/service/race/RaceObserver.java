@@ -1,6 +1,7 @@
 package com.ordint.tcpears.service.race;
 
 import java.time.Clock;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -17,11 +18,13 @@ import org.slf4j.LoggerFactory;
 import com.ordint.tcpears.domain.ClientDetails;
 import com.ordint.tcpears.domain.Position;
 import com.ordint.tcpears.domain.PositionDistanceInfo;
+import com.ordint.tcpears.domain.RaceDetail;
 import com.ordint.tcpears.domain.Sector;
 import com.ordint.tcpears.domain.SectorTime;
 import com.ordint.tcpears.service.position.PositionEnhancer;
 import com.ordint.tcpears.track.SectorTimeCalculator;
 import com.ordint.tcpears.track.Track;
+import com.ordint.tcpears.util.DateUtil;
 
 
 
@@ -34,12 +37,12 @@ public class RaceObserver implements PositionEnhancer {
 	
 	public enum EventState {PRE_RACE, UNDER_STARTERS_ORDERS, STARTED, FINSIHED};
 	
-	private EventState status = EventState.PRE_RACE;
+	private volatile EventState status = EventState.PRE_RACE;
 	
 	private List<RaceStatusListener> statusListeners = new ArrayList<>();
 	
 	private ConcurrentMap<String, Integer> placings = new ConcurrentHashMap<>();
-	private long raceId;
+	private RaceDetail race;
 
 	private Track track;
 	private int runnerCount;
@@ -53,19 +56,20 @@ public class RaceObserver implements PositionEnhancer {
         }
     };
 	
-	public RaceObserver(Track track, List<ClientDetails> runners, long raceId) {
+	public RaceObserver(Track track, List<ClientDetails> runners, RaceDetail race) {
 		this.track = track;
 		this.runnerCount = runners.size();
 		this.runners = runners;
-		this.sectorTimeCalculator = new SectorTimeCalculator(Clock.systemUTC(), track.getSectors());
-		this.raceId = raceId;
+		this.sectorTimeCalculator = new SectorTimeCalculator(track.getSectors());
+		this.race = race;
 	}
 	
 	
 	@Override
 	public List<Position> decorate(List<Position> positions) {
-		
-		checkIfStarted(positions);
+		if (status == EventState.PRE_RACE) {
+			checkIfStarted(positions);
+		}
 		
 		calculateStandings(positions);
 		return addStandingsToPositions(positions);
@@ -80,13 +84,20 @@ public class RaceObserver implements PositionEnhancer {
 	}
 
 	private void checkIfStarted(List<Position> positions) {
-		long runningHorsesCount = positions.stream().filter(p -> p.getSpeedValue() > 5).count();
-		if (runningHorsesCount > runnerCount * .70) {
-		    if (!sectorTimeCalculator.isStarted()) {
-		        sectorTimeCalculator.start();
-		    }
-			updateStatus(EventState.STARTED);
-		}	
+		if (isAfterRaceScheduledStart(positions)) {
+			long runningHorsesCount = positions.stream().filter(p -> p.getSpeedValue() > 5).count();
+			if (runningHorsesCount > runnerCount * .70) {
+				updateStatus(EventState.STARTED);
+			}
+		}
+	}
+	
+	private boolean isAfterRaceScheduledStart(List<Position> positions) {
+		return positions.stream()
+				.map(Position::getTimeCreated)
+				.max(TIMESTAMP_COMPARATOR)
+				.orElseGet(LocalDateTime::now)
+				.isAfter(DateUtil.ukLocalDateTimeToUTC(race.getScheduledStartTime()));
 	}
 	
 	private void updateStatus(EventState status) {
@@ -195,7 +206,7 @@ public class RaceObserver implements PositionEnhancer {
 	}
 	
 	public long getRaceId() {
-		return raceId;
+		return race.getId();
 	}
 
 

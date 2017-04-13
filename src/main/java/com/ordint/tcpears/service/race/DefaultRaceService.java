@@ -44,6 +44,7 @@ import com.ordint.tcpears.service.PositionPublisher;
 import com.ordint.tcpears.service.RaceService;
 import com.ordint.tcpears.service.ReplayService;
 import com.ordint.tcpears.service.position.PositionEnhancers;
+import com.ordint.tcpears.util.DateUtil;
 
 @Component
 public class DefaultRaceService implements RaceService {
@@ -250,8 +251,7 @@ public class DefaultRaceService implements RaceService {
 	
 	private Optional<LocalDateTime> getStartTime(RaceDetail race) {
 		try {
-		    return Optional.of(ZonedDateTime.of(race.getActualStartTime(), ZoneId.of("Europe/London"))
-		    		.withZoneSameInstant(ZoneId.of("UTC")).toLocalDateTime());			
+		    return Optional.of(DateUtil.ukLocalDateTimeToUTC(race.getActualStartTime()));			
 		} catch (Exception e) {
 			
 			log.warn("Could not parese actualStartTime for race with id " + race.getId(), e);

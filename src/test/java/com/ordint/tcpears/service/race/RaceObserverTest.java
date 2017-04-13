@@ -20,6 +20,7 @@ import com.ordint.tcpears.domain.ClientDetails;
 import com.ordint.tcpears.domain.Position;
 import com.ordint.tcpears.domain.PositionDistanceInfo;
 import com.ordint.tcpears.domain.PositionUtil;
+import com.ordint.tcpears.domain.RaceDetail;
 import com.ordint.tcpears.service.race.RaceObserver.EventState;
 import com.ordint.tcpears.track.Track;
 
@@ -29,7 +30,8 @@ public class RaceObserverTest {
 	@Mock
 	private Track track;
 	@InjectMocks
-	private RaceObserver raceObserver = new RaceObserver(track, Arrays.asList(ClientDetails.builder().build(),ClientDetails.builder().build(),ClientDetails.builder().build() ), 1);
+	private RaceObserver raceObserver = new RaceObserver(track, Arrays.asList(ClientDetails.builder().build(),ClientDetails.builder().build(),ClientDetails.builder().build() ),
+			RaceDetail.builder().id(1l).build());
 	
 	private RaceStatusListener statusListener;
 	
