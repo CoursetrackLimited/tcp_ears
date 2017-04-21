@@ -57,7 +57,7 @@ public class DefaultInputParser implements InputParser {
 	 * <li>ident,time(hhmmss.ss),lat(mmss.sssss),long(mmmss.sssss),speed,heading,horizontalAccuracy,verticalAccuracy,altitude,status
 	 */
 	private Optional<Position> parseLongMessage(String message) {
-		String parts[] = message.split(",");
+		String[] parts = message.split(",");
 		try {
 			return Optional.of(parseCommon(parts)
 					.heading(formatDouble(parts[5]))
@@ -75,7 +75,7 @@ public class DefaultInputParser implements InputParser {
 	 * ident,time(hhmmss.ss),lat(mmss.sssss),long(mmmss.sssss),speed
 	 */
 	private Optional<Position> parseShortMessage(String message) {
-		String parts[] = message.split(",");
+		String[] parts = message.split(",");
 		try {
 			return Optional.of(parseCommon(parts)
 					.altitude("-1")
@@ -96,7 +96,7 @@ public class DefaultInputParser implements InputParser {
 	 * 
 	 */
 	private Optional<Position> parseDeltaMessage(String message, ClientManager clientManager) {
-		String parts[] = message.split(",");
+		String[] parts = message.split(",");
 		//get the existing postion
 		String clientId = parts[0];
 		if (StringUtils.isNotBlank(clientId)) {
@@ -158,7 +158,7 @@ public class DefaultInputParser implements InputParser {
 	
     private static String applyPositionDelta(String rawPos, double delta) {
     	double currentPosition = Double.parseDouble(rawPos) + delta;
-    	return new BigDecimal(currentPosition).setScale(5, RoundingMode.HALF_DOWN).toString();
+    	return BigDecimal.valueOf(currentPosition).setScale(5, RoundingMode.HALF_DOWN).toString();
 
     }	
 

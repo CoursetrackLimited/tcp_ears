@@ -1,7 +1,5 @@
 package com.ordint.tcpears.service.race;
 
-import java.time.Clock;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -71,7 +69,7 @@ public class RaceObserver implements PositionEnhancer {
 			checkIfStarted(positions);
 		}
 		
-		calculateStandings(positions);
+		calculateStandings();
 		return addStandingsToPositions(positions);
 	}
 
@@ -120,18 +118,7 @@ public class RaceObserver implements PositionEnhancer {
 		
 	}
 	
-	
-	private List<Position> addStandings(List<Position> positions) {
-		
-		if (status == EventState.PRE_RACE || status == EventState.UNDER_STARTERS_ORDERS) {
-			//do nothing
-			return positions;
-		}
-		if (status == EventState.STARTED) {
-			calculateStandings(positions);
-		}
-		return addStandingsToPositions(positions);			
-	}
+
 
 	private List<Position> addStandingsToPositions(List<Position> positions) {
 		List<Position> updatedPositions = new ArrayList<>();
@@ -149,7 +136,7 @@ public class RaceObserver implements PositionEnhancer {
 		return updatedPositions;
 	}
 
-	private void calculateStandings(List<Position> positions) {
+	private void calculateStandings() {
 		List<PositionDistanceInfo> stillRunning = new ArrayList<>();	
 		for(PositionDistanceInfo pdi : distances.values()) {
 			
