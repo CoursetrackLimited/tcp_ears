@@ -3,7 +3,9 @@ package com.ordint.tcpears.domain;
 
 
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.isNotNull;
 
 import java.time.temporal.ChronoUnit;
 import java.util.Optional;
@@ -12,6 +14,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.BDDMockito;
+import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
@@ -136,6 +139,34 @@ public class DefaultInputParserTest {
 		//ident,timeDelta,latDelta,lonDelta,speedDelta,AltDelta
 		String deltaMessage = "400678,11,20,4000003,12,10"; 
 		assertThat(defaultInputParser.parse(deltaMessage, clientManager).get(), equalTo(expected));
+	}
+	
+	@Test
+	public void shouldParseDeltaMessagesWithDecimalPoints() {
+		ClientDetails c = new ClientDetails("groupId", "400678");
+		BDDMockito.when(clientDetailsResolver.resolveClientDetails("400678")).thenReturn(c);
+		
+		Position current = Position.builder()
+				.altitude("2")
+				.clientDetails(c)
+				.heading("119.43")
+				.horizontalAccuracy("0.7")
+				.verticalAccuracy("0.6")
+				.rawLat("5101.63261")
+				.rawLon("0059.99997")
+				.lat("51.027210166667")
+				.lon("-0.32454")
+				.speed("1")
+				.status("D")
+				.timeCreated(timestamper.now())
+				.timestampFromTime("105413.15")
+				.build();
+	
+		BDDMockito.when(clientManager.getClientPosition("400678")).thenReturn(Optional.of(current));
+		//ident,timeDelta,latDelta,lonDelta,speedDelta,AltDelta
+		String deltaMessage = "400678,11.2,20.3,4000003.4,12.3,10"; 
+		assertThat(defaultInputParser.parse(deltaMessage, clientManager).get(), notNullValue());
+		
 	}
 
 }

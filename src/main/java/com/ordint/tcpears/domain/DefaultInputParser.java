@@ -104,7 +104,7 @@ public class DefaultInputParser implements InputParser {
 			if (currentOpt.isPresent()) {
 				Position current = currentOpt.get();
 				try {
-					long timeDelta = Integer.parseInt(parts[1]) * 10;
+					long timeDelta = (long) (Double.parseDouble(parts[1]) * 10);
 					double latDelta = scaleDown(parts[2], 100 *1000);
 					double lonDelta = scaleDown(parts[3], 100 *1000);
 					double speedDelta = scaleDown(parts[4], 100);
@@ -150,9 +150,9 @@ public class DefaultInputParser implements InputParser {
 		
 	}
 	
-	private double scaleDown(String intNumber, int by) {
+	private double scaleDown(String number, int by) {
 		
-		return (double)Integer.parseInt(intNumber)/ by;
+		return Double.parseDouble(number) / by;
 		
 	}
 	
