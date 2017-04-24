@@ -7,6 +7,8 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.temporal.ChronoUnit;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -15,8 +17,6 @@ import org.slf4j.LoggerFactory;
 
 import com.ordint.tcpears.domain.Position.PositionBuilder;
 import com.ordint.tcpears.service.ClientDetailsResolver;
-import com.ordint.tcpears.service.ClientManager;
-import com.ordint.tcpears.util.ConversionUtil;
 import com.ordint.tcpears.util.time.Timestamper;
 
 public class DefaultInputParser implements InputParser {
@@ -24,6 +24,7 @@ public class DefaultInputParser implements InputParser {
 	private final static Logger log = LoggerFactory.getLogger("com.ordint.tcpears.domain.DefaultInputParser2");
 	private ClientDetailsResolver clientDetailsResolver;	
 	private Timestamper timestamper;
+	private ConcurrentMap<String, Position> lastLongPositionMap = new ConcurrentHashMap<>();
 	
 	public DefaultInputParser(ClientDetailsResolver clientDetailsResolver, Timestamper timestamper) {
 		super();
@@ -41,12 +42,12 @@ public class DefaultInputParser implements InputParser {
 
 
 	@Override
-	public Optional<Position> parse(String message, ClientManager clientManager) {
+	public Optional<Position> parse(String message) {
 		intpuLog.debug(message);
 		int count = StringUtils.countMatches(message, ',');
 		switch (count) {
 		case 9: return parseLongMessage(message);
-		case 5: return parseDeltaMessage(message, clientManager);
+		case 5: return parseDeltaMessage(message);
 		case 4: return parseShortMessage(message);
 		default:
 		}
@@ -59,13 +60,15 @@ public class DefaultInputParser implements InputParser {
 	private Optional<Position> parseLongMessage(String message) {
 		String[] parts = message.split(",");
 		try {
-			return Optional.of(parseCommon(parts)
+			Position p =  parseCommon(parts)
 					.heading(formatDouble(parts[5]))
 					.horizontalAccuracy(formatDouble(parts[6]))
 					.verticalAccuracy(formatDouble(parts[7]))
 					.altitude(parts[8])
 					.status(parts[9])
-					.build());
+					.build();
+			lastLongPositionMap.put(p.getClientId(), p);
+			return Optional.of(p);
 		} catch (Exception e) {
 			log.warn("Could not parse long message " + message, e);
 		}
@@ -95,14 +98,13 @@ public class DefaultInputParser implements InputParser {
 	 * where all the values are scaled up to ints
 	 * 
 	 */
-	private Optional<Position> parseDeltaMessage(String message, ClientManager clientManager) {
+	private Optional<Position> parseDeltaMessage(String message) {
 		String[] parts = message.split(",");
 		//get the existing postion
 		String clientId = parts[0];
 		if (StringUtils.isNotBlank(clientId)) {
-			Optional<Position> currentOpt = clientManager.getClientPosition(clientId);
-			if (currentOpt.isPresent()) {
-				Position current = currentOpt.get();
+			Position current = lastLongPositionMap.get(clientId);
+			if (current != null) {
 				try {
 					long timeDelta = (long) (Double.parseDouble(parts[1]) * 10);
 					double latDelta = scaleDown(parts[2], 100 *1000);

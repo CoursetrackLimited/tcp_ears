@@ -87,7 +87,8 @@ public class HorseDetailsResolver implements ClientDetailsResolver {
 	
 	
 	private ClientDetails addUnrecognisedClient(String clientId) {
-		jdbcTemplate.update("INSERT INTO clients (client_ident) values(?)", clientId);
+		jdbcTemplate.update("INSERT INTO clients (client_ident) values(?) ON DUPLICATE KEY UPDATE "
+		        + "client_ident = client_ident", clientId);
 		return new ClientDetails(defaultGroupId, clientId);
 	}
 	

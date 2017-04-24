@@ -33,7 +33,7 @@ public class PositionServiceImpl implements PositionService {
 	@Override
 	public void update(String positionInfo) {
 		
-		Optional<Position> p = inputParser.parse(positionInfo, clientManager);
+		Optional<Position> p = inputParser.parse(positionInfo);
 		p.ifPresent(pos -> { 
 			positionLogger.log(pos, "horse", "boxes");
 			clientManager.updatePostion(pos);

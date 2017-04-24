@@ -5,21 +5,15 @@ package com.ordint.tcpears.domain;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.isNotNull;
-
-import java.time.temporal.ChronoUnit;
-import java.util.Optional;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.BDDMockito;
-import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.ordint.tcpears.service.ClientDetailsResolver;
-import com.ordint.tcpears.service.ClientManager;
 import com.ordint.tcpears.util.time.TimeProvider;
 import com.ordint.tcpears.util.time.Timestamper;
 
@@ -30,10 +24,7 @@ public class DefaultInputParserTest {
 	private ClientDetailsResolver clientDetailsResolver;
 	@Mock
 	private TimeProvider systemClock;
-	
-	@Mock
-	private ClientManager clientManager;
-	
+
 	private DefaultInputParser defaultInputParser;
 	
 	private Timestamper timestamper;
@@ -69,7 +60,7 @@ public class DefaultInputParserTest {
 				.timestampFromTime("110338.40")
 				.build();
 		
-		assertThat(defaultInputParser.parse(input, clientManager).get(), equalTo(expected));
+		assertThat(defaultInputParser.parse(input).get(), equalTo(expected));
 		
 	}
 	@Test
@@ -94,7 +85,7 @@ public class DefaultInputParserTest {
 				.timestampFromTime("105413.15")
 				.build();
 		
-		assertThat(defaultInputParser.parse(input, clientManager).get(), equalTo(expected));
+		assertThat(defaultInputParser.parse(input).get(), equalTo(expected));
 		
 	}
 	
@@ -102,22 +93,9 @@ public class DefaultInputParserTest {
 	public void shouldParseDeltaInput() throws Exception {
 		ClientDetails c = new ClientDetails("groupId", "400678");
 		BDDMockito.when(clientDetailsResolver.resolveClientDetails("400678")).thenReturn(c);
-		
-		Position current = Position.builder()
-				.altitude("2")
-				.clientDetails(c)
-				.heading("119.43")
-				.horizontalAccuracy("0.7")
-				.verticalAccuracy("0.6")
-				.rawLat("5101.63261")
-				.rawLon("0059.99997")
-				.lat("51.027210166667")
-				.lon("-0.32454")
-				.speed("1")
-				.status("D")
-				.timeCreated(timestamper.now())
-				.timestampFromTime("105413.15")
-				.build();
+		String longInput = "400678,105413.15,5101.63261,0059.99997,1.0000,119.430000,0.700000,0.600000,2,D";
+		defaultInputParser.parse(longInput);
+
 		
 		Position expected = Position.builder()
 				.altitude("2.1")
@@ -132,40 +110,25 @@ public class DefaultInputParserTest {
 				.speed("1.12")
 				.status("D")
 				.timeCreated(timestamper.now())
-				.timestampFromDateTime(current.getTimestamp().plus(110, ChronoUnit.MILLIS))
+				.timestampFromTime("105413.26")
 				.build();
 		
-		BDDMockito.when(clientManager.getClientPosition("400678")).thenReturn(Optional.of(current));
+		
 		//ident,timeDelta,latDelta,lonDelta,speedDelta,AltDelta
 		String deltaMessage = "400678,11,20,4000003,12,10"; 
-		assertThat(defaultInputParser.parse(deltaMessage, clientManager).get(), equalTo(expected));
+		assertThat(defaultInputParser.parse(deltaMessage).get(), equalTo(expected));
 	}
 	
 	@Test
 	public void shouldParseDeltaMessagesWithDecimalPoints() {
 		ClientDetails c = new ClientDetails("groupId", "400678");
 		BDDMockito.when(clientDetailsResolver.resolveClientDetails("400678")).thenReturn(c);
-		
-		Position current = Position.builder()
-				.altitude("2")
-				.clientDetails(c)
-				.heading("119.43")
-				.horizontalAccuracy("0.7")
-				.verticalAccuracy("0.6")
-				.rawLat("5101.63261")
-				.rawLon("0059.99997")
-				.lat("51.027210166667")
-				.lon("-0.32454")
-				.speed("1")
-				.status("D")
-				.timeCreated(timestamper.now())
-				.timestampFromTime("105413.15")
-				.build();
+        String longInput = "400678,105413.15,5101.63261,0059.99997,1.0000,119.430000,0.700000,0.600000,2,D";
+        defaultInputParser.parse(longInput);
 	
-		BDDMockito.when(clientManager.getClientPosition("400678")).thenReturn(Optional.of(current));
 		//ident,timeDelta,latDelta,lonDelta,speedDelta,AltDelta
 		String deltaMessage = "400678,11.2,20.3,4000003.4,12.3,10"; 
-		assertThat(defaultInputParser.parse(deltaMessage, clientManager).get(), notNullValue());
+		assertThat(defaultInputParser.parse(deltaMessage).get(), notNullValue());
 		
 	}
 
