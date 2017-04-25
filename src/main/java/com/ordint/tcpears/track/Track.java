@@ -23,9 +23,7 @@ public class Track {
 
 	private static final Logger log = LoggerFactory.getLogger(Track.class);
 
-	private double finishLineDistanceFromStartOfTrackShape;
 	private double officialRaceDistance;
-
 	private MeasuredShape trackShape;
 	private PositionToPointConverter positionToPointConverter;
 	private double finishOffset;
@@ -41,8 +39,9 @@ public class Track {
 		this.officialRaceDistance = raceDistanceMeters;
 		Point2D temp = positionToPointConverter.toPoint(finishLatLong);
 		double[] info = trackShape.getDistanceAlongTrackLastThreeSegments(temp);
-		finishLineDistanceFromStartOfTrackShape = info[2];
-		finishOffset = trackShape.getOriginalDistance() - finishLineDistanceFromStartOfTrackShape;
+
+		finishOffset = trackShape.getOriginalDistance() - info[2];
+
 		System.out.println(positionToPointConverter.metersToLat(info[1]) + " " + positionToPointConverter.metersToLon(info[0]));
 		
 	}
@@ -55,7 +54,7 @@ public class Track {
 
 
 
-    private double calculateDistance2(Point2D currentPoint, double distanceFromEndOfTrack) {
+    private double distanceFromEndOfTrack(Point2D currentPoint, double distanceFromEndOfTrack) {
         double[] info = trackShape.getDistanceAlongTrack(currentPoint, trackShape.getOriginalDistance() - distanceFromEndOfTrack);
         if (info != null) {
             double distanceFromStartOfShape = info[2];
@@ -65,18 +64,15 @@ public class Track {
             return -1;
         }
     }
-    private double calculateDistance(Position position) {
+    private double distanceFromEndOfTrack(Position position) {
         Point2D currentPoint = positionToPointConverter.toPoint(position);
-        return calculateDistance2(currentPoint, position.getDistanceInfo() != null ? position.getDistanceInfo().getDistanceFromEndOfTrack() : 
-        	officialRaceDistance); 
+        return distanceFromEndOfTrack(currentPoint, position.getDistanceInfo() != null ? position.getDistanceInfo().getDistanceFromEndOfTrack() : 
+            finishOffset + officialRaceDistance); 
     }
 
 
-
-
-
     public PositionDistanceInfo calculateDistanceInfo(Position position) {
-		double distance = calculateDistance(position);
+		double distance = distanceFromEndOfTrack(position);
 		if (distance  >  0) {
 		    return new PositionDistanceInfo(position.getClientId(),  officialRaceDistance - (distance - finishOffset) , distance , 0);
 		} else {
