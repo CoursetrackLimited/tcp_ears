@@ -201,14 +201,13 @@
     </executions>
     <configuration>
         <obfuscate>true</obfuscate>
-        <injar>${shaded-jar.name}</injar>
-        <outjar>${shaded-jar.name}</outjar>
-        <libs>
-            <lib>${java.bootstrap.classes}</lib>
-            <lib>${java.cryptographic.extension.classes}</lib>
-            <lib>${java.secure.socket.extension.classes}</lib>
-        </libs>
+        <injar>${project.build.finalName}.jar</injar>
+        <outjar>${project.build.finalName}-pg.jar</outjar>
+        <proguardInclude>proguard-tcpears.cfg</proguardInclude>
         <injarNotExistsSkip>true</injarNotExistsSkip>
+        <libs>
+            <lib>${java.home}/lib/rt.jar</lib>
+        </libs>
         <options>
         </options>
     </configuration>
