@@ -13,12 +13,12 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ordint.tcpears.domain.ClientDetails;
-import com.ordint.tcpears.domain.Position;
-import com.ordint.tcpears.domain.PositionDistanceInfo;
-import com.ordint.tcpears.domain.RaceDetail;
-import com.ordint.tcpears.domain.Sector;
-import com.ordint.tcpears.domain.SectorTime;
+import com.ordint.tcpears.domain.lombok.ClientDetails;
+import com.ordint.tcpears.domain.lombok.Position;
+import com.ordint.tcpears.domain.lombok.PositionDistanceInfo;
+import com.ordint.tcpears.domain.lombok.RaceDetail;
+import com.ordint.tcpears.domain.lombok.Sector;
+import com.ordint.tcpears.domain.lombok.SectorTime;
 import com.ordint.tcpears.service.position.PositionEnhancer;
 import com.ordint.tcpears.track.SectorTimeCalculator;
 import com.ordint.tcpears.track.Track;

@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 import com.javadocmd.simplelatlng.LatLng;
 import com.javadocmd.simplelatlng.LatLngTool;
 import com.javadocmd.simplelatlng.util.LengthUnit;
-import com.ordint.tcpears.domain.Position;
+import com.ordint.tcpears.domain.lombok.Position;
 import com.ordint.tcpears.track.StaticPathBuilder;
 import com.ordint.tcpears.track.Track;
 import com.ordint.tcpears.util.ConversionUtil;

@@ -2,6 +2,9 @@ package com.ordint.tcpears.domain;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.ordint.tcpears.domain.lombok.Position;
+import com.ordint.tcpears.domain.lombok.PositionDistanceInfo;
+
 /**
  * The output of this OutputWritre matches what is currently
  * expected by the map.php page

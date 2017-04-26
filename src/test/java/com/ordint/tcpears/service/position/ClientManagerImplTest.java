@@ -19,8 +19,8 @@ import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.ordint.tcpears.domain.ClientDetails;
-import com.ordint.tcpears.domain.Position;
+import com.ordint.tcpears.domain.lombok.ClientDetails;
+import com.ordint.tcpears.domain.lombok.Position;
 @SuppressWarnings("all")
 public class ClientManagerImplTest {
 

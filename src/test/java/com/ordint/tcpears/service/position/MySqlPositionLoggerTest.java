@@ -25,8 +25,8 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import com.ordint.tcpears.domain.ClientDetails;
-import com.ordint.tcpears.domain.Position;
+import com.ordint.tcpears.domain.lombok.ClientDetails;
+import com.ordint.tcpears.domain.lombok.Position;
 
 public class MySqlPositionLoggerTest {
 

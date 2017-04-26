@@ -1,15 +1,11 @@
 package com.ordint.tcpears.server;
 
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.DatagramChannel;
 import io.netty.handler.codec.DelimiterBasedFrameDecoder;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.util.CharsetUtil;
-@Component
-@Scope("prototype")
+
 public class UdpChannelInitializer extends AbstractChannelInitializer<DatagramChannel>{
 
 	@Override

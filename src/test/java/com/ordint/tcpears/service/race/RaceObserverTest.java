@@ -5,7 +5,6 @@ import static org.junit.Assert.assertThat;
 import java.util.Arrays;
 import java.util.List;
 
-import org.boon.Lists;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -16,11 +15,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.ordint.tcpears.domain.ClientDetails;
-import com.ordint.tcpears.domain.Position;
-import com.ordint.tcpears.domain.PositionDistanceInfo;
 import com.ordint.tcpears.domain.PositionUtil;
-import com.ordint.tcpears.domain.RaceDetail;
+import com.ordint.tcpears.domain.lombok.ClientDetails;
+import com.ordint.tcpears.domain.lombok.Position;
+import com.ordint.tcpears.domain.lombok.PositionDistanceInfo;
+import com.ordint.tcpears.domain.lombok.RaceDetail;
 import com.ordint.tcpears.service.race.RaceObserver.EventState;
 import com.ordint.tcpears.track.Track;
 

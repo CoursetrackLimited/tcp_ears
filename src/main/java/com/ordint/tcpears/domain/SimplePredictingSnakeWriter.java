@@ -7,6 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import com.javadocmd.simplelatlng.LatLng;
 import com.javadocmd.simplelatlng.LatLngTool;
 import com.javadocmd.simplelatlng.util.LengthUnit;
+import com.ordint.tcpears.domain.lombok.Position;
 
 public class SimplePredictingSnakeWriter extends DefaultSnakeWriter {
 

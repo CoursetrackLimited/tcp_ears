@@ -1,6 +1,6 @@
 package com.ordint.tcpears.service.position;
 
-import com.ordint.tcpears.domain.Position;
+import com.ordint.tcpears.domain.lombok.Position;
 
 public interface PositionLogger {
 

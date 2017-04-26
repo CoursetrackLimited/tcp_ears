@@ -7,17 +7,16 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
-import com.ordint.tcpears.domain.ClientDetails;
-import com.ordint.tcpears.domain.Position;
-import com.ordint.tcpears.domain.RaceDetail;
-import com.ordint.tcpears.domain.TrackConfig;
+import com.ordint.tcpears.domain.lombok.ClientDetails;
+import com.ordint.tcpears.domain.lombok.Position;
+import com.ordint.tcpears.domain.lombok.RaceDetail;
+import com.ordint.tcpears.domain.lombok.TrackConfig;
 import com.ordint.tcpears.service.race.RaceObserver;
 import com.ordint.tcpears.track.Track;
 import com.ordint.tcpears.track.geom.TrackGeomFactory;
 
-@Component
+
 public class PositionEnhancers {
 	private final static Logger log = LoggerFactory.getLogger(PositionEnhancers.class);
 	private Map<String, List<PositionEnhancer>> positionEnhancers = new HashMap<>();

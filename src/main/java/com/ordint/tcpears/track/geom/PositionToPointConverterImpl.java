@@ -6,7 +6,7 @@ import java.awt.geom.Point2D;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.ordint.tcpears.domain.Position;
+import com.ordint.tcpears.domain.lombok.Position;
 
 public class PositionToPointConverterImpl implements PositionToPointConverter {
 	

@@ -9,8 +9,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -30,13 +28,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Component;
 
-import com.ordint.tcpears.domain.ClientDetails;
-import com.ordint.tcpears.domain.RaceDetail;
-import com.ordint.tcpears.domain.RaceDetail.RaceStatus;
-import com.ordint.tcpears.domain.SectorTime;
-import com.ordint.tcpears.domain.TrackConfig;
+import com.ordint.tcpears.domain.lombok.ClientDetails;
+import com.ordint.tcpears.domain.lombok.RaceDetail;
+import com.ordint.tcpears.domain.lombok.RaceDetail.RaceStatus;
+import com.ordint.tcpears.domain.lombok.SectorTime;
+import com.ordint.tcpears.domain.lombok.TrackConfig;
 import com.ordint.tcpears.memcache.MemcacheHelper;
 import com.ordint.tcpears.service.ClientDetailsResolver;
 import com.ordint.tcpears.service.ClientManager;
@@ -46,7 +43,7 @@ import com.ordint.tcpears.service.ReplayService;
 import com.ordint.tcpears.service.position.PositionEnhancers;
 import com.ordint.tcpears.util.DateUtil;
 
-@Component
+
 public class DefaultRaceService implements RaceService {
 	
 	private static final String CURRENT_RACE_DETAILS_MEMCACHE_KEY = "/ggps/CurrentRaceDetails";

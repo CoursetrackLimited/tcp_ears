@@ -2,7 +2,7 @@ package com.ordint.tcpears.service;
 
 import java.util.List;
 
-import com.ordint.tcpears.domain.ClientDetails;
+import com.ordint.tcpears.domain.lombok.ClientDetails;
 
 public interface ClientDetailsResolver {
 	

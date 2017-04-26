@@ -8,8 +8,8 @@ import java.time.format.DateTimeFormatter;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.RowMapper;
 
-import com.ordint.tcpears.domain.RaceDetail;
-import com.ordint.tcpears.domain.RaceDetail.RaceStatus;
+import com.ordint.tcpears.domain.lombok.RaceDetail;
+import com.ordint.tcpears.domain.lombok.RaceDetail.RaceStatus;
 
 public class RaceRowMapper implements RowMapper<RaceDetail> {
 	private static final DateTimeFormatter MYSQL_DATETIME_FORMATTER =  DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");

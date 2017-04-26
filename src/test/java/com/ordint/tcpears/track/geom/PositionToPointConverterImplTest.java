@@ -8,8 +8,8 @@ import java.awt.geom.Point2D;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.ordint.tcpears.domain.Position;
 import com.ordint.tcpears.domain.PositionUtil;
+import com.ordint.tcpears.domain.lombok.Position;
 
 public class PositionToPointConverterImplTest {
 

@@ -2,7 +2,6 @@ package com.ordint.tcpears.rpc;
 
 import java.net.URL;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,7 +10,7 @@ import com.ordint.rpc.JsonRpcHttpClient;
 import com.ordint.rpc.ProxyUtil;
 import com.ordint.tcpears.service.AdministrationService;
 
-@Ignore
+
 public class AdminRpcITTest {
 
     private ObjectMapper mapper = new ObjectMapper();
@@ -42,7 +41,8 @@ public class AdminRpcITTest {
 			
 			//
 			
-			admin.replayRace(4366);
+			
+			admin.replayRace(5059);
 			//admin.getSectorTimes();
 			//System.out.println(mapper.writeValueAsString(admin.groupClientsByGroup()));
 		} catch (Exception e) {

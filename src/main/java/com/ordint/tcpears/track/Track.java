@@ -9,10 +9,10 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ordint.tcpears.domain.Position;
-import com.ordint.tcpears.domain.PositionDistanceInfo;
-import com.ordint.tcpears.domain.Sector;
-import com.ordint.tcpears.domain.TrackConfig;
+import com.ordint.tcpears.domain.lombok.Position;
+import com.ordint.tcpears.domain.lombok.PositionDistanceInfo;
+import com.ordint.tcpears.domain.lombok.Sector;
+import com.ordint.tcpears.domain.lombok.TrackConfig;
 import com.ordint.tcpears.track.geom.MeasuredShape;
 import com.ordint.tcpears.track.geom.PositionToPointConverter;
 import com.ordint.tcpears.track.geom.TrackGeomFactory;

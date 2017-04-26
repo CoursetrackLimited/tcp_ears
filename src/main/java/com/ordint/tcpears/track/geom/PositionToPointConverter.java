@@ -2,7 +2,7 @@ package com.ordint.tcpears.track.geom;
 
 import java.awt.geom.Point2D;
 
-import com.ordint.tcpears.domain.Position;
+import com.ordint.tcpears.domain.lombok.Position;
 
 public interface PositionToPointConverter extends LatLonToMeters {
 	

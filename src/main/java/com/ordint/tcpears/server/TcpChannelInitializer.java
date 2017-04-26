@@ -6,10 +6,6 @@ import io.netty.handler.codec.DelimiterBasedFrameDecoder;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.util.CharsetUtil;
 
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-@Component
-@Scope("prototype")
 public class TcpChannelInitializer extends AbstractChannelInitializer<SocketChannel> {
 	
 	@Override

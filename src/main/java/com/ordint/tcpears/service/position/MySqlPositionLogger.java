@@ -11,10 +11,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Component;
 
-import com.ordint.tcpears.domain.Position;
-@Component
+import com.ordint.tcpears.domain.lombok.Position;
+
 public class MySqlPositionLogger implements PositionLogger {
 	private final static Logger log = LoggerFactory.getLogger(MySqlPositionLogger.class);
 	@Autowired

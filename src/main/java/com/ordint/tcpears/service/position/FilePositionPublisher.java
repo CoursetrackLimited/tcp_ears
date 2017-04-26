@@ -5,24 +5,15 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 import java.util.concurrent.ConcurrentMap;
-import java.util.stream.Collectors;
 
-import org.boon.datarepo.spi.FilterComposer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Primary;
-import org.springframework.context.annotation.Profile;
-import org.springframework.stereotype.Component;
-import org.springframework.util.FileCopyUtils;
-import org.springframework.util.FileSystemUtils;
 
-import com.mchange.io.FileUtils;
-import com.ordint.tcpears.domain.Position;
+import com.ordint.tcpears.domain.lombok.Position;
 import com.ordint.tcpears.service.PositionDataProvider;
 import com.ordint.tcpears.service.PositionPublisher;
 
-@Component
-@Profile("dev")
+
 public class FilePositionPublisher implements PositionPublisher {
 	
 	private static final String KML_HEADER = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><kml><Document>";

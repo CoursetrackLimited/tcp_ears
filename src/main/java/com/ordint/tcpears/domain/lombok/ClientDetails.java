@@ -1,14 +1,15 @@
-package com.ordint.tcpears.domain;
+package com.ordint.tcpears.domain.lombok;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import lombok.experimental.NonFinal;
-
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Builder
 @Value

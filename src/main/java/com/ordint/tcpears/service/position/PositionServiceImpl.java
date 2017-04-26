@@ -6,7 +6,7 @@ import java.util.Optional;
 
 import com.ordint.tcpears.domain.DefaultInputParser;
 import com.ordint.tcpears.domain.InputParser;
-import com.ordint.tcpears.domain.Position;
+import com.ordint.tcpears.domain.lombok.Position;
 import com.ordint.tcpears.service.ClientDetailsResolver;
 import com.ordint.tcpears.service.ClientManager;
 import com.ordint.tcpears.service.PositionService;

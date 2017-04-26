@@ -14,6 +14,8 @@ import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.ordint.tcpears.domain.lombok.Position;
+
 public class DefaultSnakeWriterTest {
 
 	private Clock clock = Clock.fixed(Instant.now(), ZoneId.systemDefault());

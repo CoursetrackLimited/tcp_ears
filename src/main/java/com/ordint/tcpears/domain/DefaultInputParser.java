@@ -15,7 +15,8 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ordint.tcpears.domain.Position.PositionBuilder;
+import com.ordint.tcpears.domain.lombok.Position;
+import com.ordint.tcpears.domain.lombok.Position.PositionBuilder;
 import com.ordint.tcpears.service.ClientDetailsResolver;
 import com.ordint.tcpears.util.time.Timestamper;
 

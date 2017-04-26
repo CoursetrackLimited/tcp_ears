@@ -25,9 +25,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
-import com.ordint.tcpears.domain.ClientDetails;
-import com.ordint.tcpears.domain.RaceDetail;
-import com.ordint.tcpears.domain.RaceDetail.RaceStatus;
+import com.ordint.tcpears.domain.lombok.ClientDetails;
+import com.ordint.tcpears.domain.lombok.RaceDetail;
+import com.ordint.tcpears.domain.lombok.RaceDetail.RaceStatus;
 import com.ordint.tcpears.memcache.MemcacheHelper;
 import com.ordint.tcpears.service.ClientDetailsResolver;
 import com.ordint.tcpears.service.ClientManager;

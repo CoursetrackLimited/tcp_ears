@@ -2,7 +2,7 @@ package com.ordint.tcpears.service.position;
 
 import java.util.List;
 
-import com.ordint.tcpears.domain.Position;
+import com.ordint.tcpears.domain.lombok.Position;
 
 
 /**

@@ -1,10 +1,10 @@
 package com.ordint.tcpears.server;
 
+import java.util.List;
+
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.socket.DatagramPacket;
 import io.netty.handler.codec.MessageToMessageDecoder;
-
-import java.util.List;
 
 public class UdpPacketDecoder extends MessageToMessageDecoder<DatagramPacket> {
 	

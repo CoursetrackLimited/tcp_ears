@@ -2,6 +2,7 @@ package com.ordint.tcpears.server;
 
 import java.beans.PropertyVetoException;
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,7 +11,6 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
@@ -31,11 +31,15 @@ import com.ordint.tcpears.service.PositionService;
 import com.ordint.tcpears.service.ReplayService;
 import com.ordint.tcpears.service.admin.AdministrationServiceImpl;
 import com.ordint.tcpears.service.position.ClientManagerImpl;
+import com.ordint.tcpears.service.position.FilePositionPublisher;
 import com.ordint.tcpears.service.position.HorseDetailsResolver;
+import com.ordint.tcpears.service.position.MemcachePositionPublisher;
 import com.ordint.tcpears.service.position.MySqlPositionLogger;
+import com.ordint.tcpears.service.position.PositionEnhancers;
 import com.ordint.tcpears.service.position.PositionLogger;
 import com.ordint.tcpears.service.position.PositionServiceImpl;
 import com.ordint.tcpears.service.position.PublishingScheduler;
+import com.ordint.tcpears.service.race.DefaultRaceService;
 import com.ordint.tcpears.service.replay.MySqlReplayService;
 
 import io.netty.bootstrap.AbstractBootstrap;
@@ -53,7 +57,6 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 @Configuration
-@ComponentScan("com.ordint.tcpears")
 @PropertySource("classpath:netty.properties")
 public class Config {
 	
@@ -86,19 +89,8 @@ public class Config {
 	@Autowired
 	private Environment environment;	
 	
-	@Autowired
-	private TcpChannelInitializer tcpChannelInitializer;
 	
-	@Autowired
-	private AdminChannelInitializer adminChannelInitializer;
-	
-	@Autowired
-	private UdpChannelInitializer udpChannelInitializer;
-	
-	@Autowired
-	private Udp2ChannelInitializer udp2ChannelInitializer;
-	
-	@Bean
+	@Bean(name="a")
 	public DataSource dataSource() {
 		ComboPooledDataSource ds = new ComboPooledDataSource();
 		ds.setUser(environment.getProperty("user", "root"));
@@ -126,12 +118,12 @@ public class Config {
 		return ds;
 	}
 
-	@Bean
+	@Bean(name="a2")
 	public PlatformTransactionManager txManager() {
 		return new DataSourceTransactionManager(dataSource());
 	}
 	
-	@Bean
+	@Bean(name="a3")
 	public JdbcTemplate jdbcTemplate() { 
 		return new JdbcTemplate(dataSource());
 	}
@@ -146,7 +138,7 @@ public class Config {
 		b.group(bossGroup(), workerGroup())
 					.channel(NioServerSocketChannel.class)
 					.handler(new LoggingHandler(LogLevel.DEBUG))
-				.childHandler(tcpChannelInitializer);
+				.childHandler(tcpChannelInitializer());
 		/*
 		Map<ChannelOption<?>, Object> tcpChannelOptions = tcpChannelOptions();
 		Set<ChannelOption<?>> keySet = tcpChannelOptions.keySet();
@@ -187,7 +179,7 @@ public class Config {
 				.channel(EpollDatagramChannel.class)
 				.option(ChannelOption.SO_BROADCAST, true)
 	            .option(EpollChannelOption.SO_REUSEPORT, true)
-				.handler(udpChannelInitializer);
+				.handler(udpChannelInitializer());
 			return b;			
 		} else if (mode.contains("beta")) {
 		    return newUdp();
@@ -195,7 +187,7 @@ public class Config {
 			Bootstrap b = new Bootstrap();
 			b.group(new NioEventLoopGroup(bossCount))
 				.channel(NioDatagramChannel.class)
-				.handler(udpChannelInitializer);
+				.handler(udpChannelInitializer());
 			return b;
 		}
 	}
@@ -205,7 +197,7 @@ public class Config {
 	            .group(new NioEventLoopGroup(bossCount), new DefaultEventLoopGroup(threadCount))
 	            .channel(NioUdpServerChannel.class)
 	            .handler(new LoggingHandler(LogLevel.ERROR))
-	            .childHandler(udp2ChannelInitializer);
+	            .childHandler(udp2ChannelInitializer());
 	    
 	}
 	
@@ -217,7 +209,7 @@ public class Config {
 		b.group(bossGroup(), workerGroup())
 					.channel(NioServerSocketChannel.class)
 					.handler(new LoggingHandler(LogLevel.DEBUG))
-				.childHandler(adminChannelInitializer);
+				.childHandler(adminChannelInitializer());
 		return b;
 	}	
 
@@ -239,23 +231,23 @@ public class Config {
 		return options;
 	}
 	
-	@Bean
+	@Bean(name ="propertySourcesPlaceholderConfigurer")
 	public static PropertySourcesPlaceholderConfigurer propertyPlaceholderConfigurer() {
 		return new PropertySourcesPlaceholderConfigurer();
 	}
-	@Bean
+	@Bean(name="a4")
 	@Profile("!dev")
 	public MemcacheHelper memcacheHelper() throws Exception {
 		
 		return  new MemcacheHelper("localhost", 11211);
 	}
-	@Bean
+	@Bean(name="a5")
 	@Profile("dev")
 	public MemcacheHelper devMemcacheHelper() throws Exception {
 		return  new MemcacheHelper();
 		
 	}	
-	@Bean
+	@Bean(name="a6")
 	public File sectorReportsDir() {
 		File sectorDirectory = new File(sectorDirectoryPath);
 		if (!sectorDirectory.exists()) {
@@ -264,42 +256,97 @@ public class Config {
 		return sectorDirectory;
 	}
 	
-	@Bean
+	@Bean(name="a7")
 	public ClientDetailsResolver clientDetailsResolver() {
 		return new HorseDetailsResolver();
 	}
-	@Bean
+	@Bean(name= {"a8", "clientManager"})
 	@Autowired
 	public ClientManager clientManager() throws Exception {
 		return new ClientManagerImpl(useSnakes);
 	}
-	@Bean
+	@Bean(name="a9")
 	public PublishingScheduler publishingScheduler() {
 		return new PublishingScheduler(useSnakes);
 	}
-	@Bean
+	@Bean(name="a10")
 	public PositionLogger positionLogger() {
 		return new MySqlPositionLogger();
 	}
-	@Bean
+	@Bean(name="a11")
 	public PositionService positionService() throws Exception {
 		return new PositionServiceImpl(clientManager(), clientDetailsResolver(), positionLogger());
 	}
-	@Bean
+	@Bean(name="administrationService")
 	@Autowired
 	public AdministrationService administrationService() throws Exception {
 		return new AdministrationServiceImpl();
 	}
-	@Bean
+	@Bean(name="a12")
 	@Autowired
 	public ReplayService replayService() throws Exception {
 		return new MySqlReplayService();
 	}
-	@Bean
+	@Bean(name="a13")
 	public JsonRpcHandler jsonRpcHandler() throws Exception {
 		return new JsonRpcHandler(administrationService());	
 	}
-	
 
+	@Bean(name="a14")
+	@Autowired	
+	public AdminChannelInitializer adminChannelInitializer() {
+		return new AdminChannelInitializer();
+	}
 	
+	@Bean(name="a15")
+	@Autowired
+	public UdpChannelInitializer udpChannelInitializer() {
+		return new UdpChannelInitializer();
+	}
+	@Bean(name="a16")
+	@Autowired
+	public Udp2ChannelInitializer udp2ChannelInitializer() {
+		return new Udp2ChannelInitializer();
+	}
+	@Bean(name="a17")
+	@Autowired
+	public TcpChannelInitializer tcpChannelInitializer() {
+		return new TcpChannelInitializer();
+	}
+	
+	@Bean(name="a18")
+	@Autowired
+	public TCPServer tCPServer() {
+		return new TCPServer();
+	}
+
+	@Bean(name="a19")
+	@Autowired
+	@Profile("dev")
+	public FilePositionPublisher filePositionPublisher() throws IOException {
+		return new FilePositionPublisher();
+	}
+	@Bean(name="a20")
+	@Autowired
+	@Profile("!dev")
+	public MemcachePositionPublisher memcachePositionPublisher() throws IOException {
+		return new MemcachePositionPublisher();
+	}	
+	@Bean(name="a21")
+	@Autowired
+	public MySqlPositionLogger mySqlPositionLogger() {
+		return new MySqlPositionLogger();
+	}	
+	@Bean(name="a22")
+	@Autowired
+	public PositionEnhancers positionEnhancers() {
+		return new PositionEnhancers();
+	}
+	@Bean(name="a23")
+	@Autowired
+	public DefaultRaceService defaultRaceService() {
+		return new DefaultRaceService();
+	}	
+
+
 }

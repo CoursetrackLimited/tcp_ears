@@ -1,6 +1,6 @@
 package com.ordint.tcpears.service;
 
-import com.ordint.tcpears.domain.TrackConfig;
+import com.ordint.tcpears.domain.lombok.TrackConfig;
 
 public interface TrackConfigService {
 

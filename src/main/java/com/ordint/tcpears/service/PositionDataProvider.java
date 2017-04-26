@@ -3,7 +3,7 @@ package com.ordint.tcpears.service;
 import java.util.List;
 import java.util.concurrent.ConcurrentMap;
 
-import com.ordint.tcpears.domain.Position;
+import com.ordint.tcpears.domain.lombok.Position;
 
 public interface PositionDataProvider {
 

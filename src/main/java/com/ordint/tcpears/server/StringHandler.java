@@ -1,12 +1,12 @@
 package com.ordint.tcpears.server;
 
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.SimpleChannelInboundHandler;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.ordint.tcpears.service.PositionService;
+
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.SimpleChannelInboundHandler;
 
 public class StringHandler extends SimpleChannelInboundHandler<String> {
 	

@@ -12,8 +12,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.ordint.tcpears.domain.DefaultSnakeWriter;
-import com.ordint.tcpears.domain.Position;
 import com.ordint.tcpears.domain.SnakeWriter;
+import com.ordint.tcpears.domain.lombok.Position;
 import com.ordint.tcpears.service.ClientManager;
 import com.ordint.tcpears.service.PositionDataProvider;
 

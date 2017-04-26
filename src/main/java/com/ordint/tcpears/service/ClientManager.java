@@ -2,7 +2,7 @@ package com.ordint.tcpears.service;
 
 import java.util.Optional;
 
-import com.ordint.tcpears.domain.Position;
+import com.ordint.tcpears.domain.lombok.Position;
 
 public interface ClientManager {
 

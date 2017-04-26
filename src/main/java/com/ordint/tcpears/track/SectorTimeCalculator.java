@@ -1,9 +1,6 @@
 package com.ordint.tcpears.track;
 
-import java.time.Clock;
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -13,9 +10,9 @@ import java.util.concurrent.ConcurrentMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ordint.tcpears.domain.Position;
-import com.ordint.tcpears.domain.Sector;
-import com.ordint.tcpears.domain.SectorTime;
+import com.ordint.tcpears.domain.lombok.Position;
+import com.ordint.tcpears.domain.lombok.Sector;
+import com.ordint.tcpears.domain.lombok.SectorTime;
 
 public class SectorTimeCalculator {
 	

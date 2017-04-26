@@ -202,7 +202,7 @@
     <configuration>
         <obfuscate>true</obfuscate>
         <injar>${project.build.finalName}.jar</injar>
-        <outjar>${project.build.finalName}-pg.jar</outjar>
+        <outjar>${project.build.finalName}.jar</outjar>
         <proguardInclude>proguard-tcpears.cfg</proguardInclude>
         <injarNotExistsSkip>true</injarNotExistsSkip>
         <libs>

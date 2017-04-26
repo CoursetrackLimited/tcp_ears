@@ -2,6 +2,8 @@ package com.ordint.tcpears.domain;
 
 import java.util.concurrent.ConcurrentLinkedDeque;
 
+import com.ordint.tcpears.domain.lombok.Position;
+
 public class GPSClient {
 	
 	private Position currentPosition;

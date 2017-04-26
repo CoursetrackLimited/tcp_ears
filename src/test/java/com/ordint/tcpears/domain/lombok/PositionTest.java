@@ -1,4 +1,4 @@
-package com.ordint.tcpears.domain;
+package com.ordint.tcpears.domain.lombok;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
@@ -11,6 +11,8 @@ import java.time.ZoneId;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
+
+import com.ordint.tcpears.domain.PositionUtil;
 
 public class PositionTest {
 

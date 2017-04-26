@@ -1,10 +1,5 @@
 package com.ordint.tcpears.server;
 
-import io.netty.bootstrap.AbstractBootstrap;
-import io.netty.bootstrap.Bootstrap;
-import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.ChannelFuture;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,11 +11,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
+import io.netty.bootstrap.AbstractBootstrap;
+import io.netty.bootstrap.ServerBootstrap;
+import io.netty.channel.ChannelFuture;
 
-
-@Component
 public class TCPServer {
 	private final static Logger log = LoggerFactory.getLogger(TCPServer.class); 
 

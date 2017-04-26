@@ -25,7 +25,7 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.ordint.tcpears.domain.DefaultOutputWriter;
-import com.ordint.tcpears.domain.Position;
+import com.ordint.tcpears.domain.lombok.Position;
 import com.ordint.tcpears.memcache.MemcacheHelper;
 import com.ordint.tcpears.service.PositionDataProvider;
 

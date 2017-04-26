@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.ordint.tcpears.domain.ClientDetails;
+import com.ordint.tcpears.domain.lombok.ClientDetails;
 import com.ordint.tcpears.service.ClientDetailsResolver;
 
 public class AirplaneClientDetailsResolver implements ClientDetailsResolver {

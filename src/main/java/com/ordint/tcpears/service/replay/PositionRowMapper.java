@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import com.ordint.tcpears.domain.Position;
+import com.ordint.tcpears.domain.lombok.Position;
 import com.ordint.tcpears.service.ClientDetailsResolver;
 
 public class PositionRowMapper implements RowMapper<Position>{

@@ -9,11 +9,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.stereotype.Component;
 
-import com.ordint.tcpears.domain.ClientDetails;
-import com.ordint.tcpears.domain.Position;
-import com.ordint.tcpears.domain.SectorTime;
+import com.ordint.tcpears.domain.lombok.ClientDetails;
+import com.ordint.tcpears.domain.lombok.Position;
+import com.ordint.tcpears.domain.lombok.SectorTime;
 import com.ordint.tcpears.service.AdministrationService;
 import com.ordint.tcpears.service.ClientDetailsResolver;
 import com.ordint.tcpears.service.PositionPublisher;
@@ -22,7 +21,7 @@ import com.ordint.tcpears.service.ReplayService;
 import com.ordint.tcpears.service.position.ClientManagerImpl;
 import com.ordint.tcpears.service.race.RaceServiceException;
 
-@Component("administrationService")
+
 public class AdministrationServiceImpl implements AdministrationService {
 	private final static Logger log = LoggerFactory.getLogger(AdministrationServiceImpl.class);
 	@Autowired

@@ -5,7 +5,7 @@ import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import com.ordint.tcpears.domain.TrackConfig;
+import com.ordint.tcpears.domain.lombok.TrackConfig;
 
 public class TrackConfigRowMapper implements RowMapper<TrackConfig> {
 	@Override

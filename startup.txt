@@ -10,4 +10,4 @@ PHP- PDO
 mysql
 memcache (adjust
 
-java -Dspring.profiles.active=dev -Dlogback.configurationFile=../logback.xml jar tcpears-0.0.2-DeltaFix.jar --dbhost=78.110.162.226 --password=GrottoFrop --tcp.ports=5011 --listener.mode=udp
+java -Dspring.profiles.active=dev -Dlogback.configurationFile=./logback.xml -jar target/tcpears-0.0.2-DeltaFix-pg.jar --dbhost=78.110.162.226 --password=GrottoFrop --tcp.ports=5011 

@@ -17,13 +17,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Component;
 
-import com.ordint.tcpears.domain.ClientDetails;
+import com.ordint.tcpears.domain.lombok.ClientDetails;
 import com.ordint.tcpears.memcache.MemcacheHelper;
 import com.ordint.tcpears.service.ClientDetailsResolver;
 
-@Component
+
 public class HorseDetailsResolver implements ClientDetailsResolver {
 	private final static Logger log = LoggerFactory.getLogger(HorseDetailsResolver.class);
 	private ConcurrentMap<String, ClientDetails> clientDetailsMap = new ConcurrentHashMap<>();

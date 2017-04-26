@@ -13,6 +13,8 @@ import org.mockito.BDDMockito;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import com.ordint.tcpears.domain.lombok.ClientDetails;
+import com.ordint.tcpears.domain.lombok.Position;
 import com.ordint.tcpears.service.ClientDetailsResolver;
 import com.ordint.tcpears.util.time.TimeProvider;
 import com.ordint.tcpears.util.time.Timestamper;

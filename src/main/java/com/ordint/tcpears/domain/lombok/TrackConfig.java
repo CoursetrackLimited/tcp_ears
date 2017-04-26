@@ -1,4 +1,4 @@
-package com.ordint.tcpears.domain;
+package com.ordint.tcpears.domain.lombok;
 
 import lombok.Builder;
 import lombok.Value;

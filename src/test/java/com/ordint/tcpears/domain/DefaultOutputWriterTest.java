@@ -11,6 +11,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.ordint.tcpears.domain.lombok.ClientDetails;
+import com.ordint.tcpears.domain.lombok.Position;
+import com.ordint.tcpears.domain.lombok.PositionDistanceInfo;
 import com.ordint.tcpears.util.time.Timestamper;
 
 public class DefaultOutputWriterTest {

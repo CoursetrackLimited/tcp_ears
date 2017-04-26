@@ -16,17 +16,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
-import org.springframework.stereotype.Component;
 
-import com.ordint.tcpears.domain.Position;
+import com.ordint.tcpears.domain.lombok.Position;
 import com.ordint.tcpears.service.ClientDetailsResolver;
 import com.ordint.tcpears.service.ClientManager;
 import com.ordint.tcpears.service.ReplayService;
-import com.ordint.tcpears.service.position.PositionServiceImpl;
 import com.ordint.tcpears.service.race.DefaultRaceService;
 
 
-@Component
+
 public class MySqlReplayService implements ReplayService {
 	private final static Logger log = LoggerFactory.getLogger(MySqlReplayService.class);
 	
@@ -36,8 +34,7 @@ public class MySqlReplayService implements ReplayService {
 	private ClientDetailsResolver clientDetailsResolver;
 	@Autowired
 	private ClientManager clientManager;
-	@Autowired
-	private PositionServiceImpl positionService;
+
 	@Autowired
 	private DefaultRaceService raceService;
 
