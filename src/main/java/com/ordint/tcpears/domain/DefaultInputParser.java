@@ -21,7 +21,7 @@ import com.ordint.tcpears.service.ClientDetailsResolver;
 import com.ordint.tcpears.util.time.Timestamper;
 
 public class DefaultInputParser implements InputParser {
-	private final static Logger intpuLog = LoggerFactory.getLogger(DefaultInputParser.class);
+	private final static Logger intpuLog = LoggerFactory.getLogger("com.ordint.tcpears.domain.DefaultInputParser");
 	private final static Logger log = LoggerFactory.getLogger("com.ordint.tcpears.domain.DefaultInputParser2");
 	private ClientDetailsResolver clientDetailsResolver;	
 	private Timestamper timestamper;
