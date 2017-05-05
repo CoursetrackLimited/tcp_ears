@@ -140,5 +140,11 @@ public class AdministrationServiceImpl implements AdministrationService {
 		return raceService.getSectorTimes();
 	}
 
+	
+	public boolean stopStartReplay() {
+		
+		return replayService.stopStartReplay();
+	}
+
 
 }

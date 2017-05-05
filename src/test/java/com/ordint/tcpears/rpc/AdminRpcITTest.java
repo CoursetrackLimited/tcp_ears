@@ -43,7 +43,9 @@ public class AdminRpcITTest {
 			//
 			
 			
-			admin.replayRace(5059);
+			//admin.replayRace(5225);
+			
+			//admin.stopStartReplay();
 			//admin.getSectorTimes();
 			//System.out.println(mapper.writeValueAsString(admin.groupClientsByGroup()));
 		} catch (Exception e) {

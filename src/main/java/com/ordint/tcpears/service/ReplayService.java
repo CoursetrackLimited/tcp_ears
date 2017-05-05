@@ -12,5 +12,7 @@ public interface ReplayService {
 
 	String replayFrom(LocalDateTime parse, int parseInt, boolean userOriginalTimeStamp);
 	
+	boolean stopStartReplay();
+	
 	
 }

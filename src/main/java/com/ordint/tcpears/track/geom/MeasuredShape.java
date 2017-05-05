@@ -414,17 +414,6 @@ public class MeasuredShape implements Serializable {
 			i.next();
 		}
 		double t = closedDistance;
-		if(v.size()>0) {
-			Segment last = v.get(v.size()-1);
-			if(Math.abs(last.data[last.data.length-2]-moveX)>.001 ||
-					Math.abs(last.data[last.data.length-1]-moveY)>.001) {
-				coords[0] = moveX;
-				coords[1] = moveY;
-				Segment s = new Segment(PathIterator.SEG_LINETO,lastX,lastY,coords,spacing);
-				v.add(s);
-				closedDistance += s.realDistance;
-			}
-		}
 		if(!closed) {
 			originalDistance = t;
 		} else {

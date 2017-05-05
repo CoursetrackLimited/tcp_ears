@@ -43,6 +43,7 @@ public class MySqlReplayService implements ReplayService {
 	protected DateTimeFormatter timestampFormatter = DateTimeFormatter.ofPattern("Hmmss.SS");
 	
 	private Map<String, ReplayDetails> runningReplays = new HashMap<>();
+	private GpsTimeReplayer currentReplay;
 	
 	public MySqlReplayService() {
 	
@@ -67,8 +68,8 @@ public class MySqlReplayService implements ReplayService {
 			start = rs.getLong(2);
 			end = rs.getLong(3);
 		}
-		
-		Future<?> replayFuture = executor.submit(new GpsTimeReplayer(replayId, start, end));
+		currentReplay = new GpsTimeReplayer(replayId, start, end);
+		Future<?> replayFuture = executor.submit(currentReplay);
 
 		runningReplays.put(replayId, new ReplayDetails(startDateTime.toString(), replayFuture));
 		log.info("Replay id: {}", replayId);
@@ -113,6 +114,8 @@ public class MySqlReplayService implements ReplayService {
 		private String replayId;
 		private Object[] params;
 		private RowMapper<Position> rowMapper = new PositionRowMapper(clientDetailsResolver);
+		private volatile boolean pause;
+		
 		
 		public GpsTimeReplayer() {
 			// TODO Auto-generated constructor stub
@@ -122,7 +125,11 @@ public class MySqlReplayService implements ReplayService {
 			this.replayId = replayId;
 			this.params = params;
 		}		
-			
+		public boolean stopStart() {
+			pause = !pause;
+			return pause;
+		}
+		
 		@Override
 		public String call() throws Exception {
 			String sql = "SELECT * FROM positionHistory WHERE positionHistoryId > ? AND positionHistoryId <  ? ORDER BY gpsTimestamp ASC";
@@ -186,12 +193,28 @@ public class MySqlReplayService implements ReplayService {
 					
 				}
 			}
+			
+			pause();
+		}
+		
+		private void pause() {
+			while(pause) {}
 		}
 
 
 
 		
 
+	}
+
+
+
+	@Override
+	public boolean stopStartReplay() {
+		if (currentReplay != null) {
+			return currentReplay.stopStart();
+		}
+		return false;
 	}
 	
 	
