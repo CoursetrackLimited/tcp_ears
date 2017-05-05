@@ -26,7 +26,7 @@ public class Track2 {
 	private double officialRaceDistance;
 	private MeasuredShape trackShape;
 	private PositionToPointConverter positionToPointConverter;
-	private double startDistance;
+	private final double startDistance;
 
 
 	public Track2(String kmlPoints, String finishLatLong, double raceDistanceMeters) {

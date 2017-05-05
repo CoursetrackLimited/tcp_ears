@@ -59,7 +59,7 @@ public class FilePositionPublisher implements PositionPublisher {
 	}
 	private static String getDistance(Position p) {
 		if (p.getDistanceInfo() == null) return "";
-		return String.format(" (%.2f)", p.getDistanceInfo().getDistanceFromStart());
+		return String.format(" (%.2f) - %s", p.getDistanceInfo().getDistanceFromStart(), p.getStanding());
 	}
 	
 	@Override

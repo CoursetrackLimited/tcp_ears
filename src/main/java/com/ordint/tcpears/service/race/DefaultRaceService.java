@@ -51,7 +51,11 @@ public class DefaultRaceService implements RaceService {
 	private static final Logger log = LoggerFactory.getLogger(DefaultRaceService.class);
 	
 
-
+    private static final String KML_HEADER = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><kml><Document>";
+    private static final String KML_FOOTER = "</Document></kml>";
+    private static final String KML_LINESTRING = "<Placemark><LineString><tessellate>1</tessellate><coordinates>";
+    private static final String KML_LINESTRING_END = "</coordinates></LineString></Placemark>";
+    private static final String KML_POINT ="<Placemark><name>%s</name><Point><coordinates>%s</coordinates></Point></Placemark>";
 
 	
 	static final String RACE_DETAIL_SQL = "SELECT races.race_id, group_id, races.name as race_name, scheduledStartTime, actualStartTime, "
@@ -268,7 +272,7 @@ public class DefaultRaceService implements RaceService {
 		int timeInSecs = (int) race.getActualStartTime().until(race.getFinishTime(), ChronoUnit.SECONDS);
 		//String groupId = row.get("group_id").toString();
 		
-		jdbcTemplate.update("update races set status ='REPLAYING' where race_id=?", raceId);
+		//jdbcTemplate.update("update races set status ='REPLAYING' where race_id=?", raceId);
 		
 		List<ClientDetails> clientDetails = updateClientDetailsResolver(CLIENT_DETAILS_FOR_RACE_SQL, raceId);
 		
@@ -295,11 +299,31 @@ public class DefaultRaceService implements RaceService {
 	private void configureRaceObserver(RaceDetail race, List<ClientDetails> runners) {
 		clientManager.trackGroup(race.getGroupId().toString());
 		TrackConfig trackConfig = jdbcTemplate.queryForObject(TRACK_CONFIG_SQL, TRACK_CONFIG_ROW_MAPPER, race.getTrackConfigId());
-		
+		writeOutTrackKml(trackConfig);
 		currentRaceObserver = positionEnhancers.addRacePositionEnhancers(race, trackConfig, runners);	
 	}
 	
-	public void replayEnded(String replayId) {
+	private void writeOutTrackKml(TrackConfig trackConfig) {
+        try {
+    	    File file = new File(sectorDirectory, "track_config.kml");
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            FileOutputStream os = new FileOutputStream(file);
+            PrintWriter out = new PrintWriter(os);
+            
+            out.write(KML_HEADER + KML_LINESTRING + trackConfig.getKml() + KML_LINESTRING_END );
+            out.write(String.format(KML_POINT, "Finish", trackConfig.getFinishLine()));
+            out.write(KML_FOOTER);
+            out.flush();
+            out.close();
+        } catch (IOException e) {
+            log.warn("Could not write out replay track kml", e);
+        }
+    }
+
+
+    public void replayEnded(String replayId) {
 		
 		Long raceId = currentReplayRaces.remove(Long.parseLong(StringUtils.substringBefore(replayId, "-")));
 		try {

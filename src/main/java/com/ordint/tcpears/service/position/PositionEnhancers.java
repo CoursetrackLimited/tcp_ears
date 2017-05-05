@@ -13,7 +13,7 @@ import com.ordint.tcpears.domain.lombok.Position;
 import com.ordint.tcpears.domain.lombok.RaceDetail;
 import com.ordint.tcpears.domain.lombok.TrackConfig;
 import com.ordint.tcpears.service.race.RaceObserver;
-import com.ordint.tcpears.track.Track;
+import com.ordint.tcpears.track.Track2;
 import com.ordint.tcpears.track.geom.TrackGeomFactory;
 
 
@@ -45,7 +45,7 @@ public class PositionEnhancers {
 	
 	public RaceObserver addRacePositionEnhancers(RaceDetail race, TrackConfig trackConfig, List<ClientDetails> runners) {
 		log.info("Adding race  psoition enhancers for groupId {}", race.getGroupId());
-		Track track = new Track(trackConfig, trackGeomFactory, race.getRaceDistance());
+		Track2 track = new Track2(trackConfig, trackGeomFactory, race.getRaceDistance());
 		RaceObserver observer = new RaceObserver(track, runners, race);
 		List<PositionEnhancer> pd = Arrays.asList(observer);
 		//List<PositionEnhancer> pd = Arrays.asList(new RacePositionDecorator());

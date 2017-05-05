@@ -21,7 +21,7 @@ import com.ordint.tcpears.domain.lombok.Sector;
 import com.ordint.tcpears.domain.lombok.SectorTime;
 import com.ordint.tcpears.service.position.PositionEnhancer;
 import com.ordint.tcpears.track.SectorTimeCalculator;
-import com.ordint.tcpears.track.Track;
+import com.ordint.tcpears.track.Track2;
 import com.ordint.tcpears.util.DateUtil;
 
 
@@ -42,7 +42,7 @@ public class RaceObserver implements PositionEnhancer {
 	private ConcurrentMap<String, Integer> placings = new ConcurrentHashMap<>();
 	private RaceDetail race;
 
-	private Track track;
+	private Track2 track;
 	private int runnerCount;
 	private List<ClientDetails> runners;
 	private SectorTimeCalculator sectorTimeCalculator;
@@ -54,7 +54,7 @@ public class RaceObserver implements PositionEnhancer {
         }
     };
 	
-	public RaceObserver(Track track, List<ClientDetails> runners, RaceDetail race) {
+	public RaceObserver(Track2 track, List<ClientDetails> runners, RaceDetail race) {
 		this.track = track;
 		this.runnerCount = runners.size();
 		this.runners = runners;
@@ -173,7 +173,7 @@ public class RaceObserver implements PositionEnhancer {
 		//}
 		PositionDistanceInfo pdi = null;
 		if (status == EventState.STARTED) {
-			 pdi = track.calculateDistanceInfo(p);	
+			 pdi = track.calculateDistanceInfo(p);
 			distances.put(p.getClientId(), pdi);
 			sectorTimeCalculator.checkSector(p, pdi.getDistanceFromStart());
 		}

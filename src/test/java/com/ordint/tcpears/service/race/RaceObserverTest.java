@@ -21,13 +21,13 @@ import com.ordint.tcpears.domain.lombok.Position;
 import com.ordint.tcpears.domain.lombok.PositionDistanceInfo;
 import com.ordint.tcpears.domain.lombok.RaceDetail;
 import com.ordint.tcpears.service.race.RaceObserver.EventState;
-import com.ordint.tcpears.track.Track;
+import com.ordint.tcpears.track.Track2;
 
 @Ignore
 @RunWith(MockitoJUnitRunner.class)
 public class RaceObserverTest {
 	@Mock
-	private Track track;
+	private Track2 track;
 	@InjectMocks
 	private RaceObserver raceObserver = new RaceObserver(track, Arrays.asList(ClientDetails.builder().build(),ClientDetails.builder().build(),ClientDetails.builder().build() ),
 			RaceDetail.builder().id(1l).build());
