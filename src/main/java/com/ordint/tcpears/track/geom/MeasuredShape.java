@@ -717,7 +717,7 @@ public class MeasuredShape implements Serializable {
 
 	private int getSegmentIndex(double distance) {
 	    double total = 0;
-	    for (int i = 0 ; i< segments.length-1; i++) {
+	    for (int i = 0 ; i< segments.length; i++) {
 	        if (distance > total && distance <= total + segments[i].realDistance) {
 	            return i;
 	        }
@@ -753,7 +753,14 @@ public class MeasuredShape implements Serializable {
 	public double[] getDistanceAlongTrack(Point2D offTrackpoint, double distanceFromStartOfTrackShape) {
 
         int startingSegment = getSegmentIndex(distanceFromStartOfTrackShape);
-        int lastSegment = (startingSegment == segments.length -1 ? startingSegment : startingSegment + 1);
+
+        int lastSegment = startingSegment + 3;
+        if (lastSegment > segments.length -1) {
+        	lastSegment = segments.length -1;
+        }
+        if (startingSegment > 2) {
+        	startingSegment = startingSegment -2;
+        }
         return getDistanceAlongTrack(offTrackpoint, startingSegment, lastSegment);
 
 

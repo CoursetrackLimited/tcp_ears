@@ -28,6 +28,7 @@ import org.springframework.jdbc.core.RowMapper;
 import com.ordint.tcpears.domain.lombok.ClientDetails;
 import com.ordint.tcpears.domain.lombok.RaceDetail;
 import com.ordint.tcpears.domain.lombok.RaceDetail.RaceStatus;
+import com.ordint.tcpears.domain.lombok.TrackConfig;
 import com.ordint.tcpears.memcache.MemcacheHelper;
 import com.ordint.tcpears.service.ClientDetailsResolver;
 import com.ordint.tcpears.service.ClientManager;
@@ -91,6 +92,8 @@ public class DefaultRaceServiceTest {
 		ClientDetails cd2 = new ClientDetails();
 		given(jdbcTemplate.query(eq(DefaultRaceService.CLIENT_DETAILS_FOR_RACE_SQL), (RowMapper<ClientDetails>)anyObject(), anyLong()))
 			.willReturn(Arrays.asList(cd1,cd2));
+		given(jdbcTemplate.queryForObject(eq(DefaultRaceService.TRACK_CONFIG_SQL), any(TrackConfigRowMapper.class), 
+				anyLong())).willReturn(TrackConfig.builder().kml("kml").finishLine("finishLine").build());
 	
 		defaultRaceService.startRace(100);
 	
@@ -124,6 +127,10 @@ public class DefaultRaceServiceTest {
 			.willReturn(Arrays.asList(cd1,cd2));
 
 		givenAFinishedRace(100);
+
+		given(jdbcTemplate.queryForObject(eq(DefaultRaceService.TRACK_CONFIG_SQL), any(TrackConfigRowMapper.class), 
+				anyLong())).willReturn(TrackConfig.builder().kml("kml").finishLine("finishLine").build());
+
 		
 		String raceName = defaultRaceService.replayRace(100);
 		
@@ -162,7 +169,10 @@ public class DefaultRaceServiceTest {
 		given(jdbcTemplate.queryForObject(eq(DefaultRaceService.RACE_DETAIL_SQL), any(RaceRowMapper.class), eq(200l)))
 			.willReturn(RaceDetail.builder()
 					.venueId(1l)
-					.status(RaceStatus.FINISHED).build());			
+					.status(RaceStatus.FINISHED).build());
+		
+		given(jdbcTemplate.queryForObject(eq(DefaultRaceService.TRACK_CONFIG_SQL), any(TrackConfigRowMapper.class), 
+				anyLong())).willReturn(TrackConfig.builder().kml("kml").finishLine("finishLine").build());
 		
 		defaultRaceService.replayRace(100);
 		

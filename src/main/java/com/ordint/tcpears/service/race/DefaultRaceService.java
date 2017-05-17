@@ -272,7 +272,7 @@ public class DefaultRaceService implements RaceService {
 		int timeInSecs = (int) race.getActualStartTime().until(race.getFinishTime(), ChronoUnit.SECONDS);
 		//String groupId = row.get("group_id").toString();
 		
-		//jdbcTemplate.update("update races set status ='REPLAYING' where race_id=?", raceId);
+		jdbcTemplate.update("update races set status ='REPLAYING' where race_id=?", raceId);
 		
 		List<ClientDetails> clientDetails = updateClientDetailsResolver(CLIENT_DETAILS_FOR_RACE_SQL, raceId);
 		
