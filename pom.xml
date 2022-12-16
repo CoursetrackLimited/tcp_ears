@@ -5,7 +5,7 @@
   <version>0.0.2-DeltaFix</version>
   
     <properties>
-        <spring.version>4.1.2.RELEASE</spring.version>
+        <spring.version>5.2.20.RELEASE</spring.version>
         <org.aspectj.version>1.7.4</org.aspectj.version>
     </properties>
   <dependencies>
